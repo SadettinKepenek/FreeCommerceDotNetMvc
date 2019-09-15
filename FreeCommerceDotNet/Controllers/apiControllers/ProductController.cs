@@ -24,7 +24,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // GET: api/Product/5
         public List<Product> GetProductById(int id)
         {
-            string p = dbManager.GetProducts(1).FirstOrDefault().toJson();
+            string p = dbManager.GetProducts(id).FirstOrDefault().toJson();
             PostProduct(p);
             return dbManager.GetProducts(id);
         }
