@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCommerceDotNet", "FreeCommerceDotNet\FreeCommerceDotNet.csproj", "{E70DD921-A970-472F-B116-10197D037A5E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", "{7CAF6537-0BFC-4AEE-9089-12FFAB8AB7E3}"
+	ProjectSection(SolutionItems) = preProject
+		ProductInsertProcedure.sql = ProductInsertProcedure.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

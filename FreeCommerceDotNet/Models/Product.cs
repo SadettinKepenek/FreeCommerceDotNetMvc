@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Web.Script.Serialization;
 
 namespace FreeCommerceDotNet.Models
 {
@@ -245,14 +246,19 @@ namespace FreeCommerceDotNet.Models
             return p;
         }
 
-        public static Product fromJson(object jsonObject)
+        public static Product fromJson(string jsonObject)
         {
-            return null;
+            if (String.IsNullOrEmpty(jsonObject))
+            {
+                return null;
+            }
+            return new JavaScriptSerializer().Deserialize<Product>(jsonObject); ;
         }
 
-        public static string toJson()
+        public string toJson()
         {
-            return null;
+            var json=new JavaScriptSerializer().Serialize(this);
+            return json;
         }
     }
 }
