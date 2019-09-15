@@ -8,11 +8,13 @@ namespace FreeCommerceDotNet.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string p1)
         {
+            // TODO
+
             return View();
         }
-
+     
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
