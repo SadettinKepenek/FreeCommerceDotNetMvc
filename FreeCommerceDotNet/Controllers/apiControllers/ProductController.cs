@@ -13,17 +13,15 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
     {
         private DbManager dbManager=new DbManager();
         // GET: api/Product
-        public IEnumerable<string> Get()
+        public IEnumerable<Product> Get()
         {
-            dbManager.GetProducts();
-            return new string[] { "value1", "value2" };
-
+            return dbManager.GetProducts(null);
         }
 
         // GET: api/Product/5
-        public string Get(int id)
+        public List<Product> Get(int id)
         {
-            return "value";
+            return dbManager.GetProducts(id);
         }
 
         // POST: api/Product

@@ -1,4 +1,8 @@
-﻿namespace FreeCommerceDotNet.Models
+﻿using System;
+using System.Data.SqlClient;
+using System.Diagnostics;
+
+namespace FreeCommerceDotNet.Models
 {
     public class Product
     {
@@ -49,6 +53,16 @@
             get { return _metatagDescription; }
             set { _metatagDescription = value; }
         }
+
+        private string _metatagKeywords;
+
+        public string MetatagKeywords
+        {
+            get { return _metatagKeywords; }
+            set { _metatagKeywords = value; }
+        }
+
+
 
         private string _productTags;
 
@@ -138,33 +152,33 @@
             set { _availableDate = value; }
         }
 
-        private float _length;
+        private double _length;
 
-        public float Length
+        public double Length
         {
             get { return _length; }
             set { _length = value; }
         }
 
-        private float _width;
+        private double _width;
 
-        public float Width
+        public double Width
         {
             get { return _width; }
             set { _width = value; }
         }
 
-        private float _height;
+        private double _height;
 
-        public float Height
+        public double Height
         {
             get { return _height; }
             set { _height = value; }
         }
 
-        private float _weight;
+        private double _weight;
 
-        public float Weight
+        public double Weight
         {
             get { return _weight; }
             set { _weight = value; }
@@ -193,6 +207,52 @@
             set { _imageUrl = value; }
         }
 
+        public override string ToString()
+        {
+            return string.Format("Ürün Adı {0} Ürün Açıklaması {1} Ürün Durumu {2}",this.ProductName,this.ProductDescription,this.Status);
+        }
 
+        public static Product fromReader(SqlDataReader readerObject)
+        {
+            Product p=new Product();
+            p.ProductId = (int) readerObject["ProductId"];
+            p.CategoryId = (int) readerObject["CategoryId"];
+            p.ProductName = readerObject["ProductName"] as string;
+            p.ProductDescription = readerObject["ProductDescription"] as string;
+            p.MetatagTitle = readerObject["ProductName"] as string;
+            p.MetatagDescription = readerObject["ProductName"] as string;
+            p.MetatagKeywords = readerObject["MetatagKeywords"] as string;
+            p.ProductTags = readerObject["ProductTags"] as string;
+            p.ProductCode = readerObject["ProductCode"] as string;
+            p.SKU = readerObject["SKU"] as string;
+            p.UPC = readerObject["UPC"] as string;
+            p.EAN= readerObject["EAN"] as string;
+            p.JAN= readerObject["JAN"] as string;
+            p.ISBN= readerObject["ISBN"] as string;
+            p.MPN= readerObject["MPN"] as string;
+            p.Quantity = (int) readerObject["Quantity"];
+            p.OutofStockStatus = readerObject["OutOfStockStatus"] as string;
+            p.AvailableDate = readerObject["AvailableDate"] as string;
+            Debug.WriteLine(readerObject["Length"]);
+            p.Length = Convert.ToDouble(readerObject["Length"]);
+            p.Weight = Convert.ToDouble(readerObject["Weight"]);
+            p.Height = Convert.ToDouble(readerObject["Height"]);
+            p.Width = Convert.ToDouble(readerObject["Width"]!=null);
+            p.Status = (bool) readerObject["Status"];
+            p.Brand = readerObject["Brand"] as string;
+            p.ImageUrl = readerObject["ImageUrl"] as string;
+
+            return p;
+        }
+
+        public static Product fromJson(object jsonObject)
+        {
+            return null;
+        }
+
+        public static string toJson()
+        {
+            return null;
+        }
     }
 }
