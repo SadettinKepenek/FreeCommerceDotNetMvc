@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web.Script.Serialization;
 
-namespace FreeCommerceDotNet.Models
+namespace FreeCommerceDotNet.Models.Util
 {
     public static class Utilities
     {

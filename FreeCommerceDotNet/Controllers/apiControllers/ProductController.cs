@@ -9,24 +9,26 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using FreeCommerceDotNet.Models;
+using FreeCommerceDotNet.Models.DbManager;
+using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers.apiControllers
 {
     public class ProductController : ApiController
     {
-        private DbManager dbManager=new DbManager();
+        private ProductManager productManager =new ProductManager();
         // GET: api/Product
         public IEnumerable<Product> GetAllProducts()
         {   
-            return dbManager.GetProducts(null);
+            return productManager.GetAll();
         }
 
         // GET: api/Product/5
         public List<Product> GetProductById(int id)
         {
-            string p = Utilities.ToJson(dbManager.GetProducts(id).FirstOrDefault());
+            string p = Utilities.ToJson(productManager.Get(id));
             PostProduct(p);
-            return dbManager.GetProducts(id);
+            return new List<Product>() {productManager.Get(id)};
         }
 
         // POST: api/Product
@@ -35,7 +37,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
             var p = Utilities.FromJson<Product>(product);
             if (p!=null)
             {
-                dbManager.AddProduct(p);
+                productManager.Add(p);
 
             }
         }
@@ -46,7 +48,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
             Product p = Utilities.FromJson<Product>(value);
             if (p != null)
             {
-                dbManager.UpdateProducts(p);
+                productManager.Update(p);
 
             }
         }
@@ -54,7 +56,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // DELETE: api/Product/5
         public HttpStatusCodeResult Delete(int id)
         {
-            dbManager.deleteProduct(id);
+            productManager.Delete(id);
             Debug.WriteLine("Silindi");
             return new HttpStatusCodeResult(HttpStatusCode.Accepted);
         }

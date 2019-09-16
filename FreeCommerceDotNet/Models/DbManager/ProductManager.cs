@@ -3,33 +3,41 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
+using FreeCommerceDotNet.Models.Interfaces;
+using FreeCommerceDotNet.Models.Util;
 
-namespace FreeCommerceDotNet.Models
+namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class DbManager : IDisposable
+
+    public class ProductManager : IOperations<Product>
     {
         SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;");
-        public List<Product> GetProducts(int? id)
+
+        public List<Product> GetAll()
         {
             string sql = String.Empty;
             SqlCommand command;
-            if (id != null)
-            {
-                sql = "select * from Products where ProductId=@ProductId";
-                command = new SqlCommand(sql, connection);
-                SqlParameter ProductId = command.Parameters.Add("@ProductId", SqlDbType.Int);
-                ProductId.Value = id;
 
-            }
-            else
-            {
-                sql = "select * from Products";
-                command = new SqlCommand(sql, connection);
-            }
+            sql = "select * from Products";
+            command = new SqlCommand(sql, connection);
+
             return executeProductGetCommand(command);
-
         }
-        public bool AddProduct(Product p)
+        public Product Get(int id)
+        {
+            string sql = String.Empty;
+            SqlCommand command;
+
+            sql = "select * from Products where ProductId=@ProductId";
+            command = new SqlCommand(sql, connection);
+            SqlParameter ProductId = command.Parameters.Add("@ProductId", SqlDbType.Int);
+            ProductId.Value = id;
+
+
+            return executeProductGetCommand(command).First();
+        }
+        public bool Add(Product p)
         {
             using (SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;"))
             {
@@ -67,18 +75,18 @@ namespace FreeCommerceDotNet.Models
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();
-               
-                    Debug.WriteLine("Correct ! "+result.ToString());
+
+                    Debug.WriteLine("Correct ! " + result.ToString());
                 }
             }
             return false;
         }
-        public List<Product> UpdateProducts(Product p)
+        public int Update(Product p)
         {
             using (SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;"))
             {
 
-                using(SqlCommand command = new SqlCommand("sp_product_update", connection))
+                using (SqlCommand command = new SqlCommand("sp_product_update", connection))
                 {
                     command.Parameters.AddWithValue("@CategoryId", p.CategoryId);
                     command.Parameters.AddWithValue("@ProductName", p.ProductName);
@@ -108,13 +116,12 @@ namespace FreeCommerceDotNet.Models
                     connection.Open();
                     int result = command.ExecuteNonQuery();
                     Debug.WriteLine("Correct ! " + result.ToString());
-                    return executeProductGetCommand(command);
+                    return 0;
                 }
 
             }
-            
         }
-        public bool deleteProduct(int id)
+        public bool Delete(int id)
         {
             try
             {
@@ -129,7 +136,7 @@ namespace FreeCommerceDotNet.Models
             {
                 throw new Exception("Sql Error on Delete" + e.StackTrace);
             }
-            
+
             return true;
         }
         public List<Product> executeProductGetCommand(SqlCommand command)
@@ -140,15 +147,14 @@ namespace FreeCommerceDotNet.Models
             while (reader.Read())
             {
                 Product p = Utilities.fromProductReader(reader);
-                p.ProductPrices = new DbManager().GetProductPrices(p.ProductId);
+                // Bütün foreign keyleri çektir.
+                p.ProductPrices = new ProductManager().GetProductPrices(p.ProductId);
                 productsWithParameter.Add(p);
             }
 
             connection.Close();
             return productsWithParameter;
         }
-
-
         public List<ProductPrices> GetProductPrices(int productId)
         {
             string sql = "select * from ProductsPrices where ProductId=@ProductId";
@@ -165,11 +171,5 @@ namespace FreeCommerceDotNet.Models
             return productPrices;
         }
 
-
-
-
-        public void Dispose()
-        {
-        }
     }
 }
