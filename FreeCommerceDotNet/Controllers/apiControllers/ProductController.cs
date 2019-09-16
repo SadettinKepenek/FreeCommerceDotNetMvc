@@ -41,8 +41,9 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         }
 
         // PUT: api/Product/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Product value)
         {
+            dbManager.UpdateProducts(value,id);
         }
 
         // DELETE: api/Product/5
