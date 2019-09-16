@@ -7,6 +7,8 @@ namespace FreeCommerceDotNet.Models.Util
 {
     public static class Utilities
     {
+        public static string connectionString { get; set; } =
+            "\"Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;\"";
 
         public static T FromJson<T>(string jsonObject)
         {

@@ -39,7 +39,7 @@ namespace FreeCommerceDotNet.Models.DbManager
         }
         public bool Add(Product p)
         {
-            using (SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;"))
+            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
             {
                 String query = "INSERT INTO Products (id,username,password,email) VALUES (@id,@username,@password, @email)";
 
