@@ -18,13 +18,7 @@
             set { _ProductId = value; }
         }
 
-        private int _AttributeId;
-
-        public int AttributeId
-        {
-            get { return _AttributeId; }
-            set { _AttributeId = value; }
-        }
+        
         private Attribute _attribute;
 
         public Attribute Attribute

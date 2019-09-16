@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -12,6 +15,7 @@ namespace FreeCommerceDotNet.Controllers
         {
             // TODO
 
+         
             return View();
         }
      

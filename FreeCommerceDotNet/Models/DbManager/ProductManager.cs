@@ -22,7 +22,7 @@ namespace FreeCommerceDotNet.Models.DbManager
             sql = "select * from Products";
             command = new SqlCommand(sql, connection);
 
-            return executeProductGetCommand(command);
+            return GetProducts(command);
         }
         public Product Get(int id)
         {
@@ -35,7 +35,7 @@ namespace FreeCommerceDotNet.Models.DbManager
             ProductId.Value = id;
 
 
-            return executeProductGetCommand(command).First();
+            return GetProducts(command).First();
         }
         public bool Add(Product p)
         {
@@ -88,6 +88,10 @@ namespace FreeCommerceDotNet.Models.DbManager
 
                 using (SqlCommand command = new SqlCommand("sp_product_update", connection))
                 {
+                    // Add params
+                    var listOfParameters = new List<SqlCommandUtilModel>()
+                        {new SqlCommandUtilModel() {parameterName = "@CategoryId", propertyName = "CategoryId"}};
+
                     command.Parameters.AddWithValue("@CategoryId", p.CategoryId);
                     command.Parameters.AddWithValue("@ProductName", p.ProductName);
                     command.Parameters.AddWithValue("@ProductDescription", p.ProductDescription);
@@ -139,7 +143,7 @@ namespace FreeCommerceDotNet.Models.DbManager
 
             return true;
         }
-        public List<Product> executeProductGetCommand(SqlCommand command)
+        public List<Product> GetProducts(SqlCommand command)
         {
             var productsWithParameter = new List<Product>();
             connection.Open();
@@ -189,7 +193,6 @@ namespace FreeCommerceDotNet.Models.DbManager
             while (reader.Read())
             {
                 var attributes = Utilities.fromProductAttributesReader(reader);
-
                 productAttributes.Add(attributes);
             }
             reader.Dispose();

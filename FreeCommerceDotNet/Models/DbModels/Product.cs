@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FreeCommerceDotNet.Models
+namespace FreeCommerceDotNet.Models.DbModels
 {
     public class Product
     {
@@ -204,22 +204,13 @@ namespace FreeCommerceDotNet.Models
             get { return _imageUrl; }
             set { _imageUrl = value; }
         }
-        private List<ProductPrices> _productPrices;
-
-        public List<ProductPrices> ProductPrices
-        {
-            get { return _productPrices; }
-            set { _productPrices = value; }
-        }
-
-        private List<ProductAttributes> _productAttributes;
-
-        public List<ProductAttributes> ProductAttributes
-        {
-            get { return _productAttributes; }
-            set { _productAttributes = value; }
-        }
 
 
+        public List<ProductAttribute> ProductAttributes { get; set; }
+        public List<ProductPrices> ProductPriceses { get; set; }
+        public List<ProductDiscount> ProductDiscounts { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
+        public List<ProductOption> ProductOptions { get; set; }
+        
     }
 }

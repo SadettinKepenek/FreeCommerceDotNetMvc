@@ -83,16 +83,8 @@ namespace FreeCommerceDotNet.Models.Util
 
 
             productAttributes.Attribute = attribute;
-
-
-
-
-
-            productAttributes.AttributeId = (int)reader["AttributeId"];
-            //productAttributes.ProductId = (int)reader["ProductId"];
             productAttributes.RelationId = (int)reader["RelationId"];
             return productAttributes;
-
 
         }
     }
