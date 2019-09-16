@@ -74,17 +74,12 @@ namespace FreeCommerceDotNet.Models
             return false;
         }
         //Update 
-        public List<Product> UpdateProducts(Product p,int id)
+        public List<Product> UpdateProducts(Product p)
         {
             using (SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;"))
             {
-                
-                string query = "UPDATE Products SET ProductName = @ProductName ,CategoryId = @CategoryId,ProductDescription = @ProductDescription , MetatagTitle = @MetatagTitle," +
-                    "MetatagDescription = @MetatagDescription, MetatagKeywords = @MetatagKeywords ,ProductTags = @ProductTags,ProductCode = @ProductCode," +
-                    "SKU = @SKU,UPC = @UPC,EAN = @EAN,JAN=@JAN,ISBN = @ISBN,MPN = @MPN,Quantity = @Quantity,OutofStockStatus = @OutofStockStatus,AvailableDate = @AvailableDate," +
-                    "Length = @Length,Width = @Width,Height = @Height,Weight = @Weight,Status = @Status,Brand = @Brand,ImageUrl = @ImageUrl WHERE ProductId = '"+ id +"' ";
 
-                using(SqlCommand command = new SqlCommand(query, connection))
+                using(SqlCommand command = new SqlCommand("sp_product_update", connection))
                 {
                     command.Parameters.AddWithValue("@CategoryId", p.CategoryId);
                     command.Parameters.AddWithValue("@ProductName", p.ProductName);
@@ -110,6 +105,7 @@ namespace FreeCommerceDotNet.Models
                     command.Parameters.AddWithValue("@Status", p.Status);
                     command.Parameters.AddWithValue("@Brand", p.Brand);
                     command.Parameters.AddWithValue("@ImageUrl", p.ImageUrl);
+                    command.Parameters.AddWithValue("@ProductId", p.ProductId);
                     connection.Open();
                     int result = command.ExecuteNonQuery();
                     Debug.WriteLine("Correct ! " + result.ToString());
