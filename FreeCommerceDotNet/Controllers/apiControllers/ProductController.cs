@@ -24,7 +24,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // GET: api/Product/5
         public List<Product> GetProductById(int id)
         {
-            string p = dbManager.GetProducts(id).FirstOrDefault()?.toJson();
+            string p = Utilities.ToJson(dbManager.GetProducts(id).FirstOrDefault());
             PostProduct(p);
             return dbManager.GetProducts(id);
         }
@@ -32,7 +32,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // POST: api/Product
         public void PostProduct([FromBody]string product)
         {
-            Product p = Product.fromJson(product);
+            var p = Utilities.FromJson<Product>(product);
             if (p!=null)
             {
                 dbManager.AddProduct(p);
@@ -43,7 +43,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // PUT: api/Product/5
         public void Put([FromBody]string value)
         {
-            Product p = Product.fromJson(value);
+            Product p = Utilities.FromJson<Product>(value);
             if (p != null)
             {
                 dbManager.UpdateProducts(p);

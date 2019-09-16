@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web.Script.Serialization;
@@ -207,58 +208,15 @@ namespace FreeCommerceDotNet.Models
             get { return _imageUrl; }
             set { _imageUrl = value; }
         }
+        private List<ProductPrices> _productPrices;
 
-        public override string ToString()
+        public List<ProductPrices> ProductPrices
         {
-            return string.Format("Ürün Adı {0} Ürün Açıklaması {1} Ürün Durumu {2}",this.ProductName,this.ProductDescription,this.Status);
+            get { return _productPrices; }
+            set { _productPrices = value; }
         }
 
-        public static Product fromReader(SqlDataReader readerObject)
-        {
-            Product p=new Product();
-            p.ProductId = (int) readerObject["ProductId"];
-            p.CategoryId = (int) readerObject["CategoryId"];
-            p.ProductName = readerObject["ProductName"] as string;
-            p.ProductDescription = readerObject["ProductDescription"] as string;
-            p.MetatagTitle = readerObject["ProductName"] as string;
-            p.MetatagDescription = readerObject["ProductName"] as string;
-            p.MetatagKeywords = readerObject["MetatagKeywords"] as string;
-            p.ProductTags = readerObject["ProductTags"] as string;
-            p.ProductCode = readerObject["ProductCode"] as string;
-            p.SKU = readerObject["SKU"] as string;
-            p.UPC = readerObject["UPC"] as string;
-            p.EAN= readerObject["EAN"] as string;
-            p.JAN= readerObject["JAN"] as string;
-            p.ISBN= readerObject["ISBN"] as string;
-            p.MPN= readerObject["MPN"] as string;
-            p.Quantity = (int) readerObject["Quantity"];
-            p.OutofStockStatus = readerObject["OutOfStockStatus"] as string;
-            p.AvailableDate = readerObject["AvailableDate"] as string;
-            Debug.WriteLine(readerObject["Length"]);
-            p.Length = Convert.ToDouble(readerObject["Length"]);
-            p.Weight = Convert.ToDouble(readerObject["Weight"]);
-            p.Height = Convert.ToDouble(readerObject["Height"]);
-            p.Width = Convert.ToDouble(readerObject["Width"]!=null);
-            p.Status = (bool) readerObject["Status"];
-            p.Brand = readerObject["Brand"] as string;
-            p.ImageUrl = readerObject["ImageUrl"] as string;
 
-            return p;
-        }
 
-        public static Product fromJson(string jsonObject)
-        {
-            if (String.IsNullOrEmpty(jsonObject))
-            {
-                return null;
-            }
-            return new JavaScriptSerializer().Deserialize<Product>(jsonObject); ;
-        }
-
-        public string toJson()
-        {
-            var json=new JavaScriptSerializer().Serialize(this);
-            return json;
-        }
     }
 }

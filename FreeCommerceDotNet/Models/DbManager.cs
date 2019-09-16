@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace FreeCommerceDotNet.Models
 {
-    public class DbManager
+    public class DbManager : IDisposable
     {
         SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;");
         public List<Product> GetProducts(int? id)
@@ -73,7 +73,6 @@ namespace FreeCommerceDotNet.Models
             }
             return false;
         }
-        //Update 
         public List<Product> UpdateProducts(Product p)
         {
             using (SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;"))
@@ -115,7 +114,6 @@ namespace FreeCommerceDotNet.Models
             }
             
         }
-
         public bool deleteProduct(int id)
         {
             try
@@ -134,19 +132,44 @@ namespace FreeCommerceDotNet.Models
             
             return true;
         }
-
-        private List<Product> executeProductGetCommand(SqlCommand command)
+        public List<Product> executeProductGetCommand(SqlCommand command)
         {
             var productsWithParameter = new List<Product>();
             connection.Open();
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                productsWithParameter.Add(Product.fromReader(reader));
+                Product p = Utilities.fromProductReader(reader);
+                p.ProductPrices = new DbManager().GetProductPrices(p.ProductId);
+                productsWithParameter.Add(p);
             }
 
             connection.Close();
             return productsWithParameter;
+        }
+
+
+        public List<ProductPrices> GetProductPrices(int productId)
+        {
+            string sql = "select * from ProductsPrices where ProductId=@ProductId";
+            var command = new SqlCommand(sql, connection);
+            SqlParameter ProductId = command.Parameters.Add("@ProductId", SqlDbType.Int);
+            ProductId.Value = productId;
+            var productPrices = new List<ProductPrices>();
+            connection.Open();
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                productPrices.Add(Utilities.fromProductPricesReader(reader));
+            }
+            return productPrices;
+        }
+
+
+
+
+        public void Dispose()
+        {
         }
     }
 }
