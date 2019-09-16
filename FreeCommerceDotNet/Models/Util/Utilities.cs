@@ -63,5 +63,37 @@ namespace FreeCommerceDotNet.Models.Util
 
 
         }
+        public static ProductAttributes fromProductAttributesReader(SqlDataReader reader)
+        {
+            ProductAttributes productAttributes = new ProductAttributes();
+
+            var attributeGroup = new AttributeGroup()
+            {
+                AttributeGroupId = (int)reader["AttributeGroupId"],
+                AttributeGroupName = reader["AttributeGroupName"].ToString(),
+                    
+            };
+            var attribute = new Attribute()
+            {
+                AttributeGroup = attributeGroup,
+                AttributeId = (int)reader["AttributeId"],
+                AttributeGroupId = (int) reader["AttributeGroupId"],
+                AttributeName = reader["AttributeName"].ToString(),
+            };
+
+
+            productAttributes.Attribute = attribute;
+
+
+
+
+
+            productAttributes.AttributeId = (int)reader["AttributeId"];
+            //productAttributes.ProductId = (int)reader["ProductId"];
+            productAttributes.RelationId = (int)reader["RelationId"];
+            return productAttributes;
+
+
+        }
     }
 }

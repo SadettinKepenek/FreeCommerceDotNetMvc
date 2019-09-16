@@ -146,9 +146,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Attribute.cs" />
+    <Compile Include="Models\AttributeGroup.cs" />
     <Compile Include="Models\DbManager\ProductManager.cs" />
     <Compile Include="Models\Interfaces\IOperations.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductAttributes.cs" />
     <Compile Include="Models\ProductPrices.cs" />
     <Compile Include="Models\Util\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

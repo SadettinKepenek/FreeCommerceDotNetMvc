@@ -216,6 +216,13 @@ namespace FreeCommerceDotNet.Models
             set { _productPrices = value; }
         }
 
+        private List<ProductAttributes> _productAttributes;
+
+        public List<ProductAttributes> ProductAttributes
+        {
+            get { return _productAttributes; }
+            set { _productAttributes = value; }
+        }
 
 
     }

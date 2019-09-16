@@ -1,16 +1,16 @@
-﻿using System;
+﻿using FreeCommerceDotNet.Models.Interfaces;
+using FreeCommerceDotNet.Models.Util;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
-using FreeCommerceDotNet.Models.Interfaces;
-using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
 
-    public class ProductManager : IOperations<Product>
+    public class ProductManager : IOperations<Product>, IDisposable
     {
         SqlConnection connection = new SqlConnection("Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;");
 
@@ -148,8 +148,14 @@ namespace FreeCommerceDotNet.Models.DbManager
             {
                 Product p = Utilities.fromProductReader(reader);
                 // Bütün foreign keyleri çektir.
-                p.ProductPrices = new ProductManager().GetProductPrices(p.ProductId);
+                using (ProductManager productManager = new ProductManager())
+                {
+                    p.ProductPrices = productManager.GetProductPrices(p.ProductId);
+                    p.ProductAttributes = productManager.GetProductAttributes(p.ProductId);
+                }
+
                 productsWithParameter.Add(p);
+
             }
 
             connection.Close();
@@ -162,14 +168,42 @@ namespace FreeCommerceDotNet.Models.DbManager
             SqlParameter ProductId = command.Parameters.Add("@ProductId", SqlDbType.Int);
             ProductId.Value = productId;
             var productPrices = new List<ProductPrices>();
-            connection.Open();
+            checkConnection();
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 productPrices.Add(Utilities.fromProductPricesReader(reader));
             }
+            reader.Dispose();
             return productPrices;
         }
+        public List<ProductAttributes> GetProductAttributes(int productId)
+        {
+            string sql = "select Attribute.AttributeId,\r\n       AttributeGroup.AttributeGroupId,\r\n       Attribute.AttributeName,\r\n ProductAttributes.RelationId,\r\n       AttributeGroup.AttributeGroupName\r\nfrom Products as Product\r\n         INNER JOIN ProductsAttributes AS ProductAttributes ON Product.ProductId = ProductAttributes.ProductId\r\n         INNER JOIN Attributes as Attribute on ProductAttributes.AttributeId = Attribute.AttributeId\r\n         INNER JOIN AttributeGroups as AttributeGroup on Attribute.AttributeGroup = AttributeGroup.AttributeGroupId where Product.ProductId=@ProductId";
+            var command = new SqlCommand(sql, connection);
+            SqlParameter ProductId = command.Parameters.Add("@ProductId", SqlDbType.Int);
+            ProductId.Value = productId;
+            var productAttributes = new List<ProductAttributes>();
+            checkConnection();
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var attributes = Utilities.fromProductAttributesReader(reader);
 
+                productAttributes.Add(attributes);
+            }
+            reader.Dispose();
+            return productAttributes;
+        }
+
+        private void checkConnection()
+        {
+            if (connection != null && connection.State == ConnectionState.Closed)
+                connection.Open();
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }
