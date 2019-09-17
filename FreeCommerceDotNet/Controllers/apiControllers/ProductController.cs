@@ -22,9 +22,9 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
 
 
-        public IEnumerable<Store> GetAllProducts()
+        public IEnumerable<AttributeGroup> GetAllProducts()
         {   
-            return new StoreManager().GetAll();
+            return new AttributeGroupManager().GetAll();
         }
 
         // GET: api/Product/5

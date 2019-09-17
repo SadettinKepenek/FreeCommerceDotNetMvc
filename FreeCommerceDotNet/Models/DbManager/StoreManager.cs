@@ -78,7 +78,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert);
+                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Update);
                 return 0;
             }
         }
