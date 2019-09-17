@@ -5,6 +5,7 @@
         Insert,
         Update,
         Remove,
-        Select
+        Select,
+        StoredProcedure
     }
 }

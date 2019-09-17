@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Reflection;
 using System.Web.Script.Serialization;
 
@@ -44,6 +43,7 @@ namespace FreeCommerceDotNet.Models.Util
                             return false;
                         }
                     }
+
                     else
                     {
                         try
@@ -66,9 +66,6 @@ namespace FreeCommerceDotNet.Models.Util
                 }
             }
         }
-
-
-
         public static bool ColumnExists(SqlDataReader reader, string columnName)
         {
             for (int i = 0; i < reader.FieldCount; i++)
@@ -103,7 +100,7 @@ namespace FreeCommerceDotNet.Models.Util
             }
             return entry;
         }
-        public static SqlCommand CreateUpdateSqlParameters<T>(SqlCommand cmd,T entry,PropertyInfo[] propertyInfos)
+        public static SqlCommand CreateUpdateSqlParameters<T>(SqlCommand cmd, T entry, PropertyInfo[] propertyInfos)
         {
             foreach (PropertyInfo info in propertyInfos)
             {
