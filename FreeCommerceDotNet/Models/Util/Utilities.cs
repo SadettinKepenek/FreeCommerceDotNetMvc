@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Reflection;
@@ -15,12 +17,41 @@ namespace FreeCommerceDotNet.Models.Util
         {
             return new JavaScriptSerializer().Deserialize<T>(jsonObject); ;
         }
-
         public static string ToJson<T>(T entry)
         {
             var json = new JavaScriptSerializer().Serialize(entry);
             return json;
         }
+        public static bool ExecuteCommand<T>(SqlCommand command, SqlCommandTypes type, ref List<T> emptyList) where T : new()
+        {
+            /// emptyList eğer select yapılacaksa boş liste olarak gönderilir select sonucunda doldurulur.
+            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+            {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                using (command)
+                {
+                    if (type == SqlCommandTypes.Insert || type == SqlCommandTypes.Update || type == SqlCommandTypes.Remove)
+                    {
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                    else
+                    {
+                        var reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            T entry = Utilities.fromReader<T>(reader);
+                            emptyList.Add(entry);
+                        }
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+
 
         public static bool ColumnExists(SqlDataReader reader, string columnName)
         {
@@ -56,7 +87,6 @@ namespace FreeCommerceDotNet.Models.Util
             }
             return entry;
         }
-
         public static SqlCommand CreateUpdateSqlParameters<T>(SqlCommand cmd,T entry,PropertyInfo[] propertyInfos)
         {
             foreach (PropertyInfo info in propertyInfos)

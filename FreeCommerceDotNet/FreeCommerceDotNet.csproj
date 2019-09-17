@@ -185,6 +185,7 @@
     <Compile Include="Models\DbModels\Shipping.cs" />
     <Compile Include="Models\DbModels\Store.cs" />
     <Compile Include="Models\Interfaces\IOperations.cs" />
+    <Compile Include="Models\Util\SqlCommandTypes.cs" />
     <Compile Include="Models\Util\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
