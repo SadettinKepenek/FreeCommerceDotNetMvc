@@ -66,6 +66,29 @@ namespace FreeCommerceDotNet.Models.Util
                 }
             }
         }
+        public static bool ExecuteCommand<T>(SqlCommand command, SqlCommandTypes type) where T : new()
+        {
+            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+            {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                using (command)
+                {
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                        return true;
+
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
+
+                }
+            }
+        }
+
         public static bool ColumnExists(SqlDataReader reader, string columnName)
         {
             for (int i = 0; i < reader.FieldCount; i++)

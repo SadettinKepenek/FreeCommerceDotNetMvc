@@ -38,7 +38,15 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool Add(Shipping entry)
         {
-
+            string sqlQuery = "select * from Shippings where ShippingId=@Id ";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
+                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert, null);
+                return true;
+            }
             throw new System.NotImplementedException();
         }
 
