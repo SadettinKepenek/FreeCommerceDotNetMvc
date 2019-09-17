@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Reflection;
 using System.Web.Script.Serialization;
 
 namespace FreeCommerceDotNet.Models.Util
@@ -12,7 +13,6 @@ namespace FreeCommerceDotNet.Models.Util
 
         public static T FromJson<T>(string jsonObject)
         {
-
             return new JavaScriptSerializer().Deserialize<T>(jsonObject); ;
         }
 
@@ -21,73 +21,51 @@ namespace FreeCommerceDotNet.Models.Util
             var json = new JavaScriptSerializer().Serialize(entry);
             return json;
         }
-        public static Product fromProductReader(SqlDataReader readerObject)
-        {
-            Product p = new Product();
-            p.ProductId = (int)readerObject["ProductId"];
-            p.CategoryId = (int)readerObject["CategoryId"];
-            p.ProductName = readerObject["ProductName"] as string;
-            p.ProductDescription = readerObject["ProductDescription"] as string;
-            p.MetatagTitle = readerObject["ProductName"] as string;
-            p.MetatagDescription = readerObject["ProductName"] as string;
-            p.MetatagKeywords = readerObject["MetatagKeywords"] as string;
-            p.ProductTags = readerObject["ProductTags"] as string;
-            p.ProductCode = readerObject["ProductCode"] as string;
-            p.SKU = readerObject["SKU"] as string;
-            p.UPC = readerObject["UPC"] as string;
-            p.EAN = readerObject["EAN"] as string;
-            p.JAN = readerObject["JAN"] as string;
-            p.ISBN = readerObject["ISBN"] as string;
-            p.MPN = readerObject["MPN"] as string;
-            p.Quantity = (int)readerObject["Quantity"];
-            p.OutofStockStatus = readerObject["OutOfStockStatus"] as string;
-            p.AvailableDate = readerObject["AvailableDate"] as string;
-            Debug.WriteLine(readerObject["Length"]);
-            p.Length = Convert.ToDouble(readerObject["Length"]);
-            p.Weight = Convert.ToDouble(readerObject["Weight"]);
-            p.Height = Convert.ToDouble(readerObject["Height"]);
-            p.Width = Convert.ToDouble(readerObject["Width"]);
-            p.Status = (bool)readerObject["Status"];
-            p.Brand = readerObject["Brand"] as string;
-            p.ImageUrl = readerObject["ImageUrl"] as string;
 
-            return p;
+        public static bool ColumnExists(SqlDataReader reader, string columnName)
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                if (reader.GetName(i).Equals(columnName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public static T fromReader<T>(SqlDataReader reader) where T : new()
+        {
+            T entry = new T();
+            foreach (PropertyInfo info in entry.GetType().GetProperties())
+            {
+                string propertyName = info.Name;
+                if (ColumnExists(reader, propertyName) == false)
+                    continue;
+
+                var value = reader[propertyName];
+                if (value != null && value != DBNull.Value)
+                {
+
+                    if (info.PropertyType == typeof(Double))
+                        info.SetValue(entry, Convert.ToDouble(reader[propertyName]));
+                    else
+                        info.SetValue(entry, reader[propertyName]);
+
+                }
+            }
+            return entry;
         }
 
-        public static ProductPrices fromProductPricesReader(SqlDataReader reader)
+        public static SqlCommand CreateUpdateSqlParameters<T>(SqlCommand cmd,T entry,PropertyInfo[] propertyInfos)
         {
-            ProductPrices productPrices = new ProductPrices();
-            productPrices.PriceId = (int)reader["PriceId"];
-            productPrices.Product = (int)reader["ProductId"];
-            productPrices.Price = Convert.ToDouble(reader["Price"]);
-            productPrices.Segment = reader["Segment"].ToString();
-            return productPrices;
-
-
-        }
-        public static ProductAttributes fromProductAttributesReader(SqlDataReader reader)
-        {
-            ProductAttributes productAttributes = new ProductAttributes();
-
-            var attributeGroup = new AttributeGroup()
+            foreach (PropertyInfo info in propertyInfos)
             {
-                AttributeGroupId = (int)reader["AttributeGroupId"],
-                AttributeGroupName = reader["AttributeGroupName"].ToString(),
-                    
-            };
-            var attribute = new Attribute()
-            {
-                AttributeGroup = attributeGroup,
-                AttributeId = (int)reader["AttributeId"],
-                AttributeGroupId = (int) reader["AttributeGroupId"],
-                AttributeName = reader["AttributeName"].ToString(),
-            };
+                string parameterName = "@" + info.Name;
+                cmd.Parameters.AddWithValue(parameterName, info.GetValue(entry));
+            }
 
-
-            productAttributes.Attribute = attribute;
-            productAttributes.RelationId = (int)reader["RelationId"];
-            return productAttributes;
-
+            return cmd;
         }
     }
 }

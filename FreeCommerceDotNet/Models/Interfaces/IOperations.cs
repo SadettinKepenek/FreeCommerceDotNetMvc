@@ -9,7 +9,6 @@ namespace FreeCommerceDotNet.Models.Interfaces
         bool Add(T entry);
         int Update(T entry);
         bool Delete(int id);
-
-
+        bool CheckIsExist(int id);
     }
 }
