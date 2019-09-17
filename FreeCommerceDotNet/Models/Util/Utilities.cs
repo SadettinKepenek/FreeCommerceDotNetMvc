@@ -43,20 +43,7 @@ namespace FreeCommerceDotNet.Models.Util
                             return false;
                         }
                     }
-                    else if (type == SqlCommandTypes.StoredProcedure)
-                    {
-                        try
-                        {
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.ExecuteNonQuery();
-                            return true;
 
-                        }
-                        catch (Exception e)
-                        {
-                            return false;
-                        }
-                    }
                     else
                     {
                         try

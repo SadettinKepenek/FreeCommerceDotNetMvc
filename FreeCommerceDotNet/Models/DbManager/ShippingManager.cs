@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using FreeCommerceDotNet.Models.DbModels;
@@ -24,9 +25,10 @@ namespace FreeCommerceDotNet.Models.DbManager
         public Shipping Get(int id)
         {
             string sqlQuery = "select * from Shippings where ShippingId=@Id ";
-            using (SqlCommand command = new SqlCommand())
+            using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 var shippings = new List<Shipping>();
                 Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Select, ref shippings);
