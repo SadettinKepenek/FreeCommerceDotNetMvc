@@ -14,7 +14,7 @@ namespace FreeCommerceDotNet.Models.DbManager
         public List<Shipping> GetAll()
         {
             string sqlQuery = "select * from Shippings";
-            using (SqlCommand command = new SqlCommand())
+            using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
                 var shippings = new List<Shipping>();

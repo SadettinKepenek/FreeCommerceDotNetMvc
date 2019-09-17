@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Reflection;
 using System.Web.Script.Serialization;
 
@@ -9,8 +10,7 @@ namespace FreeCommerceDotNet.Models.Util
 {
     public static class Utilities
     {
-        public static string connectionString { get; set; } =
-            "\"Server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;\"";
+        public static string connectionString { get; set; } ="server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
 
         public static T FromJson<T>(string jsonObject)
         {
@@ -30,6 +30,7 @@ namespace FreeCommerceDotNet.Models.Util
                     connection.Open();
                 using (command)
                 {
+                    command.Connection = connection;
                     if (type == SqlCommandTypes.Insert || type == SqlCommandTypes.Update || type == SqlCommandTypes.Remove)
                     {
                         try
@@ -59,6 +60,7 @@ namespace FreeCommerceDotNet.Models.Util
                         }
                         catch (Exception e)
                         {
+                            Debug.WriteLine(e.StackTrace);
                             return false;
                         }
 
@@ -74,6 +76,7 @@ namespace FreeCommerceDotNet.Models.Util
                     connection.Open();
                 using (command)
                 {
+                    command.Connection = connection;
 
                     try
                     {
@@ -89,7 +92,6 @@ namespace FreeCommerceDotNet.Models.Util
                 }
             }
         }
-
         public static bool ColumnExists(SqlDataReader reader, string columnName)
         {
             for (int i = 0; i < reader.FieldCount; i++)

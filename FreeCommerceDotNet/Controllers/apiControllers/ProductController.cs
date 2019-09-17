@@ -19,9 +19,9 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
     {
         private ProductManager productManager =new ProductManager();
         // GET: api/Product
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<Shipping> GetAllProducts()
         {   
-            return productManager.GetAll();
+            return new ShippingManager().GetAll();
         }
 
         // GET: api/Product/5
