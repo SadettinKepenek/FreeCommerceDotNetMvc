@@ -119,6 +119,8 @@ namespace FreeCommerceDotNet.Models.Util
 
                     if (info.PropertyType == typeof(Double))
                         info.SetValue(entry, Convert.ToDouble(reader[propertyName]));
+                    if (info.PropertyType == typeof(Boolean))
+                        info.SetValue(entry, Convert.ToBoolean(reader[propertyName]));
                     else
                         info.SetValue(entry, reader[propertyName]);
 

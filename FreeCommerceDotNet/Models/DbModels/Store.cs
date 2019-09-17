@@ -32,8 +32,8 @@
 
         public string MetaTagKeywords
         {
-            get { return MetaTagKeywords; }
-            set { MetaTagKeywords = value; }
+            get { return _MetaTagKeywords; }
+            set { _MetaTagKeywords = value; }
         }
         private string _StoreName;
 
@@ -60,7 +60,7 @@
 
         private string _EMail;
 
-        public string Email
+        public string EMail
         {
             get { return _EMail; }
             set { _EMail = value; }
