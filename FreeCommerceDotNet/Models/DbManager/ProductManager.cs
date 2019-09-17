@@ -14,10 +14,9 @@ namespace FreeCommerceDotNet.Models.DbManager
     public class ProductManager : IOperations<Product>, IDisposable
     {
 
-      
-
         public void Dispose()
         {
+
         }
 
         public List<Product> GetAll()
