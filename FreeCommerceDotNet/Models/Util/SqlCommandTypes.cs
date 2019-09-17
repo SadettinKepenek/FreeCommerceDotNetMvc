@@ -6,6 +6,7 @@
         Update,
         Remove,
         Select,
-        StoredProcedure
+        StoredProcedure,
+        Check
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -38,31 +39,72 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool Add(Shipping entry)
         {
-            string sqlQuery = "select * from Shippings where ShippingId=@Id ";
-            using (SqlCommand command = new SqlCommand(sqlQuery))
+            using (SqlCommand command = new SqlCommand("sp_shipping_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert, null);
+                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert);
                 return true;
             }
-            throw new System.NotImplementedException();
         }
 
         public int Update(Shipping entry)
         {
-            throw new System.NotImplementedException();
+            using (SqlCommand command = new SqlCommand("sp_shipping_update"))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
+                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert);
+                return 0;
+            }
         }
 
         public bool Delete(int id)
         {
-            throw new System.NotImplementedException();
+            string sqlQuery = "DELETE FROM Shippings WHERE ShippingId=@Id";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                return Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Select);
+            }
         }
 
         public bool CheckIsExist(int id)
         {
-            throw new System.NotImplementedException();
+            string sqlQuery = "SELECT COUNT(1) FROM Shippings WHERE ShippingId=@Id";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+                    using (command)
+                    {
+                        try
+                        {
+                            var reader=command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                int c = (int) reader[0];
+                                return c != 0;
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            return false;
+                        }
+
+                    }
+                }
+            }
+            return true;
         }
     }
 }

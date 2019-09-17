@@ -74,6 +74,7 @@ namespace FreeCommerceDotNet.Models.Util
                     connection.Open();
                 using (command)
                 {
+
                     try
                     {
                         command.ExecuteNonQuery();
