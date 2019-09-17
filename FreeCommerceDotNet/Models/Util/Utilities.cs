@@ -33,19 +33,35 @@ namespace FreeCommerceDotNet.Models.Util
                 {
                     if (type == SqlCommandTypes.Insert || type == SqlCommandTypes.Update || type == SqlCommandTypes.Remove)
                     {
-                        command.ExecuteNonQuery();
-                        return true;
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            return true;
+
+                        }
+                        catch (Exception e)
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
-                        var reader = command.ExecuteReader();
-                        while (reader.Read())
+                        try
                         {
-                            T entry = Utilities.fromReader<T>(reader);
-                            emptyList.Add(entry);
+                            var reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                T entry = fromReader<T>(reader);
+                                emptyList.Add(entry);
+                            }
+
+                            return true;
+                        }
+                        catch (Exception e)
+                        {
+                            return false;
                         }
 
-                        return true;
                     }
                 }
             }
