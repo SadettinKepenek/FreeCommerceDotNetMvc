@@ -20,7 +20,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Insert);               
+                Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Insert);               
                 return true;
             }
             
@@ -39,7 +39,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
-                return Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Select);
+                return Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Remove);
             }
         }
 
@@ -78,7 +78,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Update);
+                Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Update);
                 return 0;
             }
         }

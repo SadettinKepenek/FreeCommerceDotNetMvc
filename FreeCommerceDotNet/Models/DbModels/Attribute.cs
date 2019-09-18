@@ -24,13 +24,7 @@
             get { return _AttributeGroupId; }
             set { _AttributeGroupId = value; }
         }
-        private AttributeGroup _attributeGroup;
-
-        public AttributeGroup AttributeGroup
-        {
-            get { return _attributeGroup; }
-            set { _attributeGroup = value; }
-        }
+        
 
     }
 }
