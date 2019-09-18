@@ -32,7 +32,7 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public DbModels.Attribute Get(int id)
         {
-            string sqlQuery = "select * from Attributes where @AttributeId = @id";
+            string sqlQuery = "select * from Attributes where AttributeId = @id";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
@@ -73,7 +73,7 @@ namespace FreeCommerceDotNet.Models.DbManager
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@Id", id);
+                sqlCommand.Parameters.AddWithValue("@id", id);
                 return Utilities.ExecuteCommand<DbModels.Attribute>(sqlCommand, SqlCommandTypes.Remove);
             }
         }

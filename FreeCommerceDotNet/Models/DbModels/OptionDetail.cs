@@ -2,8 +2,8 @@
 {
     public class OptionDetail
     {
-        public int DetailId { get; set; }
-        public string DetailName { get; set; }
-        public int MasterId { get; set; }
+        public int ValueId { get; set; }
+        public string ValueName { get; set; }
+        public int OptionId { get; set; }
     }
 }
