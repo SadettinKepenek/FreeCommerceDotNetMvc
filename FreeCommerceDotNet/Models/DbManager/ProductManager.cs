@@ -83,7 +83,7 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool CheckIsExist(int id)
         {
-            return false;
+            return Utilities.CheckIsExist("Product","ProductId",id);
         }
     }
 }
