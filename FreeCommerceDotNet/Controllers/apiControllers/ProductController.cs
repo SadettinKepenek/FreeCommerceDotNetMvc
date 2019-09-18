@@ -23,10 +23,9 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
 
 
-        public IEnumerable<ProductPrice> GetAllProducts()
+        public IEnumerable<int> GetAllProducts()
         {
-            ProductModel m = new ProductModel(1);
-            return m.ProductPrices;
+            return new List<int>(){1,2,3,4,5,6,7};
         }
 
         // GET: api/Product/5

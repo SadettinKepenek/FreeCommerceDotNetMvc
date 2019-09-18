@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ReviewsManager:IDBOperations<Reviews>
+    public class ReviewsManager:IDBOperations<Reviews>, IDisposable
     {
         public List<Reviews> GetAll()
         {
@@ -81,6 +82,10 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
             return Utilities.GetByIntegerKey<Reviews>(id, tbl, key);
 
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

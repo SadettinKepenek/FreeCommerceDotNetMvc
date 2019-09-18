@@ -146,7 +146,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BusinessModels\ProductModel.cs" />
+    <Compile Include="Models\BusinessManager\ExampleBusinessManager.cs" />
+    <Compile Include="Models\BusinessModels\ExampleBusinessModel.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\CategoryManager.cs" />
@@ -240,7 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\BusinessManager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -274,7 +274,7 @@
     </ItemGroup>
     <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
     <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
-</Target>
+  </Target>
   <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
     <ItemGroup>
       <RoslynFiles Include="$(CscToolPath)\*" />
