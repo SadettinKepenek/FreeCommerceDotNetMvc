@@ -21,32 +21,69 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public List<Product> GetAll()
         {
-            throw new NotImplementedException();
+            string sqlQuery = "select * from Products";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                var Products = new List<Product>();
+                Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Select, ref Products);
+                return Products;
+            }
         }
 
         public Product Get(int id)
         {
-            throw new NotImplementedException();
+            string sqlQuery = "select * from Products where ProductId=@Id ";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                var Products = new List<Product>();
+                Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Select, ref Products);
+                return Products.First();
+            }
         }
 
         public bool Add(Product entry)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("SP_Product_Insert"))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
+                Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Insert);
+                return true;
+            }
         }
 
         public int Update(Product entry)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("sp_product_update"))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
+                Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Insert);
+                return 0;
+            }
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            string sqlQuery = "DELETE FROM Products WHERE ProductId=@Id";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                return Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Select);
+            }
         }
 
         public bool CheckIsExist(int id)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

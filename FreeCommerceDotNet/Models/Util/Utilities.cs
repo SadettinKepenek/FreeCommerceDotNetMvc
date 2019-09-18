@@ -138,5 +138,39 @@ namespace FreeCommerceDotNet.Models.Util
 
             return cmd;
         }
+
+        public static bool CheckIsExist(string tbl, string pk,int pkValue)
+        {
+            string sqlQuery = "SELECT COUNT(1) FROM "+tbl+" WHERE "+pk+"=@Id";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@Id", pkValue);
+                using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+                    using (command)
+                    {
+                        try
+                        {
+                            var reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                int c = (int)reader[0];
+                                return c != 0;
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            return false;
+                        }
+
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
