@@ -69,7 +69,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
-                return Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Select);
+                return Utilities.ExecuteCommand<ProductPrice>(sqlCommand, SqlCommandTypes.Select);
             }
         }
 
