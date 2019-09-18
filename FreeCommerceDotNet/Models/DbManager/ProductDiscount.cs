@@ -9,16 +9,16 @@ using System.Reflection;
 using System.Data;
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class CustomerManager : IOperations<Customer>, IDisposable
+    public class ProductDiscountManager : IOperations<ProductDiscount>, IDisposable
     {
-        public bool Add(Customer entry)
+        public bool Add(ProductDiscount entry)
         {
             using (SqlCommand command = new SqlCommand("sp_customers_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Insert);
+                Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Insert);
                 return true;
             }
 
@@ -26,19 +26,19 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool CheckIsExist(int id)
         {
-            return Utilities.CheckIsExist("Customers", "CustomerId", id);
+            return Utilities.CheckIsExist("ProductsDiscounts", "DiscountId", id);
 
         }
 
         public bool Delete(int id)
         {
-            string sqlQuery = "DELETE FROM Customers WHERE CustomerId=@id";
+            string sqlQuery = "DELETE FROM ProductsDiscounts WHERE DiscountId=@id";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@id", id);
-                return Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Remove);
+                return Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Remove);
             }
         }
 
@@ -46,38 +46,38 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
         }
 
-        public Customer Get(int id)
+        public ProductDiscount Get(int id)
         {
-            string sqlQuery = "select * from Customers where CustomerId = @id ";
+            string sqlQuery = "select * from ProductsDiscounts where DiscountId = @id ";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                var customers = new List<Customer>();
-                Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Select, ref customers);
-                return customers.First();
+                var discounts = new List<ProductDiscount>();
+                Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Select, ref discounts);
+                return discounts.First();
             }
         }
 
-        public List<Customer> GetAll()
+        public List<ProductDiscount> GetAll()
         {
-            string sqlQuery = "select * from Customers";
+            string sqlQuery = "select * from ProductsDiscounts";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                var customers = new List<Customer>();
-                Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Select, ref customers);
-                return customers;
+                var discounts = new List<ProductDiscount>();
+                Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Select, ref discounts);
+                return discounts;
             }
         }
 
-        public int Update(Customer entry)
+        public int Update(ProductDiscount entry)
         {
             using (SqlCommand command = new SqlCommand("sp_customers_update"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Update);
+                Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Update);
                 return 0;
             }
         }
