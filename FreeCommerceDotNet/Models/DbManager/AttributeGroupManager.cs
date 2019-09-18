@@ -10,7 +10,7 @@ using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class AttributeGroupManager : IOperations<AttributeGroup> , IDisposable
+    public class AttributeGroupManager : IDBOperations<AttributeGroup> , IDisposable
     {
         public void Dispose()
         {
@@ -80,6 +80,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<AttributeGroup> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<AttributeGroup>(id, tbl, key);
+
         }
     }
 }

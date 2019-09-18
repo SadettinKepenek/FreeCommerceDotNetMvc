@@ -7,11 +7,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Data;
+using Attribute = FreeCommerceDotNet.Models.DbModels.Attribute;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
     //System.Attribute ile DbModels.Attribute aynı isme sahip o yüzden hata veriyordu
-    public class AttributeManager : IOperations<DbModels.Attribute>, IDisposable
+    public class AttributeManager : IDBOperations<DbModels.Attribute>, IDisposable
     {
         public void Dispose()
         {
@@ -81,6 +82,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Attribute> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Attribute>(id, tbl, key);
+
         }
     }
 }

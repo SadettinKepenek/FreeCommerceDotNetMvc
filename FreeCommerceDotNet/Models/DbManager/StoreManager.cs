@@ -10,7 +10,7 @@ using System.Data;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class StoreManager : IOperations<Store>, IDisposable
+    public class StoreManager : IDBOperations<Store>, IDisposable
     {
 
         public bool Add(Store entry)
@@ -29,6 +29,11 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Store> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Store>(id, tbl, key);
         }
 
         public bool Delete(int id)

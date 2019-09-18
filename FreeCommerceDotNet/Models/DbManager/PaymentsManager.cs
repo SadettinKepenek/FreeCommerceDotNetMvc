@@ -9,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class PaymentsManager:IOperations<Payment>
+    public class PaymentsManager:IDBOperations<Payment>
     {
         public List<Payment> GetAll()
         {
@@ -105,6 +105,12 @@ namespace FreeCommerceDotNet.Models.DbManager
                 }
             }
             return true;
+        }
+
+        public List<Payment> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Payment>(id, tbl, key);
+
         }
     }
 }

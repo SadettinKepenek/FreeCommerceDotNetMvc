@@ -10,7 +10,7 @@ using System.Data;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ProductImageManager : IOperations<ProductImage>, IDisposable
+    public class ProductImageManager : IDBOperations<ProductImage>, IDisposable
     {
         public bool Add(ProductImage entry)
         {
@@ -28,6 +28,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("ProductsImages", "ImageId", id);
+
+        }
+
+        public List<ProductImage> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<ProductImage>(id, tbl, key);
 
         }
 

@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Data;
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ProductDiscountManager : IOperations<ProductDiscount>, IDisposable
+    public class ProductDiscountManager : IDBOperations<ProductDiscount>, IDisposable
     {
         public bool Add(ProductDiscount entry)
         {
@@ -27,6 +27,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("ProductsDiscounts", "DiscountId", id);
+
+        }
+
+        public List<ProductDiscount> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<ProductDiscount>(id, tbl, key);
 
         }
 

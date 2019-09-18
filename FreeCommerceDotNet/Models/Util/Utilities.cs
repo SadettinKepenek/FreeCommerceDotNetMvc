@@ -116,10 +116,10 @@ namespace FreeCommerceDotNet.Models.Util
                 var value = reader[propertyName];
                 if (value != null && value != DBNull.Value)
                 {
-
+                    Debug.WriteLine(propertyName);
                     if (info.PropertyType == typeof(Double))
-                        info.SetValue(entry, Convert.ToDouble(reader[propertyName]));
-                    if (info.PropertyType == typeof(Boolean))
+                        info.SetValue(entry, Convert.ToDouble(reader[propertyName].ToString()));
+                    else if (info.PropertyType == typeof(Boolean))
                         info.SetValue(entry, Convert.ToBoolean(reader[propertyName]));
                     else
                         info.SetValue(entry, reader[propertyName]);
@@ -171,6 +171,18 @@ namespace FreeCommerceDotNet.Models.Util
                 }
             }
             return true;
+        }
+        public static List<T> GetByIntegerKey<T>(int id, string tbl, string key) where T : new()
+        {
+            string sqlQuery = "select * from " + tbl + " where " + key + "=@Id ";
+            using (SqlCommand command = new SqlCommand(sqlQuery))
+            {
+                var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+                var Entries = new List<T>();
+                Utilities.ExecuteCommand<T>(sqlCommand, SqlCommandTypes.Select, ref Entries);
+                return Entries;
+            }
         }
     }
 }

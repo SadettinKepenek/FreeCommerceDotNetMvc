@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using FreeCommerceDotNet.Models;
+using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using FreeCommerceDotNet.Models.Util;
@@ -22,9 +23,10 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
 
 
-        public IEnumerable<OptionDetail> GetAllProducts()
-        {   
-            return new OptionDetailManager().GetAll();
+        public IEnumerable<ProductPrice> GetAllProducts()
+        {
+            ProductModel m = new ProductModel(1);
+            return m.ProductPrices;
         }
 
         // GET: api/Product/5

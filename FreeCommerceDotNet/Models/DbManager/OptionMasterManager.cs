@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Data;
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class OptionMasterManager : IOperations<OptionMaster>, IDisposable
+    public class OptionMasterManager : IDBOperations<OptionMaster>, IDisposable
     {
         public bool Add(OptionMaster entry)
         {
@@ -28,6 +28,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
             return Utilities.CheckIsExist("OptionsMaster","OptionId",id);
             
+        }
+
+        public List<OptionMaster> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<OptionMaster>(id, tbl, key);
+
         }
 
         public bool Delete(int id)

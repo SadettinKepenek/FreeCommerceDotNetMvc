@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ProductAttributeManager:IOperations<ProductAttribute>
+    public class ProductAttributeManager:IDBOperations<ProductAttribute>, IDisposable
     {
         public List<ProductAttribute> GetAll()
         {
@@ -35,7 +36,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 return Products.First();
             }
         }
-
+  
         public bool Add(ProductAttribute entry)
         {
             using (SqlCommand command = new SqlCommand("sp_productattribute_insert"))
@@ -75,6 +76,16 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("ProductAttributes", "PriceId", id);
+        }
+
+        public List<ProductAttribute> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<ProductAttribute>(id, tbl, key);
+
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

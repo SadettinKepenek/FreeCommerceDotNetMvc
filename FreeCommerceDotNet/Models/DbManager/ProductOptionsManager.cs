@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ProductOptionsManager:IOperations<ProductOption>
+    public class ProductOptionsManager:IDBOperations<ProductOption>, IDisposable
     {
         public List<ProductOption> GetAll()
         {
@@ -75,6 +76,16 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("ProductOptions", "RelationId", id);
+        }
+
+        public List<ProductOption> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<ProductOption>(id, tbl, key);
+
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

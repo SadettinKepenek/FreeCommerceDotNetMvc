@@ -9,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ShippingManager:IOperations<Shipping>
+    public class ShippingManager:IDBOperations<Shipping>
     {
         public List<Shipping> GetAll()
         {
@@ -105,6 +105,12 @@ namespace FreeCommerceDotNet.Models.DbManager
                 }
             }
             return true;
+        }
+
+        public List<Shipping> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Shipping>(id, tbl, key);
+
         }
     }
 }

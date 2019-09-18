@@ -206,11 +206,7 @@ namespace FreeCommerceDotNet.Models.DbModels
         }
 
 
-        public List<ProductAttribute> ProductAttributes { get; set; }
-        public List<ProductPrice> ProductPriceses { get; set; }
-        public List<ProductDiscount> ProductDiscounts { get; set; }
-        public List<ProductImage> ProductImages { get; set; }
-        public List<ProductOption> ProductOptions { get; set; }
+        
         
     }
 }

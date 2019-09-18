@@ -8,7 +8,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class OrderMasterManager:IOperations<OrderMaster>
+    public class OrderMasterManager:IDBOperations<OrderMaster>
     {
         public List<OrderMaster> GetAll()
         {
@@ -75,6 +75,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("OrderMasters", "OrderId", id);
+        }
+
+        public List<OrderMaster> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<OrderMaster>(id, tbl, key);
+
         }
     }
 }

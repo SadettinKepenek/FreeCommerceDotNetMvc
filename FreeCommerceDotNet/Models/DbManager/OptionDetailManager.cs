@@ -10,7 +10,7 @@ using System.Data;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class OptionDetailManager : IOperations<OptionDetail>, IDisposable
+    public class OptionDetailManager : IDBOperations<OptionDetail>, IDisposable
     {
         public bool Add(OptionDetail entry)
         {
@@ -28,6 +28,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<OptionDetail> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<OptionDetail>(id, tbl, key);
+
         }
 
         public bool Delete(int id)

@@ -146,6 +146,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessModels\ProductModel.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\CategoryManager.cs" />
@@ -184,7 +185,8 @@
     <Compile Include="Models\DbModels\Reviews.cs" />
     <Compile Include="Models\DbModels\Shipping.cs" />
     <Compile Include="Models\DbModels\Store.cs" />
-    <Compile Include="Models\Interfaces\IOperations.cs" />
+    <Compile Include="Models\Interfaces\IBusinessOperations.cs" />
+    <Compile Include="Models\Interfaces\IDBOperations.cs" />
     <Compile Include="Models\Util\SqlCommandTypes.cs" />
     <Compile Include="Models\Util\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -239,7 +241,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\BusinessManager\" />
-    <Folder Include="Models\BusinessModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

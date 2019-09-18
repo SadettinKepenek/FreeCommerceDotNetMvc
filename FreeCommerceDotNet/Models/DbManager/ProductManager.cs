@@ -11,7 +11,7 @@ using FreeCommerceDotNet.Models.DbModels;
 namespace FreeCommerceDotNet.Models.DbManager
 {
 
-    public class ProductManager : IOperations<Product>, IDisposable
+    public class ProductManager : IDBOperations<Product>, IDisposable
     {
 
         public void Dispose()
@@ -37,11 +37,10 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 var Products = new List<Product>();
                 Utilities.ExecuteCommand<Product>(sqlCommand, SqlCommandTypes.Select, ref Products);
-                return Products.First();
+                return Products.FirstOrDefault();
             }
         }
 
@@ -84,6 +83,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("Product","ProductId",id);
+        }
+
+        public List<Product> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Product>(id, tbl, key);
+
         }
     }
 }

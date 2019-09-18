@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Data;
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class CustomerManager : IOperations<Customer>, IDisposable
+    public class CustomerManager : IDBOperations<Customer>, IDisposable
     {
         public bool Add(Customer entry)
         {
@@ -27,6 +27,12 @@ namespace FreeCommerceDotNet.Models.DbManager
         public bool CheckIsExist(int id)
         {
             return Utilities.CheckIsExist("Customers", "CustomerId", id);
+
+        }
+
+        public List<Customer> GetByIntegerKey(int id, string tbl, string key)
+        {
+            return Utilities.GetByIntegerKey<Customer>(id, tbl, key);
 
         }
 
