@@ -157,7 +157,6 @@
     <Compile Include="Models\DbManager\OrderReturnsManager.cs" />
     <Compile Include="Models\DbManager\PaymentsManager.cs" />
     <Compile Include="Models\DbManager\ProductAttributeManager.cs" />
-    <Compile Include="Models\DbManager\ProductDiscount.cs" />
     <Compile Include="Models\DbManager\ProductDiscountManager.cs" />
     <Compile Include="Models\DbManager\ProductImageManager.cs" />
     <Compile Include="Models\DbManager\ProductManager.cs" />
