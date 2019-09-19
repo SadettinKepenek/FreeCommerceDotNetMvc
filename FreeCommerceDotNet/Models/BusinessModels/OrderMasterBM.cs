@@ -9,7 +9,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public OrderMaster OrderMaster { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
         public List<OrderReturn> OrderReturns { get; set; }
-
+        public CustomerBM CustomerBm { get; set; }
         public OrderMasterBM(int? id)
         {
             if (id == null)
@@ -24,6 +24,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (OrderMasterManager m = new OrderMasterManager())
                 {
                     OrderMaster = m.Get(key);
+                    CustomerBm=new CustomerBM(OrderMaster.CustomerId);
                 }
 
                 using (OrderDetailManager m = new OrderDetailManager())
