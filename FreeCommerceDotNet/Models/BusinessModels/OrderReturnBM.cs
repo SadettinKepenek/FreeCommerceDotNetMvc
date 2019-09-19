@@ -18,12 +18,14 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                     OrderReturn = m.Get((int)id);
                     OrderBM=new OrderMasterBM(OrderReturn.OrderId);
                     CustomerBm = OrderBM.CustomerBm;
+                    ProductBm=new ProductBM(OrderReturn.ProductId);
                 }
                 return;
             }
             OrderReturn = new OrderReturn();
             OrderBM = new OrderMasterBM(null);
             ProductBm = new ProductBM(null);
+            CustomerBm=new CustomerBM(null);
         }
     }
 }

@@ -7,15 +7,15 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class OptionMasterBM
     {
         public OptionMaster OptionMaster  { get; set; }
-        public List<Customer> Customers { get; set; }
-        public List<Payment> Payments { get; set; }
-        public List<Shipping> Shippings { get; set; }
+        public List<OptionDetailBM> OptionDetailBms { get; set; }
+
 
         public OptionMasterBM(int? id)
         {
             if (id == null)
             {
                 OptionMaster = new OptionMaster();
+                OptionDetailBms=new List<OptionDetailBM>();
             }
             else
             {
@@ -24,16 +24,15 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                     int key = (int)id;
                     OptionMaster = m.Get(key);
                 }
-                using (var m = new PaymentsManager())
+
+                using (OptionDetailManager m = new OptionDetailManager())
                 {
-                    int key = (int)id;
-                    Payments = m.GetByIntegerKey(key, "PaymentGateways", "PaymentId");
-                }
-                using (var m = new ShippingManager())
-                {
-                    int key = (int)id;
-                    Shippings = m.GetByIntegerKey(key, "Shippings", "ShippingId");
-                }
+                    var dbDetails = m.GetByIntegerKey((int) id, "OptionsDetail", "OptionId");
+                    foreach (var optionDetail in dbDetails)
+                    {
+                        OptionDetailBms.Add(new OptionDetailBM(optionDetail.ValueId));
+                    }
+                }              
             }
         }
     }

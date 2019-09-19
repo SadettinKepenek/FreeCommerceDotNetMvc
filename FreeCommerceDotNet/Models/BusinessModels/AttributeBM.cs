@@ -6,14 +6,14 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class AttributeBM
     {
         public Attribute Attribute { get; set; }
-        public AttributeGroup AttributeGroup { get; set; }
+        public AttributeGroupBM AttributeGroup { get; set; }
 
         public AttributeBM(int? AttributeId)
         {
             if (AttributeId == null)
             {
                 Attribute = new Attribute();
-                AttributeGroup = new AttributeGroup();
+                AttributeGroup = new AttributeGroupBM(null);
             }
             else
             {
@@ -21,11 +21,9 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (AttributeManager m = new AttributeManager())
                 {
                     Attribute = m.Get(key);
+                    AttributeGroup=new AttributeGroupBM(Attribute.AttributeGroupId);
                 }
-                using (AttributeGroupManager m = new AttributeGroupManager())
-                {
-                    AttributeGroup = m.Get(key);
-                }
+               
 
             }
         }

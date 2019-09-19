@@ -7,16 +7,15 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class ReviewBM
     {
         public Reviews Reviews { get; set; }
-        public List<Product> Products { get; set; }
-
-        public List<Customer> Customers { get; set; }
+        public ProductBM Products { get; set; }
+        public CustomerBM Customers { get; set; }
         public ReviewBM(int? id)
         {
             if (id == null)
             {
                 Reviews = new Reviews();
-                Products = new List<Product>();
-                Customers = new List<Customer>();
+                Products = new ProductBM(null);
+                Customers = new CustomerBM(null);
             }
             else
             {
@@ -25,20 +24,10 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     int key = (int)id;
                     Reviews = m.Get(key);
+                    Products=new ProductBM(Reviews.ProductId);
+                    Customers=new CustomerBM(Reviews.CustomerId);
                 }
 
-                using (var m = new ProductManager())
-                {
-                    int key = (int)id;
-                    Products = m.GetByIntegerKey(key, "Products", "ProductId");
-                }
-
-                using (var m = new CustomerManager())
-                {
-                    int key = (int)id;
-                    Customers = m.GetByIntegerKey(key, "Customers", "CustomerId");
-
-                }
             }
         }
     }
