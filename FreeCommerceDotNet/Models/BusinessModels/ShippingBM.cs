@@ -7,7 +7,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class ShippingBM
     {
         public Shipping Shipping { get; set; }
-        public List<OrderMasterBM> OrderMasterBms { get; set; }
+        public List<OrderMaster> OrderMasterBms { get; set; }
 
         public ShippingBM(int? id)
         {
@@ -25,12 +25,9 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 }
                 using (var m = new OrderMasterManager())
                 {
-                    var dbOrderMasters =
+                    OrderMasterBms =
                         m.GetByIntegerKey((int)id, "OrdersMaster", "ShippingId");
-                    foreach (var dbOrderMaster in dbOrderMasters)
-                    {
-                        OrderMasterBms.Add(new OrderMasterBM(dbOrderMaster.OrderId));
-                    }
+                   
                 }
             }
         }

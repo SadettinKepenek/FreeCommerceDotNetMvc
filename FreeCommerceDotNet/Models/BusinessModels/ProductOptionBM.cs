@@ -7,14 +7,13 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class ProductOptionBM
     {
         public ProductOption ProductOption { get; set; }
-        public OptionDetailBM OptionDetails { get; set; }
-
+        public OptionDetail OptionDetails { get; set; }
+        public Product Product { get; set; }
         public ProductOptionBM(int? id)
         {
             if (id == null)
             {
                 ProductOption = new ProductOption();
-                OptionDetails = new OptionDetailBM(null);
             }
             else
             {
@@ -23,9 +22,17 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     int key = (int)id;
                     ProductOption = m.Get(key);
-                    OptionDetails=new OptionDetailBM(ProductOption.ValueId);
                 }
-               
+                using (ProductManager m = new ProductManager())
+                {
+                    Product = m.Get(ProductOption.ProductId);
+                }
+                using (var m = new OptionDetailManager())
+                {
+                    OptionDetails = m.Get(ProductOption.ValueId);
+
+                }
+
 
             }
         }
