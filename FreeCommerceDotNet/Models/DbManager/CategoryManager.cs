@@ -9,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class CategoryManager:IDBOperations<Category>
+    public class CategoryManager:IDBOperations<Category>, IDisposable
     {
         public List<Category> GetAll()
         {
@@ -110,6 +110,10 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
             return Utilities.GetByIntegerKey<Category>(id, tbl, key);
 
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
