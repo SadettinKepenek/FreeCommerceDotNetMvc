@@ -17,6 +17,8 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             }
             else
             {
+                Attribute=new Attribute();
+                AttributeGroup=new AttributeGroup();
                 int key = (int) AttributeId;
                 using (AttributeManager m = new AttributeManager())
                 {
@@ -25,7 +27,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 
                 using (AttributeGroupManager m = new AttributeGroupManager())
                 {
-                    AttributeGroup = m.Get(Attribute.AttributeGroupId);
+                    AttributeGroup = m.Get(Attribute.AttributeGroup);
                 }
                
 

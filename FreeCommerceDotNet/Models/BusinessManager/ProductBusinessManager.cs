@@ -6,43 +6,44 @@ using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Models.BusinessManager
 {
-    public class ProductBusinessManager : IBusinessOperations<ProductBM>
+    public class ProductBusinessManager : IBusinessOperations<AttributeBM>
     {
         public void Dispose()
         {
+            throw new System.NotImplementedException();
         }
 
-        public List<ProductBM> Get()
+        public List<AttributeBM> Get()
         {
-            using (ProductManager m = new ProductManager())
+            using (AttributeManager m = new AttributeManager())
             {
-                List<Product> dbProducts = m.GetAll();
-                List<ProductBM> businessModels=new List<ProductBM>();
+                List<Attribute> dbProducts = m.GetAll();
+                List<AttributeBM> businessModels = new List<AttributeBM>();
                 foreach (var product in dbProducts)
                 {
-                    businessModels.Add(new ProductBM(product.ProductId));
+                    businessModels.Add(new AttributeBM(product.AttributeId));
                 }
 
                 return businessModels;
             }
         }
 
-        public ProductBM GetById(int id)
+        public AttributeBM GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public int Add(ProductBM entry)
+        public int Add(AttributeBM entry)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Update(ProductBM entry)
+        public bool Update(AttributeBM entry)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Delete(ProductBM entry)
+        public bool Delete(AttributeBM entry)
         {
             throw new System.NotImplementedException();
         }

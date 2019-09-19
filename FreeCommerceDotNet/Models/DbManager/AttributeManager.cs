@@ -37,6 +37,7 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@id", id);
                 var attributes = new List<DbModels.Attribute>();
                 Utilities.ExecuteCommand<DbModels.Attribute>(sqlCommand, SqlCommandTypes.Select, ref attributes);
                 return attributes.FirstOrDefault();

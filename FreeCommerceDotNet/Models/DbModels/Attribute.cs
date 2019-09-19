@@ -19,7 +19,7 @@
 
         private int _AttributeGroupId;
 
-        public int AttributeGroupId
+        public int AttributeGroup
         {
             get { return _AttributeGroupId; }
             set { _AttributeGroupId = value; }

@@ -24,17 +24,15 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
 
 
-        public IEnumerable<ProductBM> GetAllProducts()
+        public IEnumerable<AttributeBM> GetAllProducts()
         {
             return new ProductBusinessManager().Get();
         }
 
         // GET: api/Product/5
-        public List<Product> GetProductById(int id)
+        public AttributeBM GetProductById(int id)
         {
-            string p = Utilities.ToJson(productManager.Get(id));
-            PostProduct(p);
-            return new List<Product>() {productManager.Get(id)};
+            return new ProductBusinessManager().GetById(id);
         }
 
         // POST: api/Product

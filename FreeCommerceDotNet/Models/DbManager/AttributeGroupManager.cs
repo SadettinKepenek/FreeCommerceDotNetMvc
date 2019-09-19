@@ -35,9 +35,11 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(query))
             {
                 var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@id", id);
+
                 var attributegroups = new List<AttributeGroup>();
                 Utilities.ExecuteCommand<AttributeGroup>(sqlCommand, SqlCommandTypes.Select, ref attributegroups);
-                return attributegroups.First();
+                return attributegroups.FirstOrDefault();
             }
         }
 

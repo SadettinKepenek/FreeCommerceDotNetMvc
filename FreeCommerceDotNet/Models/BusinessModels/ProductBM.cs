@@ -47,13 +47,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 this.Product = m.Get(key);
                
             }
-
             using (var m = new ProductAttributeManager())
             {
                 this.ProductAttributes= m.GetByIntegerKey(key, "ProductsAttributes", "ProductId");
                
             }
-
             using (var m = new ProductDiscountManager())
             {
                 this.ProductDiscounts= m.GetByIntegerKey(key, "ProductsDiscounts", "ProductId");
