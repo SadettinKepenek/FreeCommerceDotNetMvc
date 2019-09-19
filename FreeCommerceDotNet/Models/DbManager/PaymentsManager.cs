@@ -9,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class PaymentsManager:IDBOperations<Payment>
+    public class PaymentsManager:IDBOperations<Payment>, IDisposable
     {
         public List<Payment> GetAll()
         {
@@ -72,6 +72,11 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
+        public void Dispose()
+        {
+
+        }
+
         public bool CheckIsExist(int id)
         {
             string sqlQuery = "SELECT COUNT(1) FROM PaymentGateways WHERE PaymentId=@Id";
@@ -110,6 +115,11 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
             return Utilities.GetByIntegerKey<Payment>(id, tbl, key);
 
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

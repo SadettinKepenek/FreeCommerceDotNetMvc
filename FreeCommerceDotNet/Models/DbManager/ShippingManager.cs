@@ -9,7 +9,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.DbManager
 {
-    public class ShippingManager:IDBOperations<Shipping>
+    public class ShippingManager:IDBOperations<Shipping>, IDisposable
     {
         public List<Shipping> GetAll()
         {
@@ -111,6 +111,10 @@ namespace FreeCommerceDotNet.Models.DbManager
         {
             return Utilities.GetByIntegerKey<Shipping>(id, tbl, key);
 
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
