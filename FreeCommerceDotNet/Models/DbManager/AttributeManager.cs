@@ -43,15 +43,14 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
-        public bool Add(DbModels.Attribute entry)
+        public int  Add(DbModels.Attribute entry)
         {
             using (SqlCommand command = new SqlCommand("sp_attribute_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<DbModels.Attribute>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<DbModels.Attribute>(sqlCommand);
             }
         }
 

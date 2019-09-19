@@ -80,6 +80,8 @@ namespace FreeCommerceDotNet.Models.Util
 
                     try
                     {
+                        
+
                         command.ExecuteNonQuery();
                         return true;
 
@@ -87,6 +89,32 @@ namespace FreeCommerceDotNet.Models.Util
                     catch (Exception e)
                     {
                         return false;
+                    }
+
+                }
+            }
+        }
+        public static int ExecuteCommand<T>(SqlCommand command) where T : new()
+        {
+            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+            {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                using (command)
+                {
+                    command.Connection = connection;
+
+                    try
+                    {
+
+
+                        int modified = (int)command.ExecuteScalar();
+                        return modified;
+
+                    }
+                    catch (Exception e)
+                    {
+                        return -1;
                     }
 
                 }

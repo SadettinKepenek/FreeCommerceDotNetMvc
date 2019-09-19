@@ -13,15 +13,15 @@ namespace FreeCommerceDotNet.Models.DbManager
     public class StoreManager : IDBOperations<Store>, IDisposable
     {
 
-        public bool Add(Store entry)
+        public int Add(Store entry)
         {
             using(SqlCommand command = new SqlCommand("sp_store_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Insert);               
-                return true;
+                return Utilities.ExecuteCommand<Store>(sqlCommand);               
+                
             }
             
         }

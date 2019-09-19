@@ -12,15 +12,15 @@ namespace FreeCommerceDotNet.Models.DbManager
 {
     public class ProductImageManager : IDBOperations<ProductImage>, IDisposable
     {
-        public bool Add(ProductImage entry)
+        public int Add(ProductImage entry)
         {
             using (SqlCommand command = new SqlCommand("sp_productsimages_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<ProductImage>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<ProductImage>(sqlCommand);
+                
             }
 
         }

@@ -11,15 +11,14 @@ namespace FreeCommerceDotNet.Models.DbManager
 {
     public class OptionMasterManager : IDBOperations<OptionMaster>, IDisposable
     {
-        public bool Add(OptionMaster entry)
+        public int Add(OptionMaster entry)
         {
             using (SqlCommand command = new SqlCommand("sp_optionmaster_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<OptionMaster>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<OptionMaster>(sqlCommand);
             }
 
         }

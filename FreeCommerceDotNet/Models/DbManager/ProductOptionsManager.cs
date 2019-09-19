@@ -37,15 +37,15 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
-        public bool Add(ProductOption entry)
+        public int Add(ProductOption entry)
         {
             using (SqlCommand command = new SqlCommand("sp_productoption_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<ProductOption>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<ProductOption>(sqlCommand);
+                
             }
         }
 

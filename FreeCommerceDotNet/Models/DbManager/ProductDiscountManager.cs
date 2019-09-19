@@ -11,15 +11,14 @@ namespace FreeCommerceDotNet.Models.DbManager
 {
     public class ProductDiscountManager : IDBOperations<ProductDiscount>, IDisposable
     {
-        public bool Add(ProductDiscount entry)
+        public int Add(ProductDiscount entry)
         {
             using (SqlCommand command = new SqlCommand("sp_productsdiscounts_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<ProductDiscount>(sqlCommand);
             }
 
         }

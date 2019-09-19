@@ -37,15 +37,14 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
-        public bool Add(Reviews entry)
+        public int Add(Reviews entry)
         {
             using (SqlCommand command = new SqlCommand("sp_review_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Reviews>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<Reviews>(sqlCommand);
             }
         }
 

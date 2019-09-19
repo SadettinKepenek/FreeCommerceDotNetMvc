@@ -11,15 +11,15 @@ namespace FreeCommerceDotNet.Models.DbManager
 {
     public class CustomerManager : IDBOperations<Customer>, IDisposable
     {
-        public bool Add(Customer entry)
+        public int Add(Customer entry)
         {
             using (SqlCommand command = new SqlCommand("sp_customers_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand = Utilities.CreateUpdateSqlParameters(sqlCommand, entry, entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<Customer>(sqlCommand);
+               
             }
 
         }

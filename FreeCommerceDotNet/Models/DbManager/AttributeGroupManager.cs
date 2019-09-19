@@ -41,15 +41,14 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
-        public bool Add(AttributeGroup entry)
+        public int Add(AttributeGroup entry)
         {
             using (SqlCommand command = new SqlCommand("sp_attributegroup_insert"))
             {
                 var sqlCommand = command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 Utilities.CreateUpdateSqlParameters(sqlCommand,entry,entry.GetType().GetProperties());
-                Utilities.ExecuteCommand<AttributeGroup>(sqlCommand, SqlCommandTypes.Insert);
-                return true;
+                return Utilities.ExecuteCommand<AttributeGroup>(sqlCommand);
             }
         }
 

@@ -6,7 +6,7 @@ namespace FreeCommerceDotNet.Models.Interfaces
     {
         List<T> GetAll();
         T Get(int id);
-        bool Add(T entry);
+        int Add(T entry);
         int Update(T entry);
         bool Delete(int id);
         bool CheckIsExist(int id);
