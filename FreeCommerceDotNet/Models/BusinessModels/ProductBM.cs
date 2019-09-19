@@ -1,19 +1,20 @@
 ﻿using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FreeCommerceDotNet.Models.BusinessModels
 {
     public class ProductBM
     {
         public Product Product { get; set; }
-        public List<ProductAttributeBM> ProductAttributes { get; set; }
-        public List<ProductDiscountBM> ProductDiscounts { get; set; }
-        public List<ProductImageBM> ProductImages { get; set; }
-        public List<ProductOptionBM> ProductOptions { get; set; }
-        public List<ProductPriceBM> ProductPrices { get; set; }
-        public List<ReviewBM> Reviews { get; set; }
-        public CategoryBM Category { get; set; }
+        public List<ProductAttribute> ProductAttributes { get; set; }
+        public List<ProductDiscount> ProductDiscounts { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
+        public List<ProductOption> ProductOptions { get; set; }
+        public List<ProductPrice> ProductPrices { get; set; }
+        public List<Reviews> Reviews { get; set; }
+        public Category Category { get; set; }
         public int Id { get; set; }
 
         public ProductBM(int? id)
@@ -21,12 +22,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             if (id == null)
             {
                 this.Product=new Product();
-                this.ProductAttributes = new List<ProductAttributeBM>();
-                this.ProductDiscounts = new List<ProductDiscountBM>();
-                this.ProductImages = new List<ProductImageBM>();
-                this.ProductOptions = new List<ProductOptionBM>();
-                this.ProductPrices = new List<ProductPriceBM>();
-                this.Category = new CategoryBM(null);
+              
 
             }
             else
@@ -41,67 +37,59 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 
         private void InitializeProduct(int key)
         {
+            this.ProductAttributes = new List<ProductAttribute>();
+            this.ProductDiscounts = new List<ProductDiscount>();
+            this.ProductImages = new List<ProductImage>();
+            this.ProductOptions = new List<ProductOption>();
+            this.ProductPrices = new List<ProductPrice>();
             using (var m = new ProductManager())
             {
                 this.Product = m.Get(key);
-                this.Category =new CategoryBM(Product.CategoryId);
+               
             }
 
             using (var m = new ProductAttributeManager())
             {
-                var dbAttributes = m.GetByIntegerKey(key, "ProductsAttributes", "ProductId");
-                foreach (var productAttribute in dbAttributes)
-                {
-                    ProductAttributes.Add(new ProductAttributeBM(productAttribute.RelationId));
-                }
+                this.ProductAttributes= m.GetByIntegerKey(key, "ProductsAttributes", "ProductId");
+               
             }
 
             using (var m = new ProductDiscountManager())
             {
-                var dbDiscounts = m.GetByIntegerKey(key, "ProductsDiscounts", "ProductId");
-                foreach (var productDiscount in dbDiscounts)
-                {
-                    ProductDiscounts.Add(new ProductDiscountBM(productDiscount.DiscountId));
-                }
+                this.ProductDiscounts= m.GetByIntegerKey(key, "ProductsDiscounts", "ProductId");
+                
             }
 
             using (var m = new ProductImageManager())
             {
-                var dbImages = m.GetByIntegerKey(key, "ProductsImages", "ProductId");
-                foreach (var productImage in dbImages)
-                {
-                    ProductImages.Add(new ProductImageBM(productImage.ImageId));
-                }
+                this.ProductImages = m.GetByIntegerKey(key, "ProductsImages", "ProductId");
+                
             }
 
             using (var m = new ProductOptionsManager())
             {
-                var dbOptions = m.GetByIntegerKey(key, "ProductsOptions", "ProductId");
-                foreach (var dbOption in dbOptions)
-                {
-                    ProductOptions.Add(new ProductOptionBM(dbOption.RelationId));
-                }
+                this.ProductOptions = m.GetByIntegerKey(key, "ProductsOptions", "ProductId");
+                
             }
 
             using (var m = new ProductPriceManager())
             {
-                var dbPrices = m.GetByIntegerKey(key, "ProductsPrices", "ProductId");
-                foreach (var productPrice in dbPrices)
-                {
-                    ProductPrices.Add(new ProductPriceBM(productPrice.PriceId));
-                }
+                this.ProductPrices = m.GetByIntegerKey(key, "ProductsPrices", "ProductId");
+                
+            }
+
+            using (var m = new CategoryManager())
+            {
+                Category = m.Get(Product.CategoryId);
             }
 
             using (var m = new ReviewsManager())
             {
-                var dbReviews=m.GetByIntegerKey(key, "Reviews", "ProductId");
-                foreach (var reviewse in dbReviews)
-                {
-                    Reviews.Add(new ReviewBM(reviewse.ReviewId));
-                }
+                this.Reviews = m.GetByIntegerKey(key, "Reviews", "ProductId");
+              
             }
 
-           
+
         }
     }
 }

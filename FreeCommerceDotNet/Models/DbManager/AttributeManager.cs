@@ -39,7 +39,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 var attributes = new List<DbModels.Attribute>();
                 Utilities.ExecuteCommand<DbModels.Attribute>(sqlCommand, SqlCommandTypes.Select, ref attributes);
-                return attributes.First();
+                return attributes.FirstOrDefault();
             }
         }
 

@@ -6,8 +6,8 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class OrderDetailBM
     {
         public OrderDetail Detail { get; set; }
-        public OrderMasterBM OrderMaster { get; set; }
-        public ProductBM ProductBm { get; set; }
+        public OrderMaster OrderMaster { get; set; }
+        public Product ProductBm { get; set; }
 
         public OrderDetailBM(int? id)
         {
@@ -16,15 +16,24 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (OrderDetailManager m=new OrderDetailManager())
                 {
                     Detail = m.Get((int) id);
-                    OrderMaster = new OrderMasterBM(Detail.OrderId);
-                    ProductBm=new ProductBM(Detail.ProductId);
+                }
+
+                using (OrderMasterManager m = new OrderMasterManager())
+                {
+                    OrderMaster =m.Get(Detail.OrderId);
+                }
+
+                using (ProductManager m = new ProductManager())
+                {
+                    ProductBm = m.Get(Detail.ProductId);
+
                 }
 
                 return;
             }
             Detail=new OrderDetail();
-            OrderMaster=new OrderMasterBM(null);
-            ProductBm=new ProductBM(null);
+            OrderMaster=new OrderMaster();
+            ProductBm=new Product();
         }
 
     }

@@ -8,7 +8,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class PaymentBM
     {
         public Payment Payment { get; set; }
-        public List<OrderMasterBM> OrderMasterBms { get; set; }
+        public List<OrderMaster> OrderMasterBms { get; set; }
 
         public PaymentBM(int? id)
         {
@@ -27,12 +27,9 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 
                 using (var m = new OrderMasterManager())
                 {
-                    var dbOrderMasters =
+                    OrderMasterBms =
                         m.GetByIntegerKey((int) id, "OrdersMaster", "PaymentGatewayId");
-                    foreach (var dbOrderMaster in dbOrderMasters)
-                    {
-                        OrderMasterBms.Add(new OrderMasterBM(dbOrderMaster.OrderId));
-                    }
+                 
                 }
             }
         }

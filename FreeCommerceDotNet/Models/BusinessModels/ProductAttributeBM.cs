@@ -6,8 +6,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class ProductAttributeBM
     {
         public ProductAttribute ProductAttribute { get; set; }
-        public ProductBM ProductBm { get; set; }
-        public AttributeBM AttributeBm { get; set; }
+        public Attribute AttributeBm { get; set; }
 
         public ProductAttributeBM(int? relationId)
         {
@@ -16,14 +15,16 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (ProductAttributeManager m = new ProductAttributeManager())
                 {
                     ProductAttribute = m.Get((int) relationId);
-                    ProductBm=new ProductBM(ProductAttribute.ProductId);
-                    AttributeBm=new AttributeBM(ProductAttribute.AttributeId);
+                }
+
+                using (AttributeManager m = new AttributeManager())
+                {
+                    AttributeBm =m.Get(ProductAttribute.AttributeId);
+
                 }
                 return;
             }
             ProductAttribute=new ProductAttribute();
-            ProductBm=new ProductBM(null);
-            AttributeBm=new AttributeBM(null);
         }
     }
 }

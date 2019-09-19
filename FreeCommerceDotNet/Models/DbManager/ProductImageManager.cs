@@ -61,7 +61,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 var images = new List<ProductImage>();
                 Utilities.ExecuteCommand<ProductImage>(sqlCommand, SqlCommandTypes.Select, ref images);
-                return images.First();
+                return images.FirstOrDefault();
             }
         }
 

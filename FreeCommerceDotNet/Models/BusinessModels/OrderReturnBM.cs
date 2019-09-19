@@ -6,9 +6,9 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class OrderReturnBM
     {
         public OrderReturn OrderReturn { get; set; }
-        public OrderMasterBM OrderBM { get; set; }
-        public ProductBM ProductBm { get; set; }
-        public CustomerBM CustomerBm { get; set; }
+        public OrderMaster OrderBM { get; set; }
+        public Product ProductBm { get; set; }
+        public Customer CustomerBm { get; set; }
         public OrderReturnBM(int? id)
         {
             if (id != null)
@@ -16,16 +16,25 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (OrderReturnsManager m = new OrderReturnsManager())
                 {
                     OrderReturn = m.Get((int)id);
-                    OrderBM=new OrderMasterBM(OrderReturn.OrderId);
-                    CustomerBm = OrderBM.CustomerBm;
-                    ProductBm=new ProductBM(OrderReturn.ProductId);
                 }
+                using (var m = new OrderMasterManager())
+                {
+                    OrderBM = m.Get(OrderReturn.OrderId);
+                }
+
+                using (var m = new CustomerManager())
+                {
+                    CustomerBm = m.Get(OrderBM.CustomerId);
+                }
+                using (var m = new ProductManager())
+                {
+                    ProductBm = m.Get(OrderReturn.ProductId);
+                }
+
                 return;
             }
             OrderReturn = new OrderReturn();
-            OrderBM = new OrderMasterBM(null);
-            ProductBm = new ProductBM(null);
-            CustomerBm=new CustomerBM(null);
+
         }
     }
 }

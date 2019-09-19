@@ -7,14 +7,14 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class OptionDetailBM
     {
         public OptionDetail OptionDetail { get; set; }
-        public OptionMasterBM OptionMaster { get; set; }
+        public OptionMaster OptionMaster { get; set; }
 
         public OptionDetailBM(int? id)
         {
             if (id == null)
             {
                 OptionDetail = new OptionDetail();
-                OptionMaster = new OptionMasterBM(null);
+                OptionMaster = new OptionMaster();
             }
             else
             {
@@ -23,7 +23,12 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     int key = (int)id;
                     OptionDetail = m.Get(key);
-                    OptionMaster=new OptionMasterBM(OptionDetail.OptionId);
+
+                }
+
+                using (var m = new OptionMasterManager())
+                {
+                    OptionMaster = m.Get(OptionDetail.OptionId);
 
                 }
 

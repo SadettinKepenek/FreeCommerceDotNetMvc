@@ -72,10 +72,7 @@ namespace FreeCommerceDotNet.Models.DbManager
             }
         }
 
-        public void Dispose()
-        {
-
-        }
+      
 
         public bool CheckIsExist(int id)
         {
@@ -119,7 +116,6 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class OptionMasterBM
     {
         public OptionMaster OptionMaster  { get; set; }
-        public List<OptionDetailBM> OptionDetailBms { get; set; }
+        public List<OptionDetail> OptionDetailBms { get; set; }
 
 
         public OptionMasterBM(int? id)
@@ -15,7 +15,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             if (id == null)
             {
                 OptionMaster = new OptionMaster();
-                OptionDetailBms=new List<OptionDetailBM>();
+                OptionDetailBms=new List<OptionDetail>();
             }
             else
             {
@@ -27,11 +27,8 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 
                 using (OptionDetailManager m = new OptionDetailManager())
                 {
-                    var dbDetails = m.GetByIntegerKey((int) id, "OptionsDetail", "OptionId");
-                    foreach (var optionDetail in dbDetails)
-                    {
-                        OptionDetailBms.Add(new OptionDetailBM(optionDetail.ValueId));
-                    }
+                    OptionDetailBms = m.GetByIntegerKey((int) id, "OptionsDetail", "OptionId");
+                  
                 }              
             }
         }

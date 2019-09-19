@@ -59,7 +59,7 @@ namespace FreeCommerceDotNet.Models.DbManager
                 var sqlCommand = command;
                 var discounts = new List<ProductDiscount>();
                 Utilities.ExecuteCommand<ProductDiscount>(sqlCommand, SqlCommandTypes.Select, ref discounts);
-                return discounts.First();
+                return discounts.FirstOrDefault();
             }
         }
 
