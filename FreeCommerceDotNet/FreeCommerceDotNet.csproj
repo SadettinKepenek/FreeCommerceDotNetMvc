@@ -146,7 +146,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessManager\AttributeBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\AttributeGroupBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\CategoryBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\CustomerBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\OptionDetailBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\OptionMasterBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\OrderDetailBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\OrderMasterBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\OrderReturnBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\PaymentBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ProductAttributeBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\ProductBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ProductDiscountBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ProductImageBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ProductOptionBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ProductPriceBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ReviewBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\ShippingBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\StoreBusinessManager.cs" />
     <Compile Include="Models\BusinessModels\AttributeBM.cs" />
     <Compile Include="Models\BusinessModels\AttributeGroupBM.cs" />
     <Compile Include="Models\BusinessModels\CategoryBM.cs" />

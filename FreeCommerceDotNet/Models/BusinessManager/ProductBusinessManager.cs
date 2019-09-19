@@ -6,44 +6,48 @@ using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Models.BusinessManager
 {
-    public class ProductBusinessManager : IBusinessOperations<AttributeBM>
+    public class ProductBusinessManager : IBusinessOperations<ProductBM>
     {
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public List<AttributeBM> Get()
+        public List<ProductBM> Get()
         {
-            using (AttributeManager m = new AttributeManager())
+            using (ProductManager m = new ProductManager())
             {
-                List<Attribute> dbProducts = m.GetAll();
-                List<AttributeBM> businessModels = new List<AttributeBM>();
+                List<Product> dbProducts = m.GetAll();
+                List<ProductBM> businessModels = new List<ProductBM>();
                 foreach (var product in dbProducts)
                 {
-                    businessModels.Add(new AttributeBM(product.AttributeId));
+                    businessModels.Add(new ProductBM(product.ProductId));
                 }
 
                 return businessModels;
             }
         }
 
-        public AttributeBM GetById(int id)
+        public ProductBM GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public int Add(AttributeBM entry)
+        public int Add(ProductBM entry)
+        {
+            
+            int InsertedID = new ProductManager().Add(entry.Product);
+            entry.Id = InsertedID;
+
+            throw new System.NotImplementedException();
+        }
+
+        public bool Update(ProductBM entry)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Update(AttributeBM entry)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool Delete(AttributeBM entry)
+        public bool Delete(ProductBM entry)
         {
             throw new System.NotImplementedException();
         }
