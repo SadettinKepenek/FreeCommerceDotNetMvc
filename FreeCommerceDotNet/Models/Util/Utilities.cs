@@ -223,6 +223,11 @@ namespace FreeCommerceDotNet.Models.Util
                 return Entries;
             }
         }
-  
+
+        public static bool CheckIsRemovable<T>(T entry)
+        {
+            
+            return false;
+        }
     }
 }

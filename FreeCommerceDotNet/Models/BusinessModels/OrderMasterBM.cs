@@ -54,7 +54,9 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                     ShippingBm = m.Get(OrderMaster.ShippingId);
 
                 }
-
+                OrderMaster.CustomerId = CustomerBm.CustomerId;
+                OrderMaster.PaymentGatewayId = PaymentBm.PaymentId;
+                OrderMaster.ShippingId = ShippingBm.ShippingId;
 
             }
         }
