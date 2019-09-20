@@ -26,13 +26,13 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
         public IEnumerable<AttributeBM> GetAllProducts()
         {
-            return new ProductBusinessManager().Get();
+            return null;
         }
 
         // GET: api/Product/5
         public AttributeBM GetProductById(int id)
         {
-            return new ProductBusinessManager().GetById(id);
+            return null;
         }
 
         // POST: api/Product
