@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.DbModels;
+using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -15,7 +16,8 @@ namespace FreeCommerceDotNet.Controllers
         {
             // TODO
 
-         
+            Utilities.GetTablesForeignKeys("Products");
+            Utilities.GetTablesForeignKeys("Customers");
             return View();
         }
      

@@ -5,9 +5,6 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web.Script.Serialization;
-using FreeCommerceDotNet.Models.BusinessManager;
-using FreeCommerceDotNet.Models.BusinessModels;
-using FreeCommerceDotNet.Models.Interfaces;
 
 namespace FreeCommerceDotNet.Models.Util
 {
@@ -22,7 +19,7 @@ namespace FreeCommerceDotNet.Models.Util
     }
     public static class Utilities
     {
-        public static string connectionString { get; set; } ="server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
+        public static string connectionString { get; set; } = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
 
         public static T FromJson<T>(string jsonObject)
         {
@@ -92,7 +89,7 @@ namespace FreeCommerceDotNet.Models.Util
 
                     try
                     {
-                        
+
 
                         command.ExecuteNonQuery();
                         return true;
@@ -178,9 +175,9 @@ namespace FreeCommerceDotNet.Models.Util
 
             return cmd;
         }
-        public static bool CheckIsExist(string tbl, string pk,int pkValue)
+        public static bool CheckIsExist(string tbl, string pk, int pkValue)
         {
-            string sqlQuery = "SELECT COUNT(1) FROM "+tbl+" WHERE "+pk+"=@Id";
+            string sqlQuery = "SELECT COUNT(1) FROM " + tbl + " WHERE " + pk + "=@Id";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
@@ -226,9 +223,36 @@ namespace FreeCommerceDotNet.Models.Util
 
         public static bool CheckIsRemovable<T>(T entry)
         {
-            
+
             return false;
         }
 
+        public static List<DbForeignKeyModel> GetTablesForeignKeys(string tblName)
+        {
+            var list = new List<DbForeignKeyModel>();
+            SqlCommand func = new SqlCommand("select * from dbo.getTablesForeignKeys(@tableName)");
+            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+            {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                using (func)
+                {
+                    func.Connection = connection;
+                    func.Parameters.AddWithValue("@tableName", tblName);
+                    var reader = func.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            Debug.WriteLine(reader[0].ToString()+" "+reader[1].ToString());
+                            list.Add(new DbForeignKeyModel(){tblName = reader[0].ToString(),colName = reader[1].ToString()});
+                        }
+                    }
+                   
+
+                }
+            }
+            return list;
+        }
     }
 }

@@ -225,6 +225,7 @@
     <Compile Include="Models\Interfaces\IBusinessOperations.cs" />
     <Compile Include="Models\Interfaces\IDBOperations.cs" />
     <Compile Include="Models\Interfaces\ILogger.cs" />
+    <Compile Include="Models\Util\DbForeignKeyModel.cs" />
     <Compile Include="Models\Util\LogEntry.cs" />
     <Compile Include="Models\Util\LoggerExtensions.cs" />
     <Compile Include="Models\Util\Loggers.cs" />
