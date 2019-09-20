@@ -1,8 +1,8 @@
 ﻿using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
+using FreeCommerceDotNet.Models.DbModels;
 using FreeCommerceDotNet.Models.Interfaces;
 using System.Collections.Generic;
-using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Models.BusinessManager
 {
@@ -10,7 +10,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
     {
         public void Dispose()
         {
-            
+
         }
 
         public List<ProductBM> Get()
@@ -30,16 +30,65 @@ namespace FreeCommerceDotNet.Models.BusinessManager
 
         public ProductBM GetById(int id)
         {
-            throw new System.NotImplementedException();
+            using (ProductManager m = new ProductManager())
+            {
+                return new ProductBM(id);
+            }
         }
 
         public int Add(ProductBM entry)
         {
-            
-            int InsertedID = new ProductManager().Add(entry.Product);
-            entry.Id = InsertedID;
+            using (ProductManager m = new ProductManager())
+            {
+                int insertedId = m.Add(entry.Product);
+                entry.Id = insertedId;
+                using (ProductAttributeManager attributeManager = new ProductAttributeManager())
+                {
+                    foreach (var entryProductAttribute in entry.ProductAttributes)
+                    {
+                        entryProductAttribute.ProductId = entry.Id;
+                        attributeManager.Add(entryProductAttribute);
+                    }
+                }
 
-            throw new System.NotImplementedException();
+                using (ProductDiscountManager discountManager = new ProductDiscountManager())
+                {
+                    foreach (var productDiscount in entry.ProductDiscounts)
+                    {
+                        productDiscount.ProductId = entry.Id;
+                        discountManager.Add(productDiscount);
+                    }
+                }
+
+                using (ProductImageManager imageManager = new ProductImageManager())
+                {
+                    foreach (var productImage in entry.ProductImages)
+                    {
+                        productImage.ProductId = entry.Id;
+                        imageManager.Add(productImage);
+                    }
+                }
+
+                using (ProductOptionsManager optionsManager = new ProductOptionsManager())
+                {
+                    foreach (var productOption in entry.ProductOptions)
+                    {
+                        productOption.ProductId = entry.Id;
+                        optionsManager.Add(productOption);
+                    }
+                }
+                using (ProductPriceManager productPriceManager = new ProductPriceManager())
+                {
+                    foreach (var productPrice in entry.ProductPrices)
+                    {
+                        productPrice.ProductId = entry.Id;
+                        productPriceManager.Add(productPrice);
+                    }
+                }
+
+                return entry.Id;
+            }
+
         }
 
         public bool Update(ProductBM entry)

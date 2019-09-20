@@ -5,9 +5,21 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web.Script.Serialization;
+using FreeCommerceDotNet.Models.BusinessManager;
+using FreeCommerceDotNet.Models.BusinessModels;
+using FreeCommerceDotNet.Models.Interfaces;
 
 namespace FreeCommerceDotNet.Models.Util
 {
+    public enum SqlCommandTypes
+    {
+        Insert,
+        Update,
+        Remove,
+        Select,
+        StoredProcedure,
+        Check
+    }
     public static class Utilities
     {
         public static string connectionString { get; set; } ="server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
@@ -166,7 +178,6 @@ namespace FreeCommerceDotNet.Models.Util
 
             return cmd;
         }
-
         public static bool CheckIsExist(string tbl, string pk,int pkValue)
         {
             string sqlQuery = "SELECT COUNT(1) FROM "+tbl+" WHERE "+pk+"=@Id";
@@ -212,5 +223,6 @@ namespace FreeCommerceDotNet.Models.Util
                 return Entries;
             }
         }
+  
     }
 }
