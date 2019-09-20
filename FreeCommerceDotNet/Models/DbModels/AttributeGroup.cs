@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace FreeCommerceDotNet.Models.DbModels
 {
@@ -18,6 +19,10 @@ namespace FreeCommerceDotNet.Models.DbModels
             get { return _AttributeGroupName; }
             set { _AttributeGroupName = value; }
         }
-        
+
+        public IEnumerator GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
