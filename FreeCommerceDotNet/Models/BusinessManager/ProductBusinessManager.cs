@@ -146,10 +146,29 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 return false;
             }
         }
-
         public bool Delete(ProductBM entry)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                using (ProductManager m = new ProductManager())
+                {
+
+                    /// Kontrol
+                    /// Sipariş Varmı
+                    /// Yorum Var Mı
+                    /// Fatura Var Mı
+                    return CheckIsRemovable(entry) && m.Delete(entry.Product.ProductId);
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool CheckIsRemovable(ProductBM entry)
+        {
+            return true;
         }
     }
 }
