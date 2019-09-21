@@ -24,9 +24,9 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
 
 
-        public IEnumerable<AttributeBM> GetAllProducts()
+        public IEnumerable<ProductBM> GetAllProducts()
         {
-            return null;
+            return new ProductBusinessManager().Get();
         }
 
         // GET: api/Product/5
