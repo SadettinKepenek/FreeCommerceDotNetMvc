@@ -46,7 +46,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
         {
             using (OptionMasterManager manager = new OptionMasterManager())
             {
-                List<OptionMaster> dbOptionMasters = new List<OptionMaster>();
+                List<OptionMaster> dbOptionMasters = manager.GetAll();
                 List<OptionMasterBM> businessModel = new List<OptionMasterBM>();
 
                 foreach (var optionMaster in dbOptionMasters)

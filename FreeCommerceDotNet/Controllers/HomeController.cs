@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FreeCommerceDotNet.Models.BusinessManager;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
-using FreeCommerceDotNet.Models.DbModels;
-using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -14,13 +9,16 @@ namespace FreeCommerceDotNet.Controllers
     {
         public ActionResult Index(string p1)
         {
-            // TODO
+            using (ProductBusinessManager m = new ProductBusinessManager())
+            {
+                var result = m.DeleteEntry(16);
+                if (!result.removable)
+                    result.msg.ForEach(x => Debug.WriteLine(x));
 
-            Utilities.GetTablesForeignKeys("Products");
-            Utilities.GetTablesForeignKeys("Customers");
+            }
             return View();
         }
-     
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

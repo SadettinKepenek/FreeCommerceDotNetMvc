@@ -1,9 +1,10 @@
-﻿using System;
-using FreeCommerceDotNet.Models.BusinessModels;
+﻿using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using FreeCommerceDotNet.Models.Interfaces;
+using System;
 using System.Collections.Generic;
+using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.BusinessManager
 {
@@ -31,10 +32,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
 
         public ProductBM GetById(int id)
         {
-            using (ProductManager m = new ProductManager())
-            {
-                return new ProductBM(id);
-            }
+            return new ProductBM(id);
         }
 
         public int Add(ProductBM entry)
@@ -148,27 +146,24 @@ namespace FreeCommerceDotNet.Models.BusinessManager
         }
         public bool Delete(ProductBM entry)
         {
-            try
-            {
-                using (ProductManager m = new ProductManager())
-                {
 
-                    /// Kontrol
-                    /// Sipariş Varmı
-                    /// Yorum Var Mı
-                    /// Fatura Var Mı
-                    return CheckIsRemovable(entry) && m.Delete(entry.Product.ProductId);
-                }
-            }
-            catch (Exception e)
+            using (ProductManager m = new ProductManager())
             {
-                return false;
+
+                /// Kontrol
+                /// Sipariş Varmı
+                /// Yorum Var Mı
+                /// Fatura Var Mı
+                return m.Delete(entry.Product.ProductId);
             }
+
+
         }
 
-        public bool CheckIsRemovable(ProductBM entry)
+        public DeleteResponseModel DeleteEntry(int id)
         {
-            return true;
+            return Utilities.isRemovable("Products",id);
         }
+
     }
 }

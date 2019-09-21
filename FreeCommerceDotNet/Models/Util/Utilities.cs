@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Web.Script.Serialization;
 
@@ -244,15 +245,49 @@ namespace FreeCommerceDotNet.Models.Util
                     {
                         while (reader.Read())
                         {
-                            Debug.WriteLine(reader[0].ToString()+" "+reader[1].ToString());
-                            list.Add(new DbForeignKeyModel(){tblName = reader[0].ToString(),colName = reader[1].ToString()});
+                            Debug.WriteLine(reader[0].ToString() + " " + reader[1].ToString());
+                            list.Add(new DbForeignKeyModel() { tblName = reader[0].ToString(), colName = reader[1].ToString() });
                         }
                     }
-                   
+
 
                 }
             }
             return list;
+        }
+        public static DeleteResponseModel isRemovable(string tblName, int id)
+        {
+            var booleanList = new List<bool>();
+            var foreignKeys = GetTablesForeignKeys(tblName);
+            DeleteResponseModel deleteResponseModel=new DeleteResponseModel();
+            foreach (DbForeignKeyModel keyModel in foreignKeys)
+            {
+                string sqlQuery = "Select COUNT(*) from "+keyModel.tblName+" where "+keyModel.colName+"=@id";
+                SqlCommand cmd = new SqlCommand(sqlQuery);
+                cmd.Parameters.AddWithValue("@tableName", keyModel.tblName);
+                //string --> nvarchar ''
+                // int --> 3
+                cmd.Parameters.AddWithValue("@colName", keyModel.colName);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+                    using (cmd)
+                    {
+                        cmd.Connection = connection;
+                        var result = cmd.ExecuteScalar();
+                        int count = Convert.ToInt32(result);
+                        var message = string.Format("{0} Tablosunda {1} columnu için {2} id kayıdı sonucu  Count : {3} Result {4}", keyModel.tblName, keyModel.colName, id.ToString(),count.ToString(),count!=0);
+                        if (count != 0) deleteResponseModel.msg.Add(message);
+                        booleanList.Add(count!=0);
+                    }
+                }
+            }
+
+            deleteResponseModel.removable = booleanList.All(x => x == false);
+            return deleteResponseModel;
         }
     }
 }
