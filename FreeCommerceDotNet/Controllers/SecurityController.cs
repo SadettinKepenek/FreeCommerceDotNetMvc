@@ -68,6 +68,8 @@ namespace FreeCommerceDotNet.Controllers
                             connection.Close();
                         }
 
+                        if (String.IsNullOrEmpty(returnUrl))
+                            returnUrl = "~/Home/Index";
                         return Redirect(returnUrl);
                     }
                     else
