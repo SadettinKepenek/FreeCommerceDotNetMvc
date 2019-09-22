@@ -305,8 +305,10 @@
                                 </ul>
                                 <div class="tab-content" id="top-tabContent">
                                     <div class="tab-pane fade show active" id="top-profile" role="tabpanel" aria-labelledby="top-profile-tab">
-                                        @using (Html.BeginForm("Login", "Security", FormMethod.Post))
+                                        @using (Html.BeginForm("Login", "Security", new { ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post))
                                         {
+
+                                            <div class="alert-danger text-center">@Html.ValidationSummary()</div>
                                             @Html.AntiForgeryToken()
                                             <div class="form-group">
                                                 @Html.TextBoxFor(x=>x.Username,new {@class="form-control",placeholder="E-Mail Adress",required="required",type="input"})
@@ -318,20 +320,20 @@
                                                 <div class="custom-control custom-checkbox mr-sm-2">
                                                     <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
                                                     <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
-                                                    <a href="#" class="btn btn-default forgot-pass">lost your password</a>
+                                                    <a href="#" class="btn btn-default forgot-pass">Forgot Password?</a>
                                                 </div>
                                             </div>
                                             <div class="form-button">
                                                 <button class="btn btn-primary" type="submit">Login</button>
                                             </div>
                                             <div class="form-footer">
-                                                <span>Or Login up with social platforms</span>
-                                                <ul class="social">
+                                                <span > FreeCommerceDotNet 2019</span>
+                                                @*<ul class="social">
                                                     <li><a class="icon-facebook" href=""></a></li>
                                                     <li><a class="icon-twitter" href=""></a></li>
                                                     <li><a class="icon-instagram" href=""></a></li>
                                                     <li><a class="icon-pinterest" href=""></a></li>
-                                                </ul>
+                                                </ul>*@
                                             </div>
                                         }
                                         
@@ -372,7 +374,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="index.html" class="btn btn-primary back-btn"><i data-feather="arrow-left"></i>back</a>
+                <a href="~/Home/Index" class="btn btn-primary back-btn"><i data-feather="arrow-left"></i>back</a>
             </div>
         </div>
     </div>
@@ -399,8 +401,8 @@
     <script src="../assets/js/admin-script.js"></script>
     <script>
     $('.single-item').slick({
-            arrows: false,
-            dots: true
+            arrows: true,
+            dots: false
         }
         );</script>
 </body>

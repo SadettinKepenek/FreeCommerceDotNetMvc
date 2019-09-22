@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,15 +20,20 @@ namespace FreeCommerceDotNet.Controllers
         {
             return RedirectToAction("Login",new object(){} );
         }
+        [AllowAnonymous]
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View(new LoginModel());
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public ActionResult Login(LoginModel login)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModel login,string returnUrl)
         {
+            Debug.WriteLine(returnUrl);
             if (ModelState.IsValid)
             {
                 
@@ -61,8 +67,8 @@ namespace FreeCommerceDotNet.Controllers
                             System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
                             connection.Close();
                         }
-                        
-                        return RedirectToAction("Index", "Home", null);
+
+                        return Redirect(returnUrl);
                     }
                     else
                     {
@@ -78,7 +84,7 @@ namespace FreeCommerceDotNet.Controllers
                 return View(login);
 
         }
-
+        [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
