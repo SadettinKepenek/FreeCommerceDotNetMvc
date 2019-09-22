@@ -22,7 +22,13 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             if (id == null)
             {
                 this.Product=new Product();
-              
+                this.ProductAttributes=new List<ProductAttribute>();
+                this.ProductDiscounts = new List<ProductDiscount>();
+                this.ProductImages = new List<ProductImage>();
+                this.ProductOptions = new List<ProductOption>();
+                this.ProductPrices = new List<ProductPrice>();
+                this.Reviews = new List<Reviews>();
+                this.Category=new Category();
 
             }
             else

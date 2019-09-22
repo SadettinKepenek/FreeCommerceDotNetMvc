@@ -21,7 +21,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
         {
             using (CategoryManager manager = new CategoryManager())
             {
-                return manager.Delete(entry.Category.CaregoryId);
+                return manager.Delete(entry.Category.CategoryId);
             }
         }
 
@@ -39,7 +39,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
 
                 foreach (var categories in dbCategories)
                 {
-                    businessModels.Add(new CategoryBM(categories.CaregoryId));
+                    businessModels.Add(new CategoryBM(categories.CategoryId));
                 }
 
                 return businessModels;

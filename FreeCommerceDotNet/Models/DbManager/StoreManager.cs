@@ -54,13 +54,15 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public Store Get(int id)
         {
-            string sqlQuery = "select * from Stores where StoreId = @id ";
+            string sqlQuery = "select * from Stores where StoreId = @Id ";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
+                sqlCommand.Parameters.AddWithValue("@Id", id);
+
                 var stores = new List<Store>();
                 Utilities.ExecuteCommand<Store>(sqlCommand, SqlCommandTypes.Select, ref stores);
-                return stores.First();
+                return stores.FirstOrDefault();
             }
         }
 

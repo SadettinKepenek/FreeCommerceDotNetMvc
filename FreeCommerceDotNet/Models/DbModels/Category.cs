@@ -4,7 +4,7 @@
     {
         private int _CategoryId;
 
-        public int CaregoryId
+        public int CategoryId
         {
             get { return _CategoryId; }
             set { _CategoryId = value; }

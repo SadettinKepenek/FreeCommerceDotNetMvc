@@ -1,0 +1,132 @@
+﻿@using FreeCommerceDotNet.Models.BusinessModels
+@using FreeCommerceDotNet.Models.DbModels
+@model List<FreeCommerceDotNet.Models.BusinessModels.ProductBM>
+
+@helper GetProductPrice(ProductBM bm)
+{
+    if (bm.ProductPrices != null)
+    {
+        var price = bm.ProductPrices.FirstOrDefault();
+        if (price != null)
+        {
+            <td>@price.Price ₺ </td>
+        }
+        else
+        {
+            <td>Fiyat Bulunamadı </td>
+        }
+    }
+    else
+    {
+        <td>Fiyat Bulunamadı </td>
+    }
+}
+@helper GetProductStock(ProductBM bm)
+{
+    if (bm.Product.Quantity == 0)
+    {
+        <td>Out of Stock</td>
+    }
+    else
+    {
+        <td>@bm.Product.Quantity Adet</td>
+
+    }
+}
+
+@helper GetProductStatus(ProductBM bm)
+{
+    if (bm.Product.Status)
+    {
+        <td class="alert-success">Aktif</td>
+    }
+    else
+    {
+        <td class="alert-danger">Pasif</td>
+
+    }
+}
+
+@helper GetProductActionButtons(ProductBM bm)
+{
+    <td class="text-center">
+        @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-danger" })
+    @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-warning" })
+    @Html.ActionLink("Show", "Product", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-success" })
+</td>
+}
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Product List
+                        <small>FreeCommerceDotNet Admin panel</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="~/Admin/"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item">Product List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Product Lists</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Category Name</th>
+                                <th scope="col">Price(Customer)</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ProductBM bm in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@bm.Product.ProductId</th>
+                                    <td>@bm.Product.ProductName</td>
+                                    <td>@bm.Category.CategoryName</td>
+
+                                    @GetProductPrice(bm)
+                                    @GetProductStock(bm)
+                                    @GetProductStatus(bm)
+                                    @GetProductActionButtons(bm)
+
+
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
