@@ -205,6 +205,7 @@
     <Compile Include="Models\DbManager\ReviewsManager.cs" />
     <Compile Include="Models\DbManager\ShippingManager.cs" />
     <Compile Include="Models\DbManager\StoreManager.cs" />
+    <Compile Include="Models\DbManager\UsersManager.cs" />
     <Compile Include="Models\DbModels\Attribute.cs" />
     <Compile Include="Models\DbModels\AttributeGroup.cs" />
     <Compile Include="Models\DbModels\Category.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Models\DbModels\Reviews.cs" />
     <Compile Include="Models\DbModels\Shipping.cs" />
     <Compile Include="Models\DbModels\Store.cs" />
+    <Compile Include="Models\DbModels\Users.cs" />
     <Compile Include="Models\Interfaces\IBusinessOperations.cs" />
     <Compile Include="Models\Interfaces\IDBOperations.cs" />
     <Compile Include="Models\Interfaces\ILogger.cs" />
