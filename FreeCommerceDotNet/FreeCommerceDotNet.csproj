@@ -167,6 +167,7 @@
     <Compile Include="Models\BusinessManager\ReviewBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\ShippingBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\StoreBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\UsersBusinessManager.cs" />
     <Compile Include="Models\BusinessModels\AttributeBM.cs" />
     <Compile Include="Models\BusinessModels\AttributeGroupBM.cs" />
     <Compile Include="Models\BusinessModels\CategoryBM.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Models\BusinessModels\ReviewBM.cs" />
     <Compile Include="Models\BusinessModels\ShippingBM.cs" />
     <Compile Include="Models\BusinessModels\StoreBM.cs" />
+    <Compile Include="Models\BusinessModels\UsersBM.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\CategoryManager.cs" />
