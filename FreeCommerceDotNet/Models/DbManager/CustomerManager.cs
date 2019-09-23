@@ -59,8 +59,9 @@ namespace FreeCommerceDotNet.Models.DbManager
             {
                 var sqlCommand = command;
                 var customers = new List<Customer>();
+                sqlCommand.Parameters.AddWithValue("@id", id);
                 Utilities.ExecuteCommand<Customer>(sqlCommand, SqlCommandTypes.Select, ref customers);
-                return customers.First();
+                return customers.FirstOrDefault();
             }
         }
 

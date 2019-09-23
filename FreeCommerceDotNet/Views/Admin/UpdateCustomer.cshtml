@@ -1,0 +1,91 @@
+﻿
+@using System.Web.UI.WebControls
+@using FreeCommerceDotNet.Models.BusinessModels
+@using FreeCommerceDotNet.Models.DbModels
+@model CustomerBM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@helper GetProductActionButtons(CustomerBM bm)
+{
+    <td class="text-center">
+        @Html.ActionLink("Update", "UpdateCustomer", "Admin", new { id = bm.Customer.CustomerId }, new { @class = "btn btn-sm btn-danger", id = "myBtn" })
+        @Html.ActionLink("Delete", "DeleteCustomer", "Admin", new { id = bm.Customer.CustomerId }, new { @class = "btn btn-sm btn-warning" })
+    </td>
+}
+<!-- Container-fluid Begins-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Customer Lists</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table" width="2000">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">E-Mail</th>
+                                <th scope="col">Telephone</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Address 1</th>
+                                <th scope="col">Address 2</th>
+                                <th scope="col">TaxAddress</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.HiddenFor(x=>x.Customer.CustomerId)
+                            @*@Html.HiddenFor(x=>x.OrderMasters)*@
+
+                                <tr>
+                                    <th scope="row">@Model.Customer.CustomerId</th>
+                                    <td>@Model.Customer.Firstname</td>
+                                    <td>@Model.Customer.Lastname</td>
+                                    <td>@Model.Customer.Email</td>
+                                    <td>@Model.Customer.Telephone</td>
+                                    <td>@Model.Customer.Password</td>
+                                    <td>@Model.Customer.Address1</td>
+                                    <td>@Model.Customer.Address2</td>
+                                    <td>@Model.Customer.TaxAddress</td>
+                                    <td>@Model.Customer.Status</td>
+                                    @GetProductActionButtons(Model)
+
+                                </tr>
+                            
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Modal Header</h2>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the Modal Body</p>
+                <p>Some other text...</p>
+            </div>
+            <div class="modal-footer">
+                <h3>Modal Footer</h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Container-fluid Ends-->
