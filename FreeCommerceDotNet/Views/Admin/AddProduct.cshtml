@@ -252,11 +252,12 @@
 
                                         <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
-                                            <div class="row" id="attributes-panel-tab">
-                                                @SetHiddenAttributeFieldInstance(count, attributes)
+                                            <div class="container" id="attributes-panel-tab">
+                                                @*@SetHiddenAttributeFieldInstance(count, attributes)*@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <hr/>
                                                     <button class="btn btn-xs btn-warning pull-right" type="button" onclick="addNewAttributeField()"><li>Add New Attribute</li></button>
 
                                                 </div>
@@ -320,7 +321,7 @@
             count++;
         }
         var htmlString =
-            '<div class=\"row\" id=\"hiddenAttributeField\"><div class=\"col-md-4\">'+ @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+' </div><div class=\"col-md-8\" ><textarea placeholder=\"Attribute Description\" class=\"form-control\" style =\"min-width: 100%; min-height:90 % \"></textarea></div></div>';
+            '<br/><div class=\"row\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+' </div><div class=\"col-md-8\" ><textarea placeholder=\"Attribute Description\" class=\"form-control\" style =\"min-width: 100%; min-height:90 % \"></textarea></div></div>';
         console.log(htmlString);
         attributeRow.append(htmlString);
     }
