@@ -1,9 +1,32 @@
-﻿@using FreeCommerceDotNet.Models.BusinessManager
+﻿@using System.ComponentModel
+@using System.Diagnostics
+@using FreeCommerceDotNet.Models.BusinessManager
 @using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
 @using Attribute = FreeCommerceDotNet.Models.DbModels.Attribute
+@using System.Collections.Generic
+@using System.Web
+@using System.Web.Mvc
+
 @model FreeCommerceDotNet.Models.BusinessModels.ProductBM
+
+
+
+
+@helper SetHiddenAttributeFieldInstance(int count, List<Attribute> attributes)
+{
+    <div class="row" id="hiddenAttributeField">
+        <div class="col-md-4" id="hiddenAttributeFieldDropDown">
+            @(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId,new SelectList(attributes, "AttributeId", "AttributeName"),new { @class = "form-control", type = "input" }))
+        </div>
+        <div class="col-md-8">
+            <textarea placeholder="Attribute Description" class="form-control" style="min-width: 100%; min-height: 90%"></textarea>
+        </div>
+    </div>
+
+}
+
 
 @{
     List<Category> categories;
@@ -18,6 +41,7 @@
         attributes = bm.GetAll();
 
     }
+    int count = 0;
 
 }
 
@@ -25,10 +49,12 @@
     ViewBag.Title = "AddProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+
 @*
     ProductOptions
     ProductAttributes
-    
+
 
     ProductImages
     ProductPrices
@@ -39,6 +65,13 @@
     ProductPrices alanında segment yerine bir business model objesi tutulması gerek
 
 *@
+
+
+
+
+
+
+
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="page-header">
@@ -216,24 +249,19 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                  <input type="text" class="autocomplete" placeholder="Enter an Attribute Name"/>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    Attribute
-                                                </div>
-                                                <br />
+                                            <div class="row" id="attributes-panel-tab">
+                                                @SetHiddenAttributeFieldInstance(count, attributes)
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button class="btn btn-xs btn-warning pull-right"><li>Add New Attribute</li></button>
+                                                    <button class="btn btn-xs btn-warning pull-right" type="button" onclick="addNewAttributeField()"><li>Add New Attribute</li></button>
 
                                                 </div>
                                             </div>
-                                         
+
 
                                         </div>
                                     </div>
@@ -284,11 +312,23 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    function addNewAttributeField() {
+        var attributeRow = $("#attributes-panel-tab");
+        @{
+            count++;
+        }
+        var htmlString =
+            '<div class=\"row\" id=\"hiddenAttributeField\"><div class=\"col-md-4\">'+ @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+' </div><div class=\"col-md-8\" ><textarea placeholder=\"Attribute Description\" class=\"form-control\" style =\"min-width: 100%; min-height:90 % \"></textarea></div></div>';
+        console.log(htmlString);
+        attributeRow.append(htmlString);
+    }
+</script>
 <!-- latest jquery-->
 <script src="../assets/js/jquery-3.3.1.min.js"></script>
 <!-- Container-fluid Ends-->
 <script src="../assets/js/dashboard/form-validation-custom.js"></script>
-
 <!-- ckeditor js-->
 <script src="../assets/js/editor/ckeditor/ckeditor.js"></script>
 <script src="../assets/js/editor/ckeditor/styles.js"></script>
