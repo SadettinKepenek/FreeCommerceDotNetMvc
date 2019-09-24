@@ -1,34 +1,77 @@
-﻿@using FreeCommerceDotNet.Models.BusinessManager
+﻿@using System.ComponentModel
+@using System.Diagnostics
+@using FreeCommerceDotNet.Models.BusinessManager
 @using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
+@using Attribute = FreeCommerceDotNet.Models.DbModels.Attribute
+@using System.Collections.Generic
+@using System.Web
+@using System.Web.Mvc
+
 @model FreeCommerceDotNet.Models.BusinessModels.ProductBM
+
+
+
+
+@helper SetHiddenAttributeFieldInstance(int count, List<Attribute> attributes)
+{
+    <div class="row" id="hiddenAttributeField">
+        <div class="col-md-4" id="hiddenAttributeFieldDropDown">
+            @(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId,new SelectList(attributes, "AttributeId", "AttributeName"),new { @class = "form-control", type = "input" }))
+        </div>
+        <div class="col-md-8">
+            <textarea placeholder="Attribute Description" class="form-control" style="min-width: 100%; min-height: 90%"></textarea>
+        </div>
+    </div>
+
+}
+
 
 @{
     List<Category> categories;
+    List<Attribute> attributes;
     using (CategoryManager bm = new CategoryManager())
     {
         categories = bm.GetAll();
 
     }
+    using (AttributeManager bm = new AttributeManager())
+    {
+        attributes = bm.GetAll();
+
+    }
+    int count = 0;
+
 }
 
 @{
     ViewBag.Title = "AddProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+
 @*
     ProductOptions
     ProductAttributes
+
+
     ProductImages
     ProductPrices
     ProductDiscounts alanları eklenecek
-    
+
     ProductPrices alanı için ilk önce veritabanına segmentlerin eklenip pricedaki segment text yerine id olarak tutulması gerekiyor.
     Bu işlemlerin veritabanı modelleri gibi alanlarda da değiştirilmesi gerekiyor
     ProductPrices alanında segment yerine bir business model objesi tutulması gerek
 
 *@
+
+
+
+
+
+
+
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="page-header">
@@ -122,6 +165,12 @@
                                         <li class="nav-item">
                                             <a class="nav-link" id="general-settings-nav-tab" data-toggle="tab" href="#product-specific-tab" role="tab" aria-controls="product-specific-settings" aria-selected="false">General Settings</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="general-options-nav-tab" data-toggle="tab" href="#product-options-tab" role="tab" aria-controls="product-options-settings" aria-selected="false">Product Options</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="general-attributes-nav-tab" data-toggle="tab" href="#product-attributes-tab" role="tab" aria-controls="product-attributes-settings" aria-selected="false">Product Attributes</a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
                                         <div class="tab-pane fade show active" id="product-settings-tab" role="tabpanel" aria-labelledby="home-tab">
@@ -189,6 +238,33 @@
                                                 @Html.TextBoxFor(x => x.Product.Height, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="product-options-tab" role="tabpanel" aria-labelledby="home-tab">
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    Options
+                                                </div>
+                                                <div class="col-md-9">
+                                                    Options
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
+                                            <br />
+                                            <div class="container" id="attributes-panel-tab">
+                                                @*@SetHiddenAttributeFieldInstance(count, attributes)*@
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <hr/>
+                                                    <button class="btn btn-xs btn-warning pull-right" type="button" onclick="addNewAttributeField()"><li>Add New Attribute</li></button>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                     </div>
                                 </div>
 
@@ -237,11 +313,23 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    function addNewAttributeField() {
+        var attributeRow = $("#attributes-panel-tab");
+        @{
+            count++;
+        }
+        var htmlString =
+            '<br/><div class=\"row\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+' </div><div class=\"col-md-8\" ><textarea placeholder=\"Attribute Description\" class=\"form-control\" style =\"min-width: 100%; min-height:90 % \"></textarea></div></div>';
+        console.log(htmlString);
+        attributeRow.append(htmlString);
+    }
+</script>
 <!-- latest jquery-->
 <script src="../assets/js/jquery-3.3.1.min.js"></script>
 <!-- Container-fluid Ends-->
 <script src="../assets/js/dashboard/form-validation-custom.js"></script>
-
 <!-- ckeditor js-->
 <script src="../assets/js/editor/ckeditor/ckeditor.js"></script>
 <script src="../assets/js/editor/ckeditor/styles.js"></script>

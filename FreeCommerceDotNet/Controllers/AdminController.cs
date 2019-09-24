@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.BusinessModels;
+using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -27,7 +28,13 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddProduct()
         {
-            return View(new ProductBM(null));
+            var productBm = new ProductBM(null);
+            int ATTIBUTEMAXCOUNT = 10;
+            for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
+            {
+                productBm.ProductAttributes.Add(new ProductAttribute());
+            }
+            return View(productBm);
         }
 
         [HttpPost]
