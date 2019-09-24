@@ -7,6 +7,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class CustomerBM
     {
         public Customer Customer { get; set; }
+        public Segment Segment { get; set; }
         public List<Reviews> Reviews { get; set; }
         public List<OrderMaster> OrderMasters { get; set; }
         public List<OrderReturn> OrderReturns { get; set; }
@@ -16,6 +17,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             if (id == null)
             {
                 Customer = new Customer();
+                Segment = new Segment();
                 Reviews = new List<Reviews>();
                 OrderMasters = new List<OrderMaster>();
                 OrderReturns = new List<OrderReturn>();
@@ -26,6 +28,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (CustomerManager m = new CustomerManager())
                 {
                     Customer = m.Get(key);
+                }
+
+                using (SegmentManager m = new SegmentManager())
+                {
+                    Segment = m.Get(key);
                 }
 
                 using (ReviewsManager m = new ReviewsManager())
