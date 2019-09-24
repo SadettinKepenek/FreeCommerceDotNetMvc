@@ -18,7 +18,7 @@
 {
     <div class="row" id="hiddenAttributeField">
         <div class="col-md-4" id="hiddenAttributeFieldDropDown">
-            @(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId,new SelectList(attributes, "AttributeId", "AttributeName"),new { @class = "form-control", type = "input" }))
+            @(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input" }))
         </div>
         <div class="col-md-8">
             <textarea placeholder="Attribute Description" class="form-control" style="min-width: 100%; min-height: 90%"></textarea>
@@ -31,6 +31,7 @@
 @{
     List<Category> categories;
     List<Attribute> attributes;
+    List<Segment> segments;
     using (CategoryManager bm = new CategoryManager())
     {
         categories = bm.GetAll();
@@ -40,6 +41,10 @@
     {
         attributes = bm.GetAll();
 
+    }
+    using (SegmentManager bm = new SegmentManager())
+    {
+        segments = bm.GetAll();
     }
     int count = 0;
 
@@ -51,22 +56,15 @@
 }
 
 
-@*
-    ProductOptions
-    ProductAttributes
 
+@functions{
 
-    ProductImages
-    ProductPrices
-    ProductDiscounts alanları eklenecek
+    public  void incrementAttributeCount()
+    {
+        
+    }
 
-    ProductPrices alanı için ilk önce veritabanına segmentlerin eklenip pricedaki segment text yerine id olarak tutulması gerekiyor.
-    Bu işlemlerin veritabanı modelleri gibi alanlarda da değiştirilmesi gerekiyor
-    ProductPrices alanında segment yerine bir business model objesi tutulması gerek
-
-*@
-
-
+}
 
 
 
@@ -171,6 +169,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" id="general-attributes-nav-tab" data-toggle="tab" href="#product-attributes-tab" role="tab" aria-controls="product-attributes-settings" aria-selected="false">Product Attributes</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="general-prices-nav-tab" data-toggle="tab" href="#product-prices-tab" role="tab" aria-controls="product-prices-settings" aria-selected="false">Product Prices</a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
                                         <div class="tab-pane fade show active" id="product-settings-tab" role="tabpanel" aria-labelledby="home-tab">
@@ -253,17 +254,49 @@
                                         <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
                                             <div class="container" id="attributes-panel-tab">
-                                                @*@SetHiddenAttributeFieldInstance(count, attributes)*@
+
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <hr/>
-                                                    <button class="btn btn-xs btn-warning pull-right" type="button" onclick="addNewAttributeField()"><li>Add New Attribute</li></button>
+                                                    <hr />
+                                                    <button class="btn btn-xs btn-warning pull-right" type="button" onclick="addNewAttributeField();">Add New Attribute</button>
 
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="product-prices-tab" role="tabpanel" aria-labelledby="home-tab">
+                                            <br />
+                                           
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                   
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr>
+                                                                <th scope="col">#Segment</th>
+                                                                <th scope="col">First</th>
+                                                                <th scope="col">Last</th>
+                                                                <th scope="col">Handle</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach (Segment segment in segments)
+                                                            {
+                                                                <tr>
+                                                                    <th scope="row">@segment.SegmentName</th>
+                                                                    <td>Mark</td>
+                                                                    <td>Otto</td>
+                                                                </tr>
+                                                            }
+                                                    
 
+                                                            </tbody>
+                                                        </table>
+                                                    
+                                                    <hr/>
 
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -314,15 +347,26 @@
     </div>
 </div>
 <script type="text/javascript">
-
+    var count = 0;
+    window.count = 0;
+    function setAttributeCountValue() {
+        window.count=window.count+1;       
+    }
+    function getAttributeCountValue() {
+        return window.count;
+    }
     function addNewAttributeField() {
         var attributeRow = $("#attributes-panel-tab");
-        @{
-            count++;
-        }
         var htmlString =
-            '<br/><div class=\"row\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+' </div><div class=\"col-md-8\" ><textarea placeholder=\"Attribute Description\" class=\"form-control\" style =\"min-width: 100%; min-height:90 % \"></textarea></div></div>';
+            '<div class=\"row\" id=\"attribute-row-' + window.count + '\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+'</div><div class=\"col-md-8\" >' +@Html.Raw(Json.Encode(Html.TextAreaFor(x=>x.ProductAttributes[count].AttributeDescription,new {@class="form-control",style= "min-width: 100%; min-height:90 %" }).ToHtmlString()))+'<br/><button type=\"button\" class=\"btn btn-xs btn-danger pull-right\" onclick=\"$(\'#attribute-row-'+window.count+'\').remove();\">Delete</button><hr/></div></div>';
+        // kanka şimdi koda bakıyom replace et
+
+        htmlString=htmlString.replace('ProductAttributes[0].AttributeId', 'ProductAttributes[' + window.count + '].AttributeId');
+        htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeId', 'ProductAttributes_'+window.count+'__AttributeId');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeDescription', 'ProductAttributes_' + window.count +'__AttributeDescription');
         console.log(htmlString);
+        setAttributeCountValue();
         attributeRow.append(htmlString);
     }
 </script>
