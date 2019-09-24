@@ -10,6 +10,8 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     public class SegmentBM
     {
         public Segment Segment { get; set; }
+
+        public List<Customer> CustomersBms { get; set; }
         public SegmentBM(int? id)
         {
             if (id == null)
@@ -22,6 +24,12 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     int key = (int)id;
                     Segment = m.Get(key);
+                }
+
+                using(var m = new CustomerManager())
+                {
+                    CustomersBms =
+                        m.GetByIntegerKey((int)id, "Customer", "SegmentId");
                 }
             }
         }
