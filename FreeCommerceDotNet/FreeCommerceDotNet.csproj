@@ -3597,8 +3597,8 @@
     <Content Include="Views\Admin\Products.cshtml" />
     <Content Include="Views\Admin\AddProduct.cshtml" />
     <Content Include="Views\Admin\AddCustomer.cshtml" />
-    <Content Include="Views\Admin\UpdateCustomer.cshtml" />
     <Content Include="Views\Admin\Customers.cshtml" />
+    <Content Include="Views\Admin\UpdateCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

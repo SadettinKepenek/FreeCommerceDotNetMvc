@@ -78,17 +78,16 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateCustomer(int id)
         {
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
-            {
-                return View(manager.GetById(id));
-            }
-
+            return View(new CustomerBM(id));
         }
         [HttpPost]
         public ActionResult UpdateCustomer(CustomerBM customer)
         {
-
-            return View();
+            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            {
+                manager.Update(customer);
+            }
+            return View("Customers");
         }
     }
 }
