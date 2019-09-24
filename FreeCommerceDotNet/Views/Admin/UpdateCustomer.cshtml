@@ -12,7 +12,7 @@
 @helper GetProductActionButtons(CustomerBM bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateCustomer", "Admin", new { id = bm.Customer.CustomerId }, new { @class = "btn btn-sm btn-danger", id = "myBtn" })
+        @Html.ActionLink("Update", "UpdateCustomer", "Admin", new { id = bm.Customer.CustomerId }, new { @class = "btn btn-sm btn-danger"})
         @Html.ActionLink("Delete", "DeleteCustomer", "Admin", new { id = bm.Customer.CustomerId }, new { @class = "btn btn-sm btn-warning" })
     </td>
 }
@@ -68,24 +68,6 @@
             </div>
         </div>
     </div>
-    <div id="myModal" class="modal">
 
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Modal Header</h2>
-            </div>
-            <div class="modal-body">
-                <p>Some text in the Modal Body</p>
-                <p>Some other text...</p>
-            </div>
-            <div class="modal-footer">
-                <h3>Modal Footer</h3>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 <!-- Container-fluid Ends-->

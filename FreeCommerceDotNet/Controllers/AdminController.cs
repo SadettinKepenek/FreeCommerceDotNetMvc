@@ -58,25 +58,16 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult DeleteCustomer()
-        {
-            List<CustomerBM> customers;
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
-            {
-                customers = manager.Get();
-            }
-            return View(customers);
-        }
-        [HttpPost]
         public ActionResult DeleteCustomer(int id)
         {
             using (CustomerBusinessManager manager = new CustomerBusinessManager())
             {
                 manager.Delete(manager.GetById(id));
             }
+
             return View();
         }
+
         [HttpGet]
         public ActionResult UpdateCustomer(int id)
         {
