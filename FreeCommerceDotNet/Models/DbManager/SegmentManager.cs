@@ -57,7 +57,7 @@ namespace FreeCommerceDotNet.Models.DbManager
         }
 
         public List<Segment> GetAll()
-        {
+        { 
             string sqlQuery = "select * from Segments";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {

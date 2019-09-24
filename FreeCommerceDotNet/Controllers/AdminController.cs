@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.BusinessModels;
+using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Controllers
@@ -33,6 +35,16 @@ namespace FreeCommerceDotNet.Controllers
             for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
             {
                 productBm.ProductAttributes.Add(new ProductAttribute());
+            }
+
+            using (SegmentManager m = new SegmentManager())
+            {
+                var segments = m.GetAll();
+                foreach (var segment in segments)
+                {
+                    productBm.ProductPrices.Add(new ProductPrice(){Segment = segment.SegmentName});
+
+                }
             }
             return View(productBm);
         }

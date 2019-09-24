@@ -59,9 +59,9 @@
 
 @functions{
 
-    public  void incrementAttributeCount()
+    public void incrementAttributeCount()
     {
-        
+
     }
 
 }
@@ -266,34 +266,35 @@
                                         </div>
                                         <div class="tab-pane fade" id="product-prices-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
-                                           
+
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                   
-                                                        <table class="table">
-                                                            <thead>
+
+                                                    <table class="table">
+                                                        <thead>
                                                             <tr>
                                                                 <th scope="col">#Segment</th>
-                                                                <th scope="col">First</th>
-                                                                <th scope="col">Last</th>
-                                                                <th scope="col">Handle</th>
+                                                                <th scope="col">Fiyat</th>
+
                                                             </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach (Segment segment in segments)
+                                                        </thead>
+                                                        <tbody>
+                                                            @for (int i = 0; i < Model.ProductPrices.Count; i++)
                                                             {
                                                                 <tr>
-                                                                    <th scope="row">@segment.SegmentName</th>
-                                                                    <td>Mark</td>
-                                                                    <td>Otto</td>
+                                                                    <th scope="row">@Model.ProductPrices[i].Segment</th>
+                                                                    <th scope="row">@Html.TextBoxFor(x => x.ProductPrices[i].Price, new { type = "number", style = "min-width:60%;" })</th>
                                                                 </tr>
                                                             }
-                                                    
 
-                                                            </tbody>
-                                                        </table>
-                                                    
-                                                    <hr/>
+
+
+
+
+                                                        </tbody>
+                                                    </table>
+
+                                                    <hr />
 
                                                 </div>
                                             </div>
@@ -350,7 +351,7 @@
     var count = 0;
     window.count = 0;
     function setAttributeCountValue() {
-        window.count=window.count+1;       
+        window.count=window.count+1;
     }
     function getAttributeCountValue() {
         return window.count;
