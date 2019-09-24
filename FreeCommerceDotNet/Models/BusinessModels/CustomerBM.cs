@@ -32,7 +32,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 
                 using (SegmentManager m = new SegmentManager())
                 {
-                    Segment = m.Get(key);
+                    Segment = m.Get(Customer.SegmentId);
                 }
 
                 using (ReviewsManager m = new ReviewsManager())
