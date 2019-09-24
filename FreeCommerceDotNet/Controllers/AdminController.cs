@@ -72,7 +72,7 @@ namespace FreeCommerceDotNet.Controllers
                 manager.Delete(manager.GetById(id));
             }
 
-            return View();
+            return RedirectToAction("Customers", "Admin", null);
         }
 
         [HttpGet]
