@@ -165,6 +165,7 @@
     <Compile Include="Models\BusinessManager\ProductOptionBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\ProductPriceBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\ReviewBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\SegmentBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\ShippingBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\StoreBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\UsersBusinessManager.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Models\BusinessModels\ProductOptionBM.cs" />
     <Compile Include="Models\BusinessModels\ProductPriceBM.cs" />
     <Compile Include="Models\BusinessModels\ReviewBM.cs" />
+    <Compile Include="Models\BusinessModels\SegmentBM.cs" />
     <Compile Include="Models\BusinessModels\ShippingBM.cs" />
     <Compile Include="Models\BusinessModels\StoreBM.cs" />
     <Compile Include="Models\BusinessModels\UsersBM.cs" />
