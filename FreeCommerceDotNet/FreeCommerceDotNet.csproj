@@ -205,6 +205,7 @@
     <Compile Include="Models\DbManager\ProductOptionsManager.cs" />
     <Compile Include="Models\DbManager\ProductPriceManager.cs" />
     <Compile Include="Models\DbManager\ReviewsManager.cs" />
+    <Compile Include="Models\DbManager\SegmentManager.cs" />
     <Compile Include="Models\DbManager\ShippingManager.cs" />
     <Compile Include="Models\DbManager\StoreManager.cs" />
     <Compile Include="Models\DbManager\UsersManager.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Models\DbModels\ProductOption.cs" />
     <Compile Include="Models\DbModels\ProductPrice.cs" />
     <Compile Include="Models\DbModels\Reviews.cs" />
+    <Compile Include="Models\DbModels\Segment.cs" />
     <Compile Include="Models\DbModels\Shipping.cs" />
     <Compile Include="Models\DbModels\Store.cs" />
     <Compile Include="Models\DbModels\Users.cs" />
