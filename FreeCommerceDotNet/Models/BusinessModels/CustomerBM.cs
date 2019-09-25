@@ -12,6 +12,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public List<OrderMaster> OrderMasters { get; set; }
         public List<OrderReturn> OrderReturns { get; set; }
 
+        public CustomerBM() { }
         public CustomerBM(int? id)
         {
             if (id == null)
