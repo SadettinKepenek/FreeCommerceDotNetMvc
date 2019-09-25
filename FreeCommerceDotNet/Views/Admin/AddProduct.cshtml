@@ -316,23 +316,23 @@
                                                     <div class="col-xl-3 xl-50 col-sm-6 col-3">
                                                         <ul class="file-upload-product">
                                                             <li>
-                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput1" type="file" onchange="readURL(this,1);"><i class="fa fa-plus"></i></div>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput1" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
                                                             </li>
                                                             <li>
-                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput2" type="file" onchange="readURL(this,2);"><i class="fa fa-plus"></i></div>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput2" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
                                                             </li>
                                                             <li>
-                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput3" type="file" onchange="readURL(this,3);"><i class="fa fa-plus"></i></div>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput3" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
                                                             </li>
-                                                            @*<li>
-                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                                                </li>*@
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" type="file" onchange="readURL(this);"><i class="fa fa-plus"></i></div>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -395,13 +395,12 @@
 </div>
 <script type="text/javascript">
     var clickedImageDeleteButton = 0;
+    window.imageCount = 0;
 
-   
     function RemoveSessionImageValue(key) {
         $(function () {
             $.post('../Session/RemoveVariable',
                 { key: key }, function (data) {
-                    console.log("Value " + data.success);
                 });
         });
     }
@@ -411,7 +410,6 @@
             $.post('../Session/GetVariable',
                 { key: key }, function (data)
                 {
-                    console.log("Value " + data.key);
                 });
         });
     }
@@ -420,7 +418,6 @@
             $.post('../Session/SetVariable',
                 { key: key, value: value}, function (data)
                 {
-                    console.log("Success " + data.success);
                     GetSessionImageValue(key);
 
                 });
@@ -433,49 +430,46 @@
         $('#imageUploadInput'+ id ).val('');
         var element = $('#ImageRow' + id + '');
         element.remove();
+        window.imageCount--;
         RemoveSessionImageValue('#Image' + id);
+        if (window.imageCount == 0) {
+            $('#imagesContainer').append('<a id=\"noImageCountText\">Şuan da hiç resim bulunmamaktadır.</a>');
+        }
     }
 
     function imageIsLoaded(e) {
-       
-        SetSessionImageValue("Image" + window.newAddedImage, e.target.result);
 
-        if ($('#ImageRow' + window.newAddedImage + '').length) {
+        SetSessionImageValue("Image" + window.imageCount, e.target.result);
+        window.imageCount++;
+        if (window.imageCount != 0) {
+            $('#noImageCountText').remove();
+        }
+        if ($('#ImageRow' + window.imageCount + '').length) {
             var yeniResim = '<div class=\"row\" id=\"ImageRow' +
-                window.newAddedImage +
+                window.imageCount +
                 '\"><div class=\"col-md-10\"><img src="' +
                 e.target.result +
                 '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' +
-                window.newAddedImage +
+                window.imageCount +
                 '\" onclick=\"removeImageById(this);\">Delete</button></div></div>';
-            $('#ImageRow' + window.newAddedImage + '').replaceWith(yeniResim);
+            $('#ImageRow' + window.imageCount + '').replaceWith(yeniResim);
 
-            console.log("Zaten image var" + window.newAddedImage);
+            console.log("Zaten image var" + window.imageCount);
         } else {
-            $('#imagesContainer').append('<div class=\"row\" id=\"ImageRow' + window.newAddedImage+'\"><div class=\"col-md-10\"><img src="' + e.target.result + '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' + window.newAddedImage +'\" onclick=\"removeImageById(this);\">Delete</button></div></div>');
+            $('#imagesContainer').append('<div class=\"row\" id=\"ImageRow' + window.imageCount + '\"><div class=\"col-md-10\"><img src="' + e.target.result + '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' + window.imageCount +'\" onclick=\"removeImageById(this);\">Delete</button></div></div>');
 
         }
     }
 
-    function readURL(input,c) {
+    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            window.newAddedImage = c;
 
             reader.onload = imageIsLoaded;
             reader.onerror = function(event) {
                 console.log("Error during uploading image");
             };
-            if (c == 1) {
-                console.log("Image 1 Triggered");
-            }
-            else if (c == 2) {
-                console.log("Image 2 Triggered");
-
-            } else {
-                console.log("Image 3 Triggered");
-
-            }
+            console.log(window.imageCount);
             reader.readAsDataURL(input.files[0]);
 
         }
