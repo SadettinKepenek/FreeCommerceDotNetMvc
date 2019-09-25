@@ -43,6 +43,8 @@ namespace FreeCommerceDotNet.Controllers
                 foreach (var segment in segments)
                 {
                     productBm.ProductPrices.Add(new ProductPrice(){Segment = segment.SegmentName});
+                    productBm.ProductDiscounts.Add(new ProductDiscount(){Segment = segment.SegmentName});
+
 
                 }
             }

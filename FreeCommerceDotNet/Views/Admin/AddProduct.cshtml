@@ -102,7 +102,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row product-adding">
-                        <div class="col-xl-7">
+                        <div class="col-xl-12">
 
                             <form class="needs-validation add-product-form" novalidate="">
                                 <div class="form">
@@ -171,6 +171,12 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="general-prices-nav-tab" data-toggle="tab" href="#product-prices-tab" role="tab" aria-controls="product-prices-settings" aria-selected="false">Product Prices</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="general-images-nav-tab" data-toggle="tab" href="#product-images-tab" role="tab" aria-controls="product-images-settings" aria-selected="false">Product Images</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="discount-nav-tab" data-toggle="tab" href="#product-discount-tab" role="tab" aria-controls="product-discount-settings" aria-selected="false">Product Discount</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
@@ -250,7 +256,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
                                             <div class="container" id="attributes-panel-tab">
@@ -299,6 +304,77 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="product-images-tab" role="tabpanel" aria-labelledby="home-tab">
+                                            <br />
+
+                                            <div class="add-product">
+                                                <div class="row text-center">
+
+                                                    <div class="col-xl-9 xl-50 col-sm-6 col-9" id="imagesContainer">
+                                                        @*<img src="" alt="" id="preview-image" class="img-fluid image_zoom_1 blur-up lazyloaded">*@
+                                                    </div>
+                                                    <div class="col-xl-3 xl-50 col-sm-6 col-3">
+                                                        <ul class="file-upload-product">
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput1" type="file" onchange="readURL(this,1);"><i class="fa fa-plus"></i></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput2" type="file" onchange="readURL(this,2);"><i class="fa fa-plus"></i></div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="box-input-file"><input class="upload" id="imageUploadInput3" type="file" onchange="readURL(this,3);"><i class="fa fa-plus"></i></div>
+                                                            </li>
+                                                            @*<li>
+                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
+                                                                </li>*@
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <hr />
+
+                                        </div>
+                                        <div class="tab-pane fade" id="product-discount-tab" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="container-fluid text-center">
+                                                @for (var i = 0; i < Model.ProductDiscounts.Count; i++)
+                                                {
+                                                    <div class="row text-center">
+                                                        <div class="form-group">
+                                                            <label class="form-control">Segment</label>
+                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].Segment, new { @class = "form-control text-center", @readonly = "readonly" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control">Başlangıç Tarihi</label>
+                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].StartDate, new { @class = "form-control text-center", type = "date" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control">Bitiş Tarihi</label>
+                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].EndDate, new { @class = "form-control text-center", type = "date" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control">Yeni Fiyat</label>
+                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].NewPrice, new { @class = "form-control text-center", type = "number" })
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control">Adet</label>
+                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].Quantity, new { @class = "form-control text-center", type = "number" })
+                                                        </div>
+
+
+
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -309,37 +385,7 @@
                             </form>
                         </div>
 
-                        <div class="col-xl-5">
-                            <div class="add-product">
-                                <div class="row">
-                                    <div class="col-xl-9 xl-50 col-sm-6 col-9">
-                                        <img src="../assets/images/pro3/1.jpg" alt="" class="img-fluid image_zoom_1 blur-up lazyloaded">
-                                    </div>
-                                    <div class="col-xl-3 xl-50 col-sm-6 col-3">
-                                        <ul class="file-upload-product">
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                            <li>
-                                                <div class="box-input-file"><input class="upload" type="file"><i class="fa fa-plus"></i></div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -348,6 +394,93 @@
     </div>
 </div>
 <script type="text/javascript">
+    var clickedImageDeleteButton = 0;
+
+   
+    function RemoveSessionImageValue(key) {
+        $(function () {
+            $.post('../Session/RemoveVariable',
+                { key: key }, function (data) {
+                    console.log("Value " + data.success);
+                });
+        });
+    }
+    function GetSessionImageValue(key)
+    {
+        $(function () {
+            $.post('../Session/GetVariable',
+                { key: key }, function (data)
+                {
+                    console.log("Value " + data.key);
+                });
+        });
+    }
+    function SetSessionImageValue(key, value) {
+        $(function () {
+            $.post('../Session/SetVariable',
+                { key: key, value: value}, function (data)
+                {
+                    console.log("Success " + data.success);
+                    GetSessionImageValue(key);
+
+                });
+        });
+    }
+
+    function removeImageById(item) {
+        var id = $(item).attr("id").replace("removeImageItem", "");
+        console.log("Dosyayı sıfırla" + "#imageUploadInput" + id + "");
+        $('#imageUploadInput'+ id ).val('');
+        var element = $('#ImageRow' + id + '');
+        element.remove();
+        RemoveSessionImageValue('#Image' + id);
+    }
+
+    function imageIsLoaded(e) {
+       
+        SetSessionImageValue("Image" + window.newAddedImage, e.target.result);
+
+        if ($('#ImageRow' + window.newAddedImage + '').length) {
+            var yeniResim = '<div class=\"row\" id=\"ImageRow' +
+                window.newAddedImage +
+                '\"><div class=\"col-md-10\"><img src="' +
+                e.target.result +
+                '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' +
+                window.newAddedImage +
+                '\" onclick=\"removeImageById(this);\">Delete</button></div></div>';
+            $('#ImageRow' + window.newAddedImage + '').replaceWith(yeniResim);
+
+            console.log("Zaten image var" + window.newAddedImage);
+        } else {
+            $('#imagesContainer').append('<div class=\"row\" id=\"ImageRow' + window.newAddedImage+'\"><div class=\"col-md-10\"><img src="' + e.target.result + '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' + window.newAddedImage +'\" onclick=\"removeImageById(this);\">Delete</button></div></div>');
+
+        }
+    }
+
+    function readURL(input,c) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            window.newAddedImage = c;
+
+            reader.onload = imageIsLoaded;
+            reader.onerror = function(event) {
+                console.log("Error during uploading image");
+            };
+            if (c == 1) {
+                console.log("Image 1 Triggered");
+            }
+            else if (c == 2) {
+                console.log("Image 2 Triggered");
+
+            } else {
+                console.log("Image 3 Triggered");
+
+            }
+            reader.readAsDataURL(input.files[0]);
+
+        }
+    }
+
     var count = 0;
     window.count = 0;
     function setAttributeCountValue() {
@@ -360,7 +493,6 @@
         var attributeRow = $("#attributes-panel-tab");
         var htmlString =
             '<div class=\"row\" id=\"attribute-row-' + window.count + '\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+'</div><div class=\"col-md-8\" >' +@Html.Raw(Json.Encode(Html.TextAreaFor(x=>x.ProductAttributes[count].AttributeDescription,new {@class="form-control",style= "min-width: 100%; min-height:90 %" }).ToHtmlString()))+'<br/><button type=\"button\" class=\"btn btn-xs btn-danger pull-right\" onclick=\"$(\'#attribute-row-'+window.count+'\').remove();\">Delete</button><hr/></div></div>';
-        // kanka şimdi koda bakıyom replace et
 
         htmlString=htmlString.replace('ProductAttributes[0].AttributeId', 'ProductAttributes[' + window.count + '].AttributeId');
         htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
