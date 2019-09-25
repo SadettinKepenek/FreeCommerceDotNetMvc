@@ -145,6 +145,7 @@
     <Compile Include="Controllers\apiControllers\ProductController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -3195,6 +3196,7 @@
     <Content Include="assets\js\jquery.lazyloadxt.js" />
     <Content Include="assets\js\jquery.magnific-popup.js" />
     <Content Include="assets\js\jquery.vide.min.js" />
+    <Content Include="assets\js\jsFreeCommerceDotNet\AddProductUtils.js" />
     <Content Include="assets\js\jsgrid\griddata-digital-sub.js" />
     <Content Include="assets\js\jsgrid\griddata-digital.js" />
     <Content Include="assets\js\jsgrid\griddata-discount-coupon.js" />
@@ -3602,6 +3604,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
