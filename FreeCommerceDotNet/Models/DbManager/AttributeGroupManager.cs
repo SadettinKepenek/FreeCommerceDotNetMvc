@@ -68,13 +68,12 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool Delete(int id)
         {
-            string sqlQuery = "DELETE FROM AttributeGroup WHERE AttributeGroupID=@id";
+            string sqlQuery = "DELETE FROM AttributeGroups WHERE AttributeGroupID=@id";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@id", id);
-                return Utilities.ExecuteCommand<AttributeGroup>(sqlCommand, SqlCommandTypes.Select);
+                return Utilities.ExecuteCommand<AttributeGroup>(sqlCommand, SqlCommandTypes.Remove);
             }
         }
 

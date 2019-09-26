@@ -116,7 +116,41 @@ namespace FreeCommerceDotNet.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult AddAttributeGroup()
+        {
+            return View(new AttributeGroupBM(null));
+        }
+        [HttpPost]
+        public ActionResult AddAttributeGroup(AttributeGroupBM attributeGroupModel)
+        {
+            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            {
+                manager.Add(attributeGroupModel);
+            }
+            TempData["MessageAttributeGroup"] = "Attribute Group Added!";
+            return RedirectToAction("AttributeGroupList", "Admin");
+        }
 
+        public ActionResult AttributeGroupList()
+        {
+            List<AttributeGroupBM> attributeGroupList;
+            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            {
+                attributeGroupList =  manager.Get();
+            }
+            return View(attributeGroupList);
+        }
+
+        public ActionResult DeleteAttributeGroup(int id)
+        {
+            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            {
+                manager.Delete(manager.GetById(id));
+            }
+
+            return RedirectToAction("AttributeGroupList", "Admin");
+        }
 
     }
 }

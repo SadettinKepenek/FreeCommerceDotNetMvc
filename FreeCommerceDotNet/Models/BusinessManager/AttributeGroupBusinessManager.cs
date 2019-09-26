@@ -17,14 +17,14 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 int insertedId = manager.Add(entry.AttributeGroup);
                 entry.AttributeGroup.AttributeGroupId = insertedId;
 
-                using (AttributeManager manager2 = new AttributeManager())
-                {
-                    foreach (var attributes in entry.Attributes)
-                    {
-                        attributes.AttributeId = entry.AttributeGroup.AttributeGroupId;
-                        manager2.Add(attributes);
-                    }
-                }
+                //using (AttributeManager manager2 = new AttributeManager())
+                //{
+                //    foreach (var attributes in entry.Attributes)
+                //    {
+                //        attributes.AttributeId = entry.AttributeGroup.AttributeGroupId;
+                //        manager2.Add(attributes);
+                //    }
+                //}
 
                 return entry.AttributeGroup.AttributeGroupId;
             }

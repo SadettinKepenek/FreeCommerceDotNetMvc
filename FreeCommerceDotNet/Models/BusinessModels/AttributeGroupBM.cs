@@ -9,6 +9,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public AttributeGroup AttributeGroup { get; set; }
         public List<Attribute> Attributes { get; set; }
 
+        public AttributeGroupBM()
+        {
+            AttributeGroup = new AttributeGroup();
+            Attributes = new List<Attribute>();
+        }
         public AttributeGroupBM(int? id)
         {
             if (id == null)
