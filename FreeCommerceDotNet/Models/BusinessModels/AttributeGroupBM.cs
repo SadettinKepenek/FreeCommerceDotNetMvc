@@ -31,7 +31,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 }
                 using (AttributeManager m = new AttributeManager())
                 {
-                    this.Attributes = m.GetByIntegerKey(key, "Attributes", "AttributeGroupId");
+                    this.Attributes = m.GetByIntegerKey(key, "Attributes", "AttributeGroup");
                    
                 }
             }
