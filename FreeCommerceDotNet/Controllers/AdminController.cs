@@ -19,6 +19,30 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
+
+        public ActionResult Categories()
+        {
+            List<CategoryBM> categories;
+            using (CategoryBusinessManager bm = new CategoryBusinessManager())
+            {
+                categories = bm.Get();
+            }
+            return View(categories);
+        }
+
+        [HttpGet]
+        public ActionResult AddCategory()
+        {
+            return View(new CategoryBM(null));
+        }
+        [HttpPost]
+        public ActionResult AddCategory(CategoryBM bm)
+        {
+
+            return RedirectToAction("Categories");
+        }
+
+
         public ActionResult Products()
         {
             List<ProductBM> products;
@@ -28,6 +52,7 @@ namespace FreeCommerceDotNet.Controllers
             }
             return View(products);
         }
+
         [HttpGet]
         public ActionResult AddProduct()
         {

@@ -3601,6 +3601,8 @@
     <Content Include="Views\Admin\AddCustomer.cshtml" />
     <Content Include="Views\Admin\Customers.cshtml" />
     <Content Include="Views\Admin\UpdateCustomer.cshtml" />
+    <Content Include="Views\Admin\Categories.cshtml" />
+    <Content Include="Views\Admin\AddCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
