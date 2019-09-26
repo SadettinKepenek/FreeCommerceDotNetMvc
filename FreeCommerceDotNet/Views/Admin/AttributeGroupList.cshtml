@@ -14,7 +14,7 @@
    
     <td class="text-center">
         @Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
-        @Html.ActionLink("Show", "AttributeList", "Admin", new { id = bm.AttributeGroup.AttributeGroupId}, new { @class = "btn btn-sm btn-success" })
+        <button type="button" class = "btn btn-sm btn-success" id="showAttributes@(bm.AttributeGroup.AttributeGroupId)" onclick="getAttributeGroupsAttributes(@bm.AttributeGroup.AttributeGroupId)">Show Attributes</button>
     </td>
 }
 <div class="container-fluid">
@@ -23,7 +23,11 @@
             <div class="card">
                 <div class="card-header">
                     <h5>Attribute Group List</h5>
+                    <div class="container-fluid" id="attributesList">
+                        <table id="attributesTable">
 
+                        </table>
+                    </div>
                 </div>
                 @{
                     if (TempData["MessageAttributeGroup"] != null)
@@ -42,35 +46,27 @@
                 <div class="card-body">
                     <table class="table" width="2000">
                         <thead>
-                            <tr>
-                                <th scope="col">Attribute Group Id</th>
-                                <th scope="col">Group Name</th>
-                                <th scope="col" class="text-center">Actions</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Attribute Group Id</th>
+                            <th scope="col">Group Name</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
                         </thead>
 
 
 
                         <tbody>
-                            @if (Model != null)
-                            {
-                                foreach (AttributeGroupBM bm in Model)
-                                {
-                            <tr>
-                                <th scope="row">@bm.AttributeGroup.AttributeGroupId</th>
-                                <td>@bm.AttributeGroup.AttributeGroupName</td>
-                                @GetProductActionButtons(bm);
-                            </tr>
-                                }
-
-                            }
-                            @if (Model == null)
+                  
+                            @foreach (AttributeGroupBM bm in Model)
                             {
                                 <tr>
-                                    <th></th>
-                                    <td></td>
+                                    <th scope="row">@bm.AttributeGroup.AttributeGroupId</th>
+                                    <td>@bm.AttributeGroup.AttributeGroupName</td>
+                                    @GetProductActionButtons(bm)
                                 </tr>
+                                
                             }
+
                         </tbody>
                     </table>
                 </div>
@@ -78,6 +74,49 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function addNewAttributeToAttributesList(entry) {
+        var container = $('#attributesTable');
+        container.append('<tr><td>'+entry.AttributeName+'</td></tr>');
+    }
+    function getAttributeGroupsAttributes(groupId) {
+        $.ajax({
+            type: "GET",
+            url: "../api/apiControllers/AttributeGroup/"+groupId,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    alert("Success");
+                    var attributes = response.Attributes;
+                    if (attributes.length) {
+                        console.log(attributes);
+                        attributes.forEach(function(entry) {
+                            addNewAttributeToAttributesList(entry);
+                        });
+
+                    } else {
+                        alert("Hiç attribute yok");
+                    }
+                    //$('#EmployeeName').val(response.Name);
+                    //$('#EmployeeDesignation').val(response.Designation);
+                    //$('#EmployeeLocation').val(response.Location);
+                } else {
+                    alert("Something went wrong");
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });  
+
+
+      
+    }
+</script>
 <script>
     jQuery(document).ready(function () {
         jQuery('[data-confirm]').click(function (e) {
