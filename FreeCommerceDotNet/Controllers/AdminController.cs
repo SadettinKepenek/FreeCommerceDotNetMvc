@@ -30,6 +30,7 @@ namespace FreeCommerceDotNet.Controllers
             return View(categories);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpGet]
         public ActionResult AddCategory()
         {
