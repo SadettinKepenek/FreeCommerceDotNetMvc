@@ -17,6 +17,17 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public Category Category { get; set; }
         public int Id { get; set; }
 
+        public ProductBM()
+        {
+            this.Product = new Product();
+            this.ProductAttributes = new List<ProductAttribute>();
+            this.ProductDiscounts = new List<ProductDiscount>();
+            this.ProductImages = new List<ProductImage>();
+            this.ProductOptions = new List<ProductOption>();
+            this.ProductPrices = new List<ProductPrice>();
+            this.Reviews = new List<Reviews>();
+            this.Category = new Category();
+        }
         public ProductBM(int? id)
         {
             if (id == null)

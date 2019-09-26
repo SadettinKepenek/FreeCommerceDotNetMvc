@@ -105,8 +105,11 @@
                     <div class="row product-adding">
                         <div class="col-xl-12">
 
-                            <form class="needs-validation add-product-form" novalidate="">
-                                <div class="form">
+                            <div class="form">
+                                @using (Html.BeginForm("AddProduct", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                                {
+
+
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Product Name :</label>
                                         @Html.TextBoxFor(x => x.Product.ProductName, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom01", type = "text", required = "" })
@@ -116,7 +119,7 @@
                                     <div class="form-group mb-3 row">
                                         <label for="editor1" class="col-xl-3 col-sm-4 mb-0">Product Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            @Html.TextAreaFor(x => x.Product.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm", id = "editor1", name = "editor1", type = "text", required = "" })
+                                            @Html.TextAreaFor(x => x.Product.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm",  name = "editor1", type = "text", required = "" })
                                         </div>
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Name.</div>
@@ -278,11 +281,11 @@
 
                                                     <table class="table">
                                                         <thead>
-                                                            <tr>
-                                                                <th scope="col">#Segment</th>
-                                                                <th scope="col">Fiyat</th>
+                                                        <tr>
+                                                            <th scope="col">#Segment</th>
+                                                            <th scope="col">Fiyat</th>
 
-                                                            </tr>
+                                                        </tr>
                                                         </thead>
                                                         <tbody>
                                                             @for (int i = 0; i < Model.ProductPrices.Count; i++)
@@ -349,7 +352,9 @@
                                                     <div class="row text-center">
                                                         <div class="form-group">
                                                             <label class="form-control">Segment</label>
-                                                            @Html.TextBoxFor(x => x.ProductDiscounts[i].Segment, new { @class = "form-control text-center", @readonly = "readonly" })
+                                                            <label class="form-control text-center"> @Model.ProductDiscounts[i].Segment</label>
+
+                                                            @*@Html.LabelFor(x => x.ProductDiscounts[i].Segment, new { @class = "form-control text-center" })*@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="form-control">Başlangıç Tarihi</label>
@@ -377,13 +382,14 @@
                                         </div>
 
                                     </div>
-                                </div>
+                                    <div class="offset-xl-3 offset-sm-4">
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="button" class="btn btn-light">Discard</button>
+                                    </div>
+                                }
+                             
+                            </div>
 
-                                <div class="offset-xl-3 offset-sm-4">
-                                    <button type="submit" class="btn btn-primary">Add</button>
-                                    <button type="button" class="btn btn-light">Discard</button>
-                                </div>
-                            </form>
                         </div>
 
 
@@ -409,8 +415,8 @@
     {
         $(function () {
             $.post('../Session/GetVariable',
-                { key: key }, function (data)
-                {
+                { key: key }, function (data) {
+                    console.log(data.success);
                 });
         });
     }

@@ -154,7 +154,6 @@ namespace FreeCommerceDotNet.Models.Util
                 var value = reader[propertyName];
                 if (value != null && value != DBNull.Value)
                 {
-                    Debug.WriteLine(propertyName);
                     if (info.PropertyType == typeof(Double))
                         info.SetValue(entry, Convert.ToDouble(reader[propertyName].ToString()));
                     else if (info.PropertyType == typeof(Boolean))
@@ -245,7 +244,6 @@ namespace FreeCommerceDotNet.Models.Util
                     {
                         while (reader.Read())
                         {
-                            Debug.WriteLine(reader[0].ToString() + " " + reader[1].ToString());
                             list.Add(new DbForeignKeyModel() { tblName = reader[0].ToString(), colName = reader[1].ToString() });
                         }
                     }

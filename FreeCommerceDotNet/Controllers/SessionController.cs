@@ -17,7 +17,7 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult GetVariable(string key)
         {
-            return this.Json(new {key=Session[key]});
+            return this.Json(new {success=Session[key]});
         }
         public ActionResult RemoveVariable(string key)
         {
