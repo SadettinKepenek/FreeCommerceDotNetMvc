@@ -167,5 +167,15 @@ namespace FreeCommerceDotNet.Controllers
             return RedirectToAction("AttributeGroupList", "Admin");
         }
 
+        public ActionResult AttributeList()
+        {
+            List<AttributeBM> allAttributes;
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            {
+                allAttributes = manager.Get();
+            }
+            return View(allAttributes);
+        }
+        
     }
 }

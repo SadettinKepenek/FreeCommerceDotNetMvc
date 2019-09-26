@@ -1,5 +1,10 @@
 ﻿
 @{
+    ViewBag.Title = "AttributeList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@{
     ViewBag.Title = "AttributeGroupList";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -7,30 +12,38 @@
 @using System.Web.UI.WebControls
 @using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
-@model List<FreeCommerceDotNet.Models.BusinessModels.AttributeGroupBM>
+@model List<FreeCommerceDotNet.Models.BusinessModels.AttributeBM>
 
-@helper GetProductActionButtons(AttributeGroupBM bm)
-{
-   
-    <td class="text-center">
-        @Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
-        @Html.ActionLink("Show", "AttributeList", "Admin", new { id = bm.AttributeGroup.AttributeGroupId}, new { @class = "btn btn-sm btn-success" })
-    </td>
-}
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>
+                            Add Products
+                            <small>FreeCommerce Admin panel</small>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item active">Attribute Lists</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h5>Attribute Group List</h5>
-
-                </div>
                 @{
-                    if (TempData["MessageAttributeGroup"] != null)
+                    if (TempData["MessageAttribute"] != null)
                     {
 
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            @TempData["MessageAttributeGroup"]
+                            @TempData["MessageAttribute"]
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -43,8 +56,9 @@
                     <table class="table" width="2000">
                         <thead>
                             <tr>
-                                <th scope="col">Attribute Group Id</th>
-                                <th scope="col">Group Name</th>
+                                <th scope="col">Attribute Id</th>
+                                <th scope="col">Attribute Name</th>
+                                <th scope="col">Attribute Group Name</th>
                                 <th scope="col" class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -54,13 +68,13 @@
                         <tbody>
                             @if (Model != null)
                             {
-                                foreach (AttributeGroupBM bm in Model)
+                                foreach (AttributeBM bm in Model)
                                 {
-                            <tr>
-                                <th scope="row">@bm.AttributeGroup.AttributeGroupId</th>
-                                <td>@bm.AttributeGroup.AttributeGroupName</td>
-                                @GetProductActionButtons(bm);
-                            </tr>
+                                    <tr>
+                                        <th scope="row">@bm.Attribute.AttributeId</th>
+                                        <td>@bm.Attribute.AttributeName</td>
+                                        <td>@bm.AttributeGroup.AttributeGroupName</td>
+                                    </tr>
                                 }
 
                             }
@@ -68,6 +82,7 @@
                             {
                                 <tr>
                                     <th></th>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             }
@@ -88,3 +103,5 @@
         });
     });
 </script>
+
+
