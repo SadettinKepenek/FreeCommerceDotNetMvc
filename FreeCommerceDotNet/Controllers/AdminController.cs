@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Web.Mvc;
-using System.Web.Services.Description;
-using FreeCommerceDotNet.Models.BusinessManager;
+﻿using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Web.Mvc;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -32,17 +32,18 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult AddProduct()
         {
             var productBm = new ProductBM(null);
-            int ATTIBUTEMAXCOUNT = 10;
+            int ATTIBUTEMAXCOUNT = 30;
             for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
             {
                 productBm.ProductAttributes.Add(new ProductAttribute());
             }
-
+            productBm.ProductPrices = new List<ProductPrice>();
             using (SegmentManager m = new SegmentManager())
             {
                 var segments = m.GetAll();
                 foreach (var segment in segments)
                 {
+
                     productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
                     productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
 
@@ -55,7 +56,21 @@ namespace FreeCommerceDotNet.Controllers
         [HttpPost]
         public ActionResult AddProduct(ProductBM bm)
         {
-            return View();
+            using (ProductBusinessManager productManager = new ProductBusinessManager())
+            {
+                try
+                {
+                    TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde eklendi";
+                    productManager.Add(bm);
+                    return RedirectToAction("Products");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddError","Veri eklenirken veritabanında bir hata meydana geldi.");
+                    return AddProduct(bm);
+
+                }
+            }
         }
 
 

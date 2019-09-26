@@ -49,11 +49,11 @@
 
 @helper GetProductActionButtons(ProductBM bm)
 {
-    <td class="text-center">
-        @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-danger" })
-    @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-warning" })
-    @Html.ActionLink("Show", "Product", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-success" })
-</td>
+        <td class="text-center">
+            @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-danger" })
+            @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-warning" })
+            @Html.ActionLink("Show", "Product", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-success" })
+        </td>
 }
 
 @{
@@ -90,6 +90,8 @@
             <div class="card">
                 <div class="card-header">
                     <h5>Product Lists</h5>
+                    <h3>@TempData["AddSuccessMessage"]
+                    </h3>
                 </div>
                 <div class="card-body">
                     <table class="table">
