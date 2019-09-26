@@ -3607,6 +3607,7 @@
     <Content Include="Views\Admin\AttributeGroupList.cshtml" />
     <Content Include="Views\Admin\AddCategory.cshtml" />
     <Content Include="Views\Admin\AttributeList.cshtml" />
+    <Content Include="Views\Admin\UpdateCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

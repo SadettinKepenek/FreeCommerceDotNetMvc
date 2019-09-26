@@ -39,13 +39,72 @@ namespace FreeCommerceDotNet.Controllers
         [HttpPost]
         public ActionResult AddCategory(CategoryBM bm)
         {
-            foreach (var info in bm.Category.GetType().GetProperties())
+            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
             {
-                Debug.WriteLine(info.GetValue(bm.Category));
+                try
+                {
+                    int inserted = businessManager.Add(bm);
+                    TempData["CategorySuccessMessage"] = "Category "+inserted.ToString()+" Has Been Added!";
+                    return RedirectToAction("Categories");
+
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddCategoryError",e.StackTrace);
+                    return AddCategory(bm);
+
+                }
+
+            }
+        }
+        [HttpGet]
+        public ActionResult UpdateCategory(int id)
+        {
+            return View(new CategoryBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateCategory(CategoryBM bm)
+        {
+            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
+            {
+                try
+                {
+                    businessManager.Update(bm);
+                    TempData["CategorySuccessMessage"] = "Category Has Been Updated!";
+                    return RedirectToAction("Categories");
+
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddCategoryError", e.StackTrace);
+                    return AddCategory(bm);
+
+                }
+
+            }
+        }
+
+        public ActionResult DeleteCategory(int id)
+        {
+            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
+            {
+                try
+                {
+                    businessManager.Delete(new CategoryBM(id));
+                    TempData["CategorySuccessMessage"] = "Category Has Been Deleted!";
+                    return RedirectToAction("Categories");
+
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddCategoryError", e.StackTrace);
+
+                }
+
             }
             return RedirectToAction("Categories");
         }
-
 
         public ActionResult Products()
         {

@@ -12,7 +12,7 @@
     <td class="text-center">
         @Html.ActionLink("Update", "UpdateCategory", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-danger" })
         @Html.ActionLink("Delete", "DeleteCategory", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-warning" })
-        @Html.ActionLink("Show", "Category", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-success" })
+        @*@Html.ActionLink("Show", "Category", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-success" })*@
     </td>
 }
 
@@ -46,7 +46,7 @@
                 <div class="card-header">
                     <h5>Category List</h5>
                     <h3>
-                        @TempData["AddSuccessMessage"]
+                        @TempData["CategorySuccessMessage"]
                 </h3>
             </div>
             <div class="card-body">

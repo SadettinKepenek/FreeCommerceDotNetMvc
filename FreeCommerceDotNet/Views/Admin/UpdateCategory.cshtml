@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "AddCategory";
+    ViewBag.Title = "UpdateCategory";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 @using FreeCommerceDotNet.Models.DbManager
@@ -13,9 +13,10 @@
     {
         categories = bm.GetAll();
         categories.Insert(0, new Category() { CategoryId = -1, CategoryName = "Parent Category Yok", ParentId = -1 });
+        var element = categories.FirstOrDefault(x => x.CategoryId == Model.Category.CategoryId);
+        categories.Remove(element);
     }
 }
-
 
 <div class="container-fluid">
     <div class="page-header">
@@ -23,16 +24,16 @@
             <div class="col-lg-6">
                 <div class="page-header-left">
                     <h3>
-                        Add Category
+                        Update Category
                         <small>FreeCommerce Admin panel</small>
                     </h3>
-                    
+
                 </div>
             </div>
             <div class="col-lg-6">
                 <ol class="breadcrumb pull-right">
                     <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item active">Add Category</li>
+                    <li class="breadcrumb-item active">Update Category</li>
 
                 </ol>
             </div>
@@ -44,15 +45,14 @@
         <div class="col-xl-8">
             <div class="card">
                 <div class="card-header">
-                    <h5> Add Category</h5>
-                    <h3>@TempData["AddCategorySuccess"]</h3>
+                    <h5> Update Category @Model.Category.CategoryName</h5>
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
-                        @using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                        @using (Html.BeginForm("UpdateCategory", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                         {
                             @Html.AntiForgeryToken()
-                            @*@Html.HiddenFor(x => x.Category.CategoryId)*@
+                            @Html.HiddenFor(x => x.Category.CategoryId)
 
                             <div class="form-group">
                                 <label for="validationCustom01" class="col-form-label pt-0"><span>*</span>Category Name:</label>
@@ -80,9 +80,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Show Navbar?</label>
-                                @Html.CheckBoxFor(x => x.Category.ShowNavbar, new { @class = "form-control",style="width:20px;", id = "validationCustom07" })
-                                <hr/>
-                                
+                                @Html.CheckBoxFor(x => x.Category.ShowNavbar, new { @class = "form-control", style = "width:20px;", id = "validationCustom07" })
+                                <hr />
+
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>
