@@ -77,11 +77,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Show Navbar?</label>
+                                @Html.CheckBoxFor(x => x.Category.ShowNavbar, new { @class = "form-control",style="width:20px;", id = "validationCustom07" })
                                 <hr/>
-                                @Html.RadioButtonFor(x => x.Category.ShowNavbar, "true", new { @class = "form-control", id = "validationCustom07" })
-
-                                @Html.RadioButtonFor(x => x.Category.ShowNavbar, "false", new { @class = "form-control", id = "validationCustom08" })<label>Don't Show</label>
-
+                                
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>
