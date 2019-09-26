@@ -41,8 +41,13 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         }
 
         // DELETE: api/AttributeGroup/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            using (AttributeGroupBusinessManager bm = new AttributeGroupBusinessManager())
+            {
+                bm.Delete(new AttributeGroupBM(id));
+            }
+            return new HttpResponseMessage((HttpStatusCode) 200);
         }
     }
 }
