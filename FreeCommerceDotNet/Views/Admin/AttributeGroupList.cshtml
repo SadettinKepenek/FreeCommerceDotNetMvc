@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "AttributeGroupList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using System.Diagnostics.Eventing.Reader
+@using System.Web.UI.WebControls
+@using FreeCommerceDotNet.Models.BusinessModels
+@using FreeCommerceDotNet.Models.DbModels
+@model List<FreeCommerceDotNet.Models.BusinessModels.AttributeGroupBM>
+
+@helper GetProductActionButtons(AttributeGroupBM bm)
+{
+    <td class="text-center">
+        @Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
+
+    </td>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Attribute Group List</h5>
+
+                </div>
+                @{
+                    if (TempData["MessageAttributeGroup"] != null)
+                    {
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["MessageAttributeGroup"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                    }
+
+                }
+                <div class="card-body">
+                    <table class="table" width="2000">
+                        <thead>
+                            <tr>
+                                <th scope="col">Attribute Group Id</th>
+                                <th scope="col">Group Name</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+
+
+
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (AttributeGroupBM bm in Model)
+                                {
+                            <tr>
+                                <th scope="row">@bm.AttributeGroup.AttributeGroupId</th>
+                                <td>@bm.AttributeGroup.AttributeGroupName</td>
+                                @GetProductActionButtons(bm);
+                            </tr>
+                                }
+
+                            }
+                            @if (Model == null)
+                            {
+                                <tr>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function () {
+        jQuery('[data-confirm]').click(function (e) {
+            if (!confirm(jQuery(this).attr("data-confirm")))
+            {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
