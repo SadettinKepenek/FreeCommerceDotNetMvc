@@ -43,8 +43,8 @@ namespace FreeCommerceDotNet.Controllers
                 var segments = m.GetAll();
                 foreach (var segment in segments)
                 {
-                    productBm.ProductPrices.Add(new ProductPrice(){Segment = segment.SegmentName});
-                    productBm.ProductDiscounts.Add(new ProductDiscount(){Segment = segment.SegmentName});
+                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
+                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
 
 
                 }
@@ -77,18 +77,15 @@ namespace FreeCommerceDotNet.Controllers
         [HttpPost]
         public ActionResult AddCustomer(CustomerBM customerModel)
         {
-            if (ModelState.IsValid)
-            {
-                using (CustomerBusinessManager manager = new CustomerBusinessManager())
-                {
-                    manager.Add(customerModel);
-                }
 
-                TempData["Message"] = "Customer Updated!";
-                return RedirectToAction("Customers", "Admin");
+            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            {
+                manager.Add(customerModel);
             }
-            //validation doğru değilse
-            return View("AddCustomer");
+
+            TempData["Message"] = "Customer Added!";
+            return RedirectToAction("Customers", "Admin");
+
         }
 
         public ActionResult DeleteCustomer(int id)
@@ -97,9 +94,8 @@ namespace FreeCommerceDotNet.Controllers
             {
                 manager.Delete(manager.GetById(id));
             }
-
-            
             return RedirectToAction("Customers", "Admin", null);
+
         }
 
         [HttpGet]
@@ -110,17 +106,14 @@ namespace FreeCommerceDotNet.Controllers
         [HttpPost]
         public ActionResult UpdateCustomer(CustomerBM customerModel)
         {
-            if (ModelState.IsValid)
+
+            using (CustomerBusinessManager manager = new CustomerBusinessManager())
             {
-                using (CustomerBusinessManager manager = new CustomerBusinessManager())
-                {
-                    manager.Update(customerModel);
-                }
-                TempData["Message"] = "Customer Updated!";
-                return RedirectToAction("Customers","Admin");
+                manager.Update(customerModel);
             }
-            //validation doğru değilse
-            return RedirectToAction("UpdateCustomer", "Admin", customerModel.Customer.CustomerId);
+            TempData["Message"] = "Customer Updated!";
+            return RedirectToAction("Customers", "Admin");
+
         }
 
 
