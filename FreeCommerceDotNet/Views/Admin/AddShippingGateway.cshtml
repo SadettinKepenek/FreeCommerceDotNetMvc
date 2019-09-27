@@ -1,11 +1,11 @@
 ﻿
 @{
-    ViewBag.Title = "AddAttributeGroup";
+    ViewBag.Title = "AddShippingGateway";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using FreeCommerceDotNet.Models.DbManager
-@using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.AttributeGroupBM
+
+
+@model FreeCommerceDotNet.Models.BusinessModels.ShippingBM
 
 <div class="container-fluid">
     <div class="page-header">
@@ -13,7 +13,7 @@
             <div class="col-lg-6">
                 <div class="page-header-left">
                     <h3>
-                        Add AttributeGroup
+                        Add Shipping Gateway
                         <small>FreeCommerce Admin panel</small>
                     </h3>
 
@@ -22,7 +22,7 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb pull-right">
                     <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item active">Add AttributeGroup</li>
+                    <li class="breadcrumb-item active">Add Shipping Gateway</li>
 
                 </ol>
             </div>
@@ -38,17 +38,21 @@
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
-                        @using (Html.BeginForm("AddAttributeGroup", "Admin", FormMethod.Post))
+                        @using (Html.BeginForm("AddShippingGateway", "Admin", FormMethod.Post))
                         {
-                            @Html.HiddenFor(x => x.AttributeGroup.AttributeGroupId)
-
+                            @*@Html.HiddenFor(x => x.AttributeGroup.AttributeGroupId)*@
+                            @Html.AntiForgeryToken()
                             <div class="form-group">
-                                <label for="validationCustom09" class="col-form-label pt-0"><span>*</span>Attribute Group Name:</label>
-                                @Html.TextBoxFor(x => x.AttributeGroup.AttributeGroupName, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
+                                <label for="validationCustom01" class="col-form-label pt-0"><span>*</span>Payment Gateway Name:</label>
+                                @Html.TextBoxFor(x => x.Shipping.ShippingName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Description:</label>
+                                @Html.TextBoxFor(x => x.Shipping.ShippingDescription, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>
-                                @Html.ActionLink("Discard", "AttributeGroupList", "Admin", null, new { type = "button", @class = "btn btn-light" })
+                                @Html.ActionLink("Discard", "ShippingGateways", "Admin", null, new { type = "button", @class = "btn btn-light" })
                             </div>
                         }
                     </div>
@@ -57,4 +61,5 @@
         </div>
     </div>
 </div>
+
 

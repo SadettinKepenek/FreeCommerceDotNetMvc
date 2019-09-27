@@ -29,11 +29,10 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 var shippings = new List<Shipping>();
                 Utilities.ExecuteCommand<Shipping>(sqlCommand, SqlCommandTypes.Select, ref shippings);
-                return shippings.First();
+                return shippings.FirstOrDefault();
             }
         }
 

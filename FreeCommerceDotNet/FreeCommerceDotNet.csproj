@@ -3608,9 +3608,12 @@
     <Content Include="Views\Admin\AddCategory.cshtml" />
     <Content Include="Views\Admin\AttributeList.cshtml" />
     <Content Include="Views\Admin\UpdateCategory.cshtml" />
-    <Content Include="Views\Admin\UpdateAttributeGroup.cshtml" />
-    <Content Include="Views\Admin\UpdateAttribute.cshtml" />
-    <Content Include="Views\Admin\AddAttribute.cshtml" />
+    <Content Include="Views\Admin\PaymentGateways.cshtml" />
+    <Content Include="Views\Admin\AddPaymentGateway.cshtml" />
+    <Content Include="Views\Admin\UpdatePaymentGateway.cshtml" />
+    <Content Include="Views\Admin\ShippingGateways.cshtml" />
+    <Content Include="Views\Admin\AddShippingGateway.cshtml" />
+    <Content Include="Views\Admin\UpdateShippingGateway.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
