@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@model FreeCommerceDotNet.Models.BusinessModels.UsersBM
+
+
+
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Update User
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Update User</li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row product-adding">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Update User</h5>
+                </div>
+                <div class="card-body">
+                    <div class="digital-add needs-validation">
+                        @using (Html.BeginForm("UpdateUser", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.HiddenFor(x => x.Users.UserId)
+
+
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Email:</label>
+                                @Html.TextBoxFor(x => x.Users.EMail, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Username:</label>
+                                @Html.TextBoxFor(x => x.Users.Username, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Role(;) :</label>
+                                @Html.TextBoxFor(x => x.Users.Role, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Password :</label>
+                                @Html.PasswordFor(x => x.Users.Password, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="offset-xl-3 offset-sm-4">
+                                <button type="submit" class="btn btn-primary">Add Return</button>
+                                @Html.ActionLink("Discard", "Users", "Admin", null, new { type = "button", @class = "btn btn-light" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<!-- Container-fluid Ends-->
+<script src="../assets/js/dashboard/form-validation-custom.js"></script>
+

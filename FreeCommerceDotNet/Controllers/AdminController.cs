@@ -19,14 +19,31 @@ namespace FreeCommerceDotNet.Controllers
         }
 
 
-        public ActionResult Categories()
+        public ActionResult Categories(bool subCategories)
         {
             List<CategoryBM> categories;
+
+           
             using (CategoryBusinessManager bm = new CategoryBusinessManager())
             {
-                categories = bm.Get();
+                if (subCategories)
+                {
+                    categories=new List<CategoryBM>();
+                    foreach (CategoryBM categoryBm in bm.Get())
+                    {
+                        if (categoryBm.Category.ParentId!=-1)
+                        {
+                            categories.Add(categoryBm);
+                        }
+                    }
+                    return View(categories);
+                }
+                else
+                {
+                    categories = bm.Get();
+                    return View(categories);
+                }
             }
-            return View(categories);
         }
 
         [HttpGet]
@@ -44,7 +61,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     int inserted = businessManager.Add(bm);
                     TempData["CategorySuccessMessage"] = "Category " + inserted.ToString() + " Has Been Added!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories",new { subCategories =false});
 
                 }
                 catch (Exception e)
@@ -71,7 +88,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     businessManager.Update(bm);
                     TempData["CategorySuccessMessage"] = "Category Has Been Updated!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories", new { subCategories = false });
 
                 }
                 catch (Exception e)
@@ -92,7 +109,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     businessManager.Delete(new CategoryBM(id));
                     TempData["CategorySuccessMessage"] = "Category Has Been Deleted!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories", new { subCategories = false });
 
                 }
                 catch (Exception e)
@@ -102,7 +119,7 @@ namespace FreeCommerceDotNet.Controllers
                 }
 
             }
-            return RedirectToAction("Categories");
+            return RedirectToAction("Categories", new { subCategories = false });
         }
 
 
@@ -170,9 +187,9 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
                 {
-                    businessManager.Delete(new PaymentBM(id));
+                    businessManager.Delete(new ShippingBM(id));
                 }
                 TempData["ShippingGatewayMessage"] = "Gateway Has Been Deleted.";
 
@@ -326,6 +343,55 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult UpdateProduct(int id)
+        {
+            var productBm = new ProductBM(id);
+            int ATTIBUTEMAXCOUNT = 30;
+            for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
+            {
+                productBm.ProductAttributes.Add(new ProductAttribute());
+            }
+            productBm.ProductPrices = new List<ProductPrice>();
+            using (SegmentManager m = new SegmentManager())
+            {
+                var segments = m.GetAll();
+                foreach (var segment in segments)
+                {
+
+                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
+                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
+
+
+                }
+            }
+            return View(productBm);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateProduct(ProductBM bm)
+        {
+            using (ProductBusinessManager productManager = new ProductBusinessManager())
+            {
+                try
+                {
+                    TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde eklendi";
+                    productManager.Update(bm);
+                    return RedirectToAction("Products");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
+                    return AddProduct(bm);
+
+                }
+            }
+        }
+
+        public ActionResult DeleteProduct(int id)
+        {
+            return View();
+        }
 
         public ActionResult Customers()
         {
@@ -575,7 +641,55 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Users()
         {
-            return View();
+            using (UsersBusinessManager bm = new UsersBusinessManager())
+            {
+                return View(bm.Get());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddUser()
+        {
+            return View(new UsersBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddUser(UsersBM bm)
+        {
+            using (UsersBusinessManager manager=new UsersBusinessManager())
+            {
+                manager.Add(bm);
+            }
+
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateUser(int id)
+        {
+            return View(new UsersBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateUser(UsersBM bm)
+        {
+            using (UsersBusinessManager manager = new UsersBusinessManager())
+            {
+                manager.Update(bm);
+            }
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
+        }
+
+        public ActionResult DeleteUser(int id)
+        {
+            using (UsersBusinessManager manager = new UsersBusinessManager())
+            {
+                manager.Delete(new UsersBM(id));
+            }
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
         }
 
 

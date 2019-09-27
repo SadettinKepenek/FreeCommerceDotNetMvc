@@ -14,7 +14,6 @@ namespace FreeCommerceDotNet.Models.DbManager
     {
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public int Add(Users entry)

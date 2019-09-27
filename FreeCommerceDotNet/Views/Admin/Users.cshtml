@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using FreeCommerceDotNet.Models.BusinessModels
+@model List<FreeCommerceDotNet.Models.BusinessModels.UsersBM>
+
+@helper GetProductActionButtons(UsersBM bm)
+{
+    <td class="text-center">
+        @Html.ActionLink("Update", "UpdateUser", "Admin", new { id = bm.Users.UserId}, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteUser", "Admin", new { id = bm.Users.UserId }, new { @class = "btn btn-sm btn-warning" })
+    </td>
+}
+
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Users
+                        <small>FreeCommerceDotNet Admin panel</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="~/Admin/"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"> Users</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Users</h5>
+                    <h3>
+                        @TempData["UserSuccessMessage"]
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Mail</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Role</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (UsersBM bm in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@bm.Users.UserId</th>
+                                    <td>@bm.Users.EMail</td>
+                                    <td>@bm.Users.Username</td>
+                                    <td>@bm.Users.Role</td>
+                                    @GetProductActionButtons(bm)
+
+
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->
