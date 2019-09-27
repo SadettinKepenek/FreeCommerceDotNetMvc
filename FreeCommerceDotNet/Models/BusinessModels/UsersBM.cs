@@ -9,8 +9,13 @@ namespace FreeCommerceDotNet.Models.BusinessModels
 {
     public class UsersBM
     {
+
         public Users Users { get; set; }
 
+        public UsersBM()
+        {
+            Users = new Users();
+        }
         public UsersBM(int? id)
         {
             if (id == null)

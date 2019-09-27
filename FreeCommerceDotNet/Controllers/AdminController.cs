@@ -575,8 +575,57 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Users()
         {
-            return View();
+            using (UsersBusinessManager bm = new UsersBusinessManager())
+            {
+                return View(bm.Get());
+            }
         }
+
+        [HttpGet]
+        public ActionResult AddUser()
+        {
+            return View(new UsersBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddUser(UsersBM bm)
+        {
+            using (UsersBusinessManager manager=new UsersBusinessManager())
+            {
+                manager.Add(bm);
+            }
+
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateUser(int id)
+        {
+            return View(new UsersBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateUser(UsersBM bm)
+        {
+            using (UsersBusinessManager manager = new UsersBusinessManager())
+            {
+                manager.Update(bm);
+            }
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
+        }
+
+        public ActionResult DeleteUser(int id)
+        {
+            using (UsersBusinessManager manager = new UsersBusinessManager())
+            {
+                manager.Delete(new UsersBM(id));
+            }
+            TempData["UserSuccessMessage"] = "Success !";
+            return RedirectToAction("Users");
+        }
+
 
         public ActionResult Orders()
         {
