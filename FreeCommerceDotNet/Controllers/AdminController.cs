@@ -432,10 +432,5 @@ namespace FreeCommerceDotNet.Controllers
             return View(allAttributes);
         }
         
-
-        
-
-
-
     }
 }

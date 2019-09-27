@@ -8,6 +8,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public Attribute Attribute { get; set; }
         public AttributeGroup AttributeGroup { get; set; }
 
+        public AttributeBM()
+        {
+            Attribute = new Attribute();
+            AttributeGroup = new AttributeGroup();
+        }
         public AttributeBM(int? AttributeId)
         {
             if (AttributeId == null)

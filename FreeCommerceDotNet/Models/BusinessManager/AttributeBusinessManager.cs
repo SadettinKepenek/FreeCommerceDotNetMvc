@@ -13,7 +13,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
         {
             using (AttributeManager manager = new AttributeManager())
             {
-                entry.Attribute.AttributeGroup = entry.AttributeGroup.AttributeGroupId;
+                //entry.Attribute.AttributeGroup = entry.AttributeGroup.AttributeGroupId;
                 return manager.Add(entry.Attribute);
             }
         }

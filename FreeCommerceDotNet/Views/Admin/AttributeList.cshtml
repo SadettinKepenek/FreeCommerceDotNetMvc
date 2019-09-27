@@ -14,26 +14,34 @@
 @using FreeCommerceDotNet.Models.DbModels
 @model List<FreeCommerceDotNet.Models.BusinessModels.AttributeBM>
 
-    <div class="container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="page-header-left">
-                        <h3>
-                            Attribute List
-                            <small>FreeCommerce Admin panel</small>
-                        </h3>
-                    </div>
+@helper GetProductActionButtons(AttributeBM bm)
+{
+
+    <td class="text-center">
+        @Html.ActionLink("Update", "UpdateAttribute", "Admin", new { id = bm.Attribute.AttributeId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteAttribute", "Admin", new { id = bm.Attribute.AttributeId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
+    </td>
+}
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Attribute List
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
                 </div>
-                <div class="col-lg-6">
-                    <ol class="breadcrumb pull-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
-                        <li class="breadcrumb-item active">Product/Attribute/Attribute List</li>
-                    </ol>
-                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Product/Attribute/Attribute List</li>
+                </ol>
             </div>
         </div>
     </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -66,26 +74,19 @@
 
 
                         <tbody>
-                            @if (Model != null)
-                            {
-                                foreach (AttributeBM bm in Model)
-                                {
-                                    <tr>
-                                        <th scope="row">@bm.Attribute.AttributeId</th>
-                                        <td>@bm.Attribute.AttributeName</td>
-                                        <td>@bm.AttributeGroup.AttributeGroupName</td>
-                                    </tr>
-                                }
 
-                            }
-                            @if (Model == null)
+                            @foreach (AttributeBM bm in Model)
                             {
                                 <tr>
-                                    <th></th>
-                                    <td></td>
-                                    <td></td>
+                                    <th scope="row">@bm.Attribute.AttributeId</th>
+                                    <td>@bm.Attribute.AttributeName</td>
+                                    <td>@bm.AttributeGroup.AttributeGroupName</td>
+                                    @GetProductActionButtons(bm)
                                 </tr>
                             }
+
+
+
                         </tbody>
                     </table>
                 </div>
@@ -96,8 +97,7 @@
 <script>
     jQuery(document).ready(function () {
         jQuery('[data-confirm]').click(function (e) {
-            if (!confirm(jQuery(this).attr("data-confirm")))
-            {
+            if (!confirm(jQuery(this).attr("data-confirm"))) {
                 e.preventDefault();
             }
         });
