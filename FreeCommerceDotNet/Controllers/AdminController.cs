@@ -61,7 +61,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     int inserted = businessManager.Add(bm);
                     TempData["CategorySuccessMessage"] = "Category " + inserted.ToString() + " Has Been Added!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories",new { subCategories =false});
 
                 }
                 catch (Exception e)
@@ -88,7 +88,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     businessManager.Update(bm);
                     TempData["CategorySuccessMessage"] = "Category Has Been Updated!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories", new { subCategories = false });
 
                 }
                 catch (Exception e)
@@ -109,7 +109,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     businessManager.Delete(new CategoryBM(id));
                     TempData["CategorySuccessMessage"] = "Category Has Been Deleted!";
-                    return RedirectToAction("Categories");
+                    return RedirectToAction("Categories", new { subCategories = false });
 
                 }
                 catch (Exception e)
@@ -119,7 +119,7 @@ namespace FreeCommerceDotNet.Controllers
                 }
 
             }
-            return RedirectToAction("Categories");
+            return RedirectToAction("Categories", new { subCategories = false });
         }
 
 
