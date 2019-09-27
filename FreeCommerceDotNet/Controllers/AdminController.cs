@@ -264,6 +264,62 @@ namespace FreeCommerceDotNet.Controllers
             }
             return View(allAttributes);
         }
-        
+
+        [HttpGet]
+        public ActionResult UpdateAttributeGroup(int id)
+        {
+            return View(new AttributeGroupBM(id));
+        }
+        [HttpPost]
+        public ActionResult UpdateAttributeGroup(AttributeGroupBM attributeGroupModel)
+        {
+            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            {
+                manager.Update(attributeGroupModel);
+            }
+            TempData["MessageAttributeGroup"] = "Attribute Group Updated!";
+            return RedirectToAction("AttributeGroupList", "Admin");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateAttribute(int id)
+        {
+            return View(new AttributeBM(id));
+        }
+        [HttpPost]
+        public ActionResult UpdateAttribute(AttributeBM attributeModel)
+        {
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            {
+                manager.Update(attributeModel);
+            }
+            TempData["MessageAttribute"] = "Attribute Updated!";
+            return RedirectToAction("AttributeList", "Admin");
+        }
+        public ActionResult DeleteAttribute(int id)
+        {
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            {
+                manager.Delete(manager.GetById(id));
+            }
+
+            return RedirectToAction("AttributeList", "Admin");
+        }
+
+        [HttpGet]
+        public ActionResult AddAttribute()
+        {
+            return View(new AttributeBM(null));
+        }
+        [HttpPost]
+        public ActionResult AddAttribute(AttributeBM attributeModel)
+        {
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            {
+                manager.Add(attributeModel);
+            }
+            TempData["MessageAttribute"] = "Attribute Added!";
+            return RedirectToAction("AttributeList","Admin");
+        }
     }
 }

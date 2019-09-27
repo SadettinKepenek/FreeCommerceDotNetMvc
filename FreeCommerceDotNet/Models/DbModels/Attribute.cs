@@ -17,12 +17,12 @@
             set { _AttributeName = value; }
         }
 
-        private int _AttributeGroupId;
+        private int _AttributeGroup;
 
         public int AttributeGroup
         {
-            get { return _AttributeGroupId; }
-            set { _AttributeGroupId = value; }
+            get { return _AttributeGroup; }
+            set { _AttributeGroup = value; }
         }
         
 

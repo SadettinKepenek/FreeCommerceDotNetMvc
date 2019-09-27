@@ -13,7 +13,7 @@
 {
    
     <td class="text-center">
-       
+        @Html.ActionLink("Update","UpdateAttributeGroup","Admin",new{id = bm.AttributeGroup.AttributeGroupId},new{@class = "btn btn-sm btn-danger"})
         @Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
         <button type="button" class="btn btn-sm btn-success" id="showAttributes@(bm.AttributeGroup.AttributeGroupId)" data-toggle="modal" data-target="#exampleModal" onclick="getAttributeGroupsAttributes(@bm.AttributeGroup.AttributeGroupId)">Show Attributes</button>
 
