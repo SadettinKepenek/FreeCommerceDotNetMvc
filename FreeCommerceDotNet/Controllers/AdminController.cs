@@ -421,6 +421,7 @@ namespace FreeCommerceDotNet.Controllers
             return RedirectToAction("AttributeGroupList", "Admin");
         }
 
+
         public ActionResult AttributeList()
         {
             List<AttributeBM> allAttributes;
@@ -431,5 +432,10 @@ namespace FreeCommerceDotNet.Controllers
             return View(allAttributes);
         }
         
+
+        
+
+
+
     }
 }
