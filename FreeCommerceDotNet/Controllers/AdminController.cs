@@ -500,5 +500,62 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("Orders");
         }
+
+
+        public ActionResult Returns()
+        {
+            using (OrderReturnBusinessManager bm=new OrderReturnBusinessManager())
+            {
+                return View(bm.Get());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddReturn()
+        {
+            return View(new OrderReturnBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddReturn(OrderReturnBM returnBm)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Add(returnBm);
+                TempData["OrderReturnSuccessMessage"] = "Has Been Added";
+                return RedirectToAction("Returns");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UpdateReturn(int id)
+        {
+            return View(new OrderReturnBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateReturn(OrderReturnBM returnBm)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Update(returnBm);
+                TempData["OrderReturnSuccessMessage"] = "Has Been Updated";
+                return RedirectToAction("Returns");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteReturn(int id)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Delete(new OrderReturnBM(id));
+                TempData["OrderReturnSuccessMessage"] = "Has Been Deleted";
+                return RedirectToAction("Returns");
+            }
+        }
+
+
+
     }
 }

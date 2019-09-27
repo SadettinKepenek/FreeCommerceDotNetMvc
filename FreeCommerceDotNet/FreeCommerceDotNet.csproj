@@ -3618,6 +3618,9 @@
     <Content Include="Views\Admin\AddOrder.cshtml" />
     <Content Include="Views\Admin\UpdateOrder.cshtml" />
     <Content Include="Views\Admin\OrderDetail.cshtml" />
+    <Content Include="Views\Admin\Returns.cshtml" />
+    <Content Include="Views\Admin\AddReturn.cshtml" />
+    <Content Include="Views\Admin\UpdateReturn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
