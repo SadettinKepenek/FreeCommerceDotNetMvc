@@ -13,21 +13,36 @@
 {
    
     <td class="text-center">
-        @*@Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })*@
-        <button type="button" class = "btn btn-sm btn-success" id="showAttributes@(bm.AttributeGroup.AttributeGroupId)" data-toggle="modal" data-target="#exampleModal"onclick="getAttributeGroupsAttributes(@bm.AttributeGroup.AttributeGroupId)">Show Attributes</button>
-        <button type="button" class = "btn btn-sm btn-success" id="deleteGroup@(bm.AttributeGroup.AttributeGroupId)" data-toggle="modal" data-target="#exampleModal"onclick="deleteAttributeGroup(@bm.AttributeGroup.AttributeGroupId)">Delete</button>
+       
+        @Html.ActionLink("Delete", "DeleteAttributeGroup", "Admin", new { id = bm.AttributeGroup.AttributeGroupId }, new { @class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?" })
+        <button type="button" class="btn btn-sm btn-success" id="showAttributes@(bm.AttributeGroup.AttributeGroupId)" data-toggle="modal" data-target="#exampleModal" onclick="getAttributeGroupsAttributes(@bm.AttributeGroup.AttributeGroupId)">Show Attributes</button>
+
     </td>
 }
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Attribute Group List
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Product/Attribute/Attribute Group List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h5>Attribute Group List</h5>
-                    <div class="container-fluid" id="attributesList">
-                        
-                    </div>
-                </div>
                 @{
                     if (TempData["MessageAttributeGroup"] != null)
                     {
@@ -58,14 +73,16 @@
                   
                         @foreach (AttributeGroupBM bm in Model)
                         {
+                            var id = bm.AttributeGroup.AttributeGroupId;
+                            var result = String.Concat("name", id.ToString());
                             <tr>
                                 <th scope="row">@bm.AttributeGroup.AttributeGroupId</th>
-                                <td>@bm.AttributeGroup.AttributeGroupName</td>
+                                <td id = @result>@bm.AttributeGroup.AttributeGroupName</td>
                                 @GetProductActionButtons(bm)
                             </tr>
-                                
-                        }
 
+                        }
+                            
                         </tbody>
                     </table>
                 </div>
@@ -92,32 +109,9 @@
 <script type="text/javascript">
     function addNewAttributeToAttributesList(entry) {
         var container = $('#attributes');
-        container.append('<p class="form-control text-center">'+entry.AttributeName+'<p>');
+        container.append('<p class=" text-center">'+entry.AttributeName+'<p>');
     }
-    function deleteAttributeGroup(groupId) {
-        $.ajax({
-            type: "DELETE",
-            url: "../api/apiControllers/AttributeGroup/"+groupId,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                if (response != null) {
-                    console.log(response);
-                    location.reload();
-
-
-                } else {
-                    alert("Something went wrong");
-                }
-            },
-            failure: function (response) {
-                alert(response.responseText);
-            },
-            error: function (response) {
-                alert(response.responseText);
-            }
-        });  
-    }
+    
     function getAttributeGroupsAttributes(groupId) {
         $('#attributes').empty();
         $.ajax({
@@ -135,7 +129,8 @@
                         });
 
                     } else {
-                        alert("Hiç attribute yok");
+                        var container = $('#attributes');
+                        container.append('<p class = "text-center">There is no attribute</p>');
                     }
                 } else {
                     alert("Something went wrong");
@@ -147,10 +142,7 @@
             error: function (response) {
                 alert(response.responseText);
             }
-        });  
-
-
-      
+        });
     }
 </script>
 <script>

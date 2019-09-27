@@ -21,7 +21,7 @@
 
                 <div class="card-body">
                     <div class="digital-add needs-validation">
-                        @using (Html.BeginForm("AddCustomer", "Admin", FormMethod.Post))
+                        @using (Html.BeginForm("AddCustomer", "Admin", FormMethod.Post,new { novalidate = "", @class = "needs-validation" }))
                         {
                             @Html.HiddenFor(x => x.Customer.CustomerId)
 
@@ -34,14 +34,20 @@
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span> Last Name:</label>
                                 @Html.TextBoxFor(x => x.Customer.Lastname, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom03" class="col-form-label pt-0"><span>*</span> Address1:</label>
                                 @Html.TextBoxFor(x => x.Customer.Address1, new { @class = "form-control", id = "validationCustom03", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom04" class="col-form-label pt-0"><span>*</span> Address2:</label>
                                 @Html.TextBoxFor(x => x.Customer.Address2, new { @class = "form-control", id = "validationCustom04", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom05" class="col-form-label pt-0"><span>*</span> E-Mail:</label>
@@ -52,21 +58,31 @@
                             <div class="form-group">
                                 <label for="validationCustom06" class="col-form-label pt-0"><span>*</span> TaxAddress:</label>
                                 @Html.TextBoxFor(x => x.Customer.TaxAddress, new { @class = "form-control", id = "validationCustom06", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom07" class="col-form-label pt-0"><span>*</span> Telephone:</label>
                                 @Html.TextBoxFor(x => x.Customer.Telephone, new { @class = "form-control", id = "validationCustom07", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom08" class="col-form-label pt-0"><span>*</span> Segment:</label>
-                                @Html.DropDownListFor(x => x.Customer.SegmentId, new SelectList(segments, "SegmentId", "SegmentName"),new { @class = "form-control", id = "validationCustom08", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.Customer.SegmentId, new SelectList(segments, "SegmentId", "SegmentName"), new { @class = "form-control", id = "validationCustom08", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom09" class="col-form-label pt-0"><span>*</span> Password:</label>
                                 @Html.TextBoxFor(x => x.Customer.Password, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="form-group">
-                                <label  class="col-form-label pt-0"><span>*</span> Admin: @Html.CheckBoxFor(x => x.Customer.Status, new { @class = "form-control", type = "checkbox", value = "false" })</label>
+                                <label class="col-form-label pt-0"><span>*</span> Admin: @Html.CheckBoxFor(x => x.Customer.Status, new { @class = "form-control", type = "checkbox", value = "false" })</label>
+                                <div class="valid-feedback">Looks good!</div>
+                                <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter a valid First Name.</div>
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>

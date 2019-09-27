@@ -20,7 +20,27 @@
     </td>
 }
 
-<!-- Container-fluid Begins-->
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Customer List
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Customers/Customer List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -62,9 +82,8 @@
 
 
                         <tbody>
-                            @if (Model != null)
-                            {
-                                foreach (CustomerBM bm in Model)
+                           
+                                @foreach (CustomerBM bm in Model)
                                 {
                                     <tr>
                                         <th scope="row">@bm.Customer.CustomerId</th>
@@ -78,19 +97,6 @@
                                     </tr>
                                 }
 
-                            }
-                            @if (Model == null)
-                            {
-                                <tr>
-                                    <th></th>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            }
                         </tbody>
                     </table>
                 </div>

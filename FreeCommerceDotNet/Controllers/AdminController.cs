@@ -197,7 +197,8 @@ namespace FreeCommerceDotNet.Controllers
             {
                 manager.Delete(manager.GetById(id));
             }
-            return RedirectToAction("Customers", "Admin", null);
+            
+            return RedirectToAction("Customers", "Admin");
 
         }
 
@@ -251,7 +252,6 @@ namespace FreeCommerceDotNet.Controllers
             {
                 manager.Delete(manager.GetById(id));
             }
-
             return RedirectToAction("AttributeGroupList", "Admin");
         }
 
