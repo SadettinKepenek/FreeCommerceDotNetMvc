@@ -106,6 +106,87 @@ namespace FreeCommerceDotNet.Controllers
             return RedirectToAction("Categories");
         }
 
+
+        public ActionResult PaymentGateways()
+        {
+            using (PaymentBusinessManager bm = new PaymentBusinessManager())
+            {
+                return View(bm.Get());
+
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddPaymentGateway()
+        {
+            return View(new PaymentBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddPaymentGateway(PaymentBM bm)
+        {
+            try
+            {
+                using (PaymentBusinessManager businessManager=new PaymentBusinessManager())
+                {
+                    businessManager.Add(bm);
+                }
+                TempData["PaymentGatewayMessage"] = "Gateway Has Been Added.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["PaymentGatewayMessage"] = "Database Insert Error.";
+
+            }
+            return RedirectToAction("PaymentGateways");
+        }
+
+        [HttpGet]
+        public ActionResult UpdatePaymentGateway(int id)
+        {
+            return View(new PaymentBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdatePaymentGateway(PaymentBM bm)
+        {
+            try
+            {
+                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                {
+                    businessManager.Update(bm);
+                }
+                TempData["PaymentGatewayMessage"] = "Gateway Has Been Updated.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["PaymentGatewayMessage"] = "Database Update Error."+e.StackTrace;
+
+            }
+            return RedirectToAction("PaymentGateways");
+        }
+
+        public ActionResult DeletePaymentGateway(int id)
+        {
+            try
+            {
+                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                {
+                    businessManager.Delete(new PaymentBM(id));
+                }
+                TempData["PaymentGatewayMessage"] = "Gateway Has Been Deleted.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["PaymentGatewayMessage"] = "Database Delete Error." + e.StackTrace;
+
+            }
+            return RedirectToAction("PaymentGateways");
+        }
+
         public ActionResult Products()
         {
             List<ProductBM> products;

@@ -10,6 +10,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public Payment Payment { get; set; }
         public List<OrderMaster> OrderMasterBms { get; set; }
 
+        public PaymentBM()
+        {
+            Payment = new Payment();
+
+        }
         public PaymentBM(int? id)
         {
             if (id == null)

@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "PaymentGateways";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using FreeCommerceDotNet.Models.BusinessModels
+
+@helper GetProductActionButtons(PaymentBM bm)
+{
+    <td class="text-center">
+        @Html.ActionLink("Update", "UpdatePaymentGateway", "Admin", new { id = bm.Payment.PaymentId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeletePaymentGateway", "Admin", new { id = bm.Payment.PaymentId }, new { @class = "btn btn-sm btn-warning" })
+    </td>
+}
+
+
+@model List<FreeCommerceDotNet.Models.BusinessModels.PaymentBM>
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Add AttributeGroup
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Add AttributeGroup</li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row product-adding">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Add Attribute Group</h5>
+                    <h3>@TempData["PaymentGatewayMessage"]</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Gateway Name</th>
+                                <th scope="col">Gateway Description</th>
+                                <th scope="col">Product Count</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (PaymentBM bm in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@bm.Payment.PaymentId</th>
+                                    <td>@bm.Payment.PaymentName</td>
+                                    <td>@bm.Payment.PaymentDescription</td>
+                                    <td>@bm.OrderMasterBms.Count</td>
+
+                                    @GetProductActionButtons(bm)
+
+
+                                </tr>
+                                
+
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
