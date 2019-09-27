@@ -326,6 +326,55 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult UpdateProduct(int id)
+        {
+            var productBm = new ProductBM(id);
+            int ATTIBUTEMAXCOUNT = 30;
+            for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
+            {
+                productBm.ProductAttributes.Add(new ProductAttribute());
+            }
+            productBm.ProductPrices = new List<ProductPrice>();
+            using (SegmentManager m = new SegmentManager())
+            {
+                var segments = m.GetAll();
+                foreach (var segment in segments)
+                {
+
+                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
+                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
+
+
+                }
+            }
+            return View(productBm);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateProduct(ProductBM bm)
+        {
+            using (ProductBusinessManager productManager = new ProductBusinessManager())
+            {
+                try
+                {
+                    TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde eklendi";
+                    productManager.Update(bm);
+                    return RedirectToAction("Products");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
+                    return AddProduct(bm);
+
+                }
+            }
+        }
+
+        public ActionResult DeleteProduct(int id)
+        {
+            return View();
+        }
 
         public ActionResult Customers()
         {
