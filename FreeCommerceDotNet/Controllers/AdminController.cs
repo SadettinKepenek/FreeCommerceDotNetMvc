@@ -431,139 +431,93 @@ namespace FreeCommerceDotNet.Controllers
             }
             return View(allAttributes);
         }
-
-
-        public ActionResult Orders()
+        [HttpGet]
+        public ActionResult UpdateAttributeGroup(int id)
         {
-            using (OrderMasterBusinessManager bm = new OrderMasterBusinessManager())
-            {
-                return View(bm.Get());
-            }
+            return View(new AttributeGroupBM(id));
         }
-
-        public ActionResult OrderDetail(int id)
+        [HttpPost]
+        public ActionResult UpdateAttributeGroup(AttributeGroupBM attributeGroupModel)
         {
-            var orderMasterBm = new OrderMasterBM(null);
-            for (int i = 0; i <= 1; i++)
+            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
             {
-                orderMasterBm.OrderDetails.Add(new OrderDetail());
+                manager.Update(attributeGroupModel);
             }
-            return View(orderMasterBm);
+            TempData["MessageAttributeGroup"] = "Attribute Group Updated!";
+            return RedirectToAction("AttributeGroupList", "Admin");
         }
 
         [HttpGet]
-        public ActionResult AddOrder()
+        public ActionResult UpdateAttribute(int id)
         {
-            var orderMasterBm = new OrderMasterBM(null);
-            for (int i = 0; i <= 1; i++)
-            {
-                orderMasterBm.OrderDetails.Add(new OrderDetail());
-            }
-            return View(orderMasterBm);
+            return View(new AttributeBM(id));
         }
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddOrder(OrderMasterBM bm)
+        public ActionResult UpdateAttribute(AttributeBM attributeModel)
         {
-
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
             {
-                manager.Add(bm);
-                TempData["OrderMasterMessage"] = "Order Has Been Added";
+                manager.Update(attributeModel);
             }
-            return RedirectToAction("Orders");
+            TempData["MessageAttribute"] = "Attribute Updated!";
+            return RedirectToAction("AttributeList", "Admin");
+        }
+        public ActionResult DeleteAttribute(int id)
+        {
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            {
+                manager.Delete(manager.GetById(id));
+            }
+
+            return RedirectToAction("AttributeList", "Admin");
         }
 
         [HttpGet]
-        public ActionResult UpdateOrder(int id)
+        public ActionResult AddAttribute()
         {
-            return View(new OrderMasterBM(id));
+            return View(new AttributeBM(null));
         }
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateOrder(OrderMasterBM bm)
+        public ActionResult AddAttribute(AttributeBM attributeModel)
         {
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            using (AttributeBusinessManager manager = new AttributeBusinessManager())
             {
-                manager.Update(bm);
-                TempData["OrderMasterMessage"] = "Order Has Been Updated";
+                manager.Add(attributeModel);
             }
-            return RedirectToAction("Orders");
+            TempData["MessageAttribute"] = "Attribute Added!";
+            return RedirectToAction("AttributeList", "Admin");
         }
-
-        public ActionResult DeleteOrder(int id)
-        {
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
-            {
-                manager.Delete(new OrderMasterBM(id));
-                TempData["OrderMasterMessage"] = "Order Has Been Deleted";
-            }
-            return RedirectToAction("Orders");
-        }
-
-
-        public ActionResult Returns()
-        {
-            using (OrderReturnBusinessManager bm=new OrderReturnBusinessManager())
-            {
-                return View(bm.Get());
-            }
-        }
-
         [HttpGet]
-        public ActionResult AddReturn()
+        public ActionResult Reviews()
         {
-            return View(new OrderReturnBM(null));
-        }
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult AddReturn(OrderReturnBM returnBm)
-        {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            List<ReviewBM> reviews;
+            using (ReviewBusinessManager manager = new ReviewBusinessManager())
             {
-                bm.Add(returnBm);
-                TempData["OrderReturnSuccessMessage"] = "Has Been Added";
-                return RedirectToAction("Returns");
+                reviews = manager.Get();
             }
+            return View(reviews);
         }
 
-        [HttpGet]
-        public ActionResult UpdateReturn(int id)
+        public ActionResult DeleteReview(int id)
         {
-            return View(new OrderReturnBM(id));
-        }
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult UpdateReturn(OrderReturnBM returnBm)
-        {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            using (ReviewBusinessManager manager = new ReviewBusinessManager())
             {
-                bm.Update(returnBm);
-                TempData["OrderReturnSuccessMessage"] = "Has Been Updated";
-                return RedirectToAction("Returns");
+                manager.Delete(manager.GetById(id));
             }
+            return RedirectToAction("Reviews", "Admin");
         }
 
-        [HttpPost]
-        public ActionResult DeleteReturn(int id)
+        public ActionResult ChangeReviewVisibility(int id)
         {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            
+            using (ReviewBusinessManager manager = new ReviewBusinessManager())
             {
-                bm.Delete(new OrderReturnBM(id));
-                TempData["OrderReturnSuccessMessage"] = "Has Been Deleted";
-                return RedirectToAction("Returns");
+                var result = manager.GetById(id);
+                result.Reviews.Status = !result.Reviews.Status;
+                manager.Update(result);
             }
-        }
 
-        public ActionResult Users()
-        {
-            return View();
+            return RedirectToAction("Reviews","Admin");
         }
-
-        public ActionResult AddUser()
-        {
-            return View();
-        }
-
     }
 }

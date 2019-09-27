@@ -29,11 +29,10 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 var Products = new List<Reviews>();
                 Utilities.ExecuteCommand<Reviews>(sqlCommand, SqlCommandTypes.Select, ref Products);
-                return Products.First();
+                return Products.FirstOrDefault();
             }
         }
 
@@ -66,9 +65,8 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
-                return Utilities.ExecuteCommand<Reviews>(sqlCommand, SqlCommandTypes.Select);
+                return Utilities.ExecuteCommand<Reviews>(sqlCommand, SqlCommandTypes.Remove);
             }
         }
 

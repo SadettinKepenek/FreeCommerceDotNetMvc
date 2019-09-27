@@ -1,0 +1,55 @@
+﻿
+
+@{
+    ViewBag.Title = "AddAttributeGroup";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using FreeCommerceDotNet.Models.DbManager
+@using FreeCommerceDotNet.Models.DbModels
+@model FreeCommerceDotNet.Models.BusinessModels.AttributeBM
+
+@{
+    List<AttributeGroup> groups;
+
+    using (AttributeGroupManager manager = new AttributeGroupManager())
+    {
+        groups = manager.GetAll();
+    }
+}
+<div class="container-fluid">
+    <div class="row product-adding">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Update Attributes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="digital-add needs-validation">
+                        @using (Html.BeginForm("UpdateAttribute", "Admin", FormMethod.Post))
+                        {
+                            @Html.HiddenFor(x => x.Attribute.AttributeId)
+
+                            <div class="form-group">
+                                <label for="validationCustom08" class="col-form-label pt-0"><span>*</span>Attribute Name:</label>
+                                @Html.TextBoxFor(x => x.Attribute.AttributeName, new { @class = "form-control", id = "validationCustom08", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom010" class="col-form-label pt-0"><span>*</span>Attribute Group Name:</label>
+                                @Html.DropDownListFor(x => x.Attribute.AttributeGroup, new SelectList(groups, "AttributeGroupId", "AttributeGroupName"), new { @class = "form-control", id = "validationCustom010", type = "text", required = "" })
+                            </div>
+                            <div class="offset-xl-3 offset-sm-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                @Html.ActionLink("Discard", "AttributeGroupList", "Admin", null, new { type = "button", @class = "btn btn-light" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
