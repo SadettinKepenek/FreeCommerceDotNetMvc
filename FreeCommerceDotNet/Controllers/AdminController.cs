@@ -555,7 +555,15 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
+        public ActionResult Users()
+        {
+            return View();
+        }
 
+        public ActionResult AddUser()
+        {
+            return View();
+        }
 
     }
 }
