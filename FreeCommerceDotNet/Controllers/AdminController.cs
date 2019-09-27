@@ -431,6 +431,69 @@ namespace FreeCommerceDotNet.Controllers
             }
             return View(allAttributes);
         }
-        
+
+
+        public ActionResult Orders()
+        {
+            using (OrderMasterBusinessManager bm = new OrderMasterBusinessManager())
+            {
+                return View(bm.Get());
+            }
+        }
+
+        public ActionResult OrderDetail(int id)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult AddOrder()
+        {
+            var orderMasterBm = new OrderMasterBM(null);
+            for (int i = 0; i <= 1; i++)
+            {
+                orderMasterBm.OrderDetails.Add(new OrderDetail());
+            }
+            return View(orderMasterBm);
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddOrder(OrderMasterBM bm)
+        {
+
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Add(bm);
+                TempData["OrderMasterMessage"] = "Order Has Been Added";
+            }
+            return RedirectToAction("Orders");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateOrder(int id)
+        {
+            return View(new OrderMasterBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateOrder(OrderMasterBM bm)
+        {
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Update(bm);
+                TempData["OrderMasterMessage"] = "Order Has Been Updated";
+            }
+            return RedirectToAction("Orders");
+        }
+
+        public ActionResult DeleteOrder(int id)
+        {
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Delete(new OrderMasterBM(id));
+                TempData["OrderMasterMessage"] = "Order Has Been Deleted";
+            }
+            return RedirectToAction("Orders");
+        }
     }
 }

@@ -3614,6 +3614,9 @@
     <Content Include="Views\Admin\ShippingGateways.cshtml" />
     <Content Include="Views\Admin\AddShippingGateway.cshtml" />
     <Content Include="Views\Admin\UpdateShippingGateway.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\AddOrder.cshtml" />
+    <Content Include="Views\Admin\UpdateOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
