@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "AttributeGroupList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using System.Diagnostics.Eventing.Reader
+@using System.Web.UI.WebControls
+@using FreeCommerceDotNet.Models.BusinessModels
+@using FreeCommerceDotNet.Models.DbModels
+@model List<FreeCommerceDotNet.Models.BusinessModels.SegmentBM>
+
+@helper getSegmentActions(SegmentBM bm)
+{
+    <td class="text-center">
+      @Html.ActionLink("Update","UpdateSegment","Admin",new{id = bm.Segment.SegmentId},new{@class = "btn btn-sm btn-danger"})
+        @Html.ActionLink("Delete", "DeleteSegments", "Admin", new {id = bm.Segment.SegmentId}, new {@class = "btn btn-sm btn-warning", data_confirm = "Do you really want to delete this AttributeGroup?"})
+    </td>
+}
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Segments
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Customer/Segments</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                @{
+                    if (TempData["MessageSegment"] != null)
+                    {
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["MessageSegment"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                    }
+
+                }
+                <div class="card-body">
+                    <table class="table" width="2000">
+                        <thead>
+                            <tr>
+                                <th scope="col">Segment Id</th>
+                                <th scope="col">Segment Name</th>
+                                <th scope="col">Priorty</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+
+
+
+                        <tbody>
+
+                            @foreach (SegmentBM bm in Model)
+                            {
+                            <tr>
+                                <th scope="row">@bm.Segment.SegmentId</th>
+                                <td>@bm.Segment.SegmentName</td>
+                                <td>@bm.Segment.Priorty</td>
+                                @getSegmentActions(bm)
+                            </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery('[data-confirm]').click(function (e) {
+            if (!confirm(jQuery(this).attr("data-confirm"))) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+

@@ -34,7 +34,7 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool Delete(int id)
         {
-            string sqlQuery = "DELETE FROM Segments WHERE SegmentId = @id";
+            string sqlQuery = "DELETE FROM Segments WHERE SegmentId=@id";
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;

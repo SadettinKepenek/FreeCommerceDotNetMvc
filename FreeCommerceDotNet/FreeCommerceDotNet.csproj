@@ -3626,6 +3626,8 @@
     <Content Include="Views\Admin\Returns.cshtml" />
     <Content Include="Views\Admin\UpdateOrder.cshtml" />
     <Content Include="Views\Admin\UpdateReturn.cshtml" />
+    <Content Include="Views\Admin\Segments.cshtml" />
+    <Content Include="Views\Admin\UpdateSegment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

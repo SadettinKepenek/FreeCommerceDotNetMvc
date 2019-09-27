@@ -578,6 +578,7 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
+
         public ActionResult Orders()
         {
             using (OrderMasterBusinessManager bm = new OrderMasterBusinessManager())
@@ -646,6 +647,40 @@ namespace FreeCommerceDotNet.Controllers
                 TempData["OrderMasterMessage"] = "Order Has Been Deleted";
             }
             return RedirectToAction("Orders");
+        }
+
+        public ActionResult Segments()
+        {
+            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            {
+                var result = manager.Get();
+                return View(result);
+            }
+            
+        }
+
+        public ActionResult DeleteSegments(int id)
+        {
+            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            {
+                manager.Delete(new SegmentBM(id));
+            }
+            return RedirectToAction("Segments", "Admin");
+        }
+        [HttpGet]
+        public ActionResult UpdateSegment(int id)
+        {
+            return View(new SegmentBM(id));
+        }
+        [HttpPost]
+        public ActionResult UpdateSegment(SegmentBM segmentBm)
+        {
+            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            {
+                manager.Update(segmentBm);
+            }
+            TempData["MessageSegment"] = "Segment Updated!";
+            return RedirectToAction("Segments", "Admin");
         }
     }
 }

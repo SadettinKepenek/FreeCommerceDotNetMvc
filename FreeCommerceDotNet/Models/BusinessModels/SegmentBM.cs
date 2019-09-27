@@ -12,6 +12,12 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public Segment Segment { get; set; }
 
         public List<Customer> CustomersBms { get; set; }
+
+        public SegmentBM()
+        {
+            Segment = new Segment();
+
+        }
         public SegmentBM(int? id)
         {
             if (id == null)
