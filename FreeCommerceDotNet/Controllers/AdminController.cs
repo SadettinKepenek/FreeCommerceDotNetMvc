@@ -142,7 +142,6 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("ShippingGateways");
         }
-
         [HttpGet]
         public ActionResult UpdateShippingGateway(int id)
         {
@@ -168,7 +167,6 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("ShippingGateways");
         }
-
         public ActionResult DeleteShippingGateway(int id)
         {
             try

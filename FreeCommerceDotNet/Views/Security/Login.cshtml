@@ -318,7 +318,7 @@
                                             </div>
                                             <div class="form-terms">
                                                 <div class="custom-control custom-checkbox mr-sm-2">
-                                                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+                                                    @Html.CheckBoxFor(x=>x.rememberMe,new { type = "checkbox" ,@class="custom-control-input", id="customControlAutosizing" })
                                                     <label class="custom-control-label" for="customControlAutosizing">Remember me</label>
                                                     <a href="#" class="btn btn-default forgot-pass">Forgot Password?</a>
                                                 </div>
