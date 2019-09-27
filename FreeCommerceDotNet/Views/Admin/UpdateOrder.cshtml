@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "UpdateOrder";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using FreeCommerceDotNet.Models.DbManager
+@using FreeCommerceDotNet.Models.DbModels
+@model FreeCommerceDotNet.Models.BusinessModels.OrderMasterBM
+
+@{
+    List<Product> products;
+    List<Payment> payments;
+    List<Shipping> shippings;
+    List<Customer> customers;
+    using (ShippingManager m = new ShippingManager())
+    {
+        shippings = m.GetAll();
+    }
+    using (PaymentsManager m = new PaymentsManager())
+    {
+        payments = m.GetAll();
+    }
+    using (ProductManager m = new ProductManager())
+    {
+        products = m.GetAll();
+    }
+    using (CustomerManager m = new CustomerManager())
+    {
+        customers = m.GetAll();
+    }
+}
+
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Order Update
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Order Update</li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row product-adding">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Order Update</h5>
+                    <h3>@TempData["OrderMasterMessage"]</h3>
+                </div>
+                <div class="card-body">
+                    <div class="digital-add needs-validation">
+                        @using (Html.BeginForm("UpdateOrder", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(x => x.OrderMaster.OrderId)
+
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Customer</label>
+                                @Html.DropDownListFor(x => x.OrderMaster.CustomerId, new SelectList(customers, "CustomerId", "Firstname"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
+                                @Html.DropDownListFor(x => x.OrderMaster.PaymentGatewayId, new SelectList(payments, "PaymentId", "PaymentName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
+                                @Html.DropDownListFor(x => x.OrderMaster.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <caption>Order Details</caption>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#Product</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col" class="pull-right"><button type="button" class="btn btn-sm btn-primary" onclick="addNewProduct()">Add New Product</button></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableOrderDetailsProduct">
+                                            @for (int i = 0; i < Model.OrderDetails.Count; i++)
+                                            {
+
+                                            <tr>
+                                                <script>incrementProductCount();</script>
+
+                                                <th scope="row">
+                                                    @Html.DropDownListFor(x => x.OrderDetails[i].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" })
+                                                </th>
+                                                <td colspan="2">@Html.TextBoxFor(x => x.OrderDetails[i].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" })</td>
+
+                                            </tr>
+                                            }
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="offset-xl-3 offset-sm-4">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                @Html.ActionLink("Discard", "Orders", "Admin", null, new { type = "button", @class = "btn btn-light" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    var productCount = 0;
+    function incrementProductCount() {
+        window.productCount++;
+    }
+    function deleteProduct(count) {
+        console.log("How Many");
+        var tr = $('#productRow' + count);
+        tr.remove();
+        window.productCount--;
+    }
+    function addNewProduct() {
+        var tbody = $('#tableOrderDetailsProduct');
+        var htmlString = '<tr id="productRow'+window.productCount+'"><th scope="row">' +
+            @Html.Raw(Json.Encode(@Html.DropDownListFor(x => x.OrderDetails[0].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" }).ToHtmlString())) +
+            '</th><td colspan="2">' +
+            @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
+            '</td>' +
+            '<td><button type="button" id="deleteProduct'+window.productCount+'" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr>';
+        htmlString =
+            htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
+        htmlString =
+            htmlString.replace("OrderDetails[0].Quantity", "OrderDetails[" + window.productCount + "].Quantity");
+        window.productCount++;
+        console.log(htmlString);
+        tbody.append(htmlString);
+    }
+</script>
+<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<!-- Container-fluid Ends-->
+<script src="../assets/js/dashboard/form-validation-custom.js"></script>
+

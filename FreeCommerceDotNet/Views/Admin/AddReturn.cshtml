@@ -1,0 +1,106 @@
+﻿@using FreeCommerceDotNet.Models.DbManager
+@using FreeCommerceDotNet.Models.DbModels
+
+@{
+    ViewBag.Title = "AddReturn";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@model FreeCommerceDotNet.Models.BusinessModels.OrderReturnBM
+
+@{
+    List<Product> products;
+    List<OrderMaster> masters;
+
+    using (ProductManager m = new ProductManager())
+    {
+        products = m.GetAll();
+    }
+
+    using (OrderMasterManager m = new OrderMasterManager())
+    {
+        masters = m.GetAll();
+    }
+}
+
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="page-header-left">
+                    <h3>
+                        Add Category
+                        <small>FreeCommerce Admin panel</small>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <ol class="breadcrumb pull-right">
+                    <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item active">Add Category</li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row product-adding">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5> Add Category</h5>
+                    <h3>@TempData["OrderMasterMessage"]</h3>
+                </div>
+                <div class="card-body">
+                    <div class="digital-add needs-validation">
+                        @using (Html.BeginForm("AddReturn", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @*@Html.HiddenFor(x => x.Category.CategoryId)*@
+
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Product</label>
+                                @Html.DropDownListFor(x => x.OrderReturn.ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Order:</label>
+                                @Html.DropDownListFor(x => x.OrderReturn.OrderId, new SelectList(masters, "OrderId", "OrderId"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Return Reason:</label>
+                                @Html.TextBoxFor(x => x.OrderReturn.ReturnReason, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Return Response:</label>
+                                @Html.TextBoxFor(x => x.OrderReturn.ReturnResponse, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Box Opened? :</label>
+                                @*@Html.CheckBoxFor(x=>x.OrderReturn.BoxOpened, new { @class = "form-control", id = "validationCustom02",  required = "" })*@
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Comment :</label>
+                                @Html.TextBoxFor(x => x.OrderReturn.Comment, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Status :</label>
+                                @Html.CheckBoxFor(x => x.OrderReturn.ReturnStatus, new { @class = "form-control", id = "validationCustom02", required = "" })
+                            </div>
+                            <div class="offset-xl-3 offset-sm-4">
+                                <button type="submit" class="btn btn-primary">Add Return</button>
+                                @Html.ActionLink("Discard", "Returns", "Admin", null, new { type = "button", @class = "btn btn-light" })
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<!-- Container-fluid Ends-->
+<script src="../assets/js/dashboard/form-validation-custom.js"></script>

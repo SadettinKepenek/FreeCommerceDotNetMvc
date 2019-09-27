@@ -13,12 +13,25 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public Customer CustomerBm { get; set; }
         public Payment PaymentBm { get; set; }
         public Shipping ShippingBm { get; set; }
+
+        public OrderMasterBM()
+        {
+            OrderMaster = new OrderMaster();
+            OrderDetails = new List<OrderDetail>();
+            CustomerBm=new Customer();
+            PaymentBm=new Payment();
+            ShippingBm=new Shipping();
+
+        }
         public OrderMasterBM(int? id)
         {
             if (id == null)
             {
-                OrderMaster=new OrderMaster();
-                OrderDetails=new List<OrderDetail>();
+                OrderMaster = new OrderMaster();
+                OrderDetails = new List<OrderDetail>();
+                CustomerBm = new Customer();
+                PaymentBm = new Payment();
+                ShippingBm = new Shipping();
             }
             else
             {
