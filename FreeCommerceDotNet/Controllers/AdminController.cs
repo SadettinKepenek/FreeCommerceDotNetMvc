@@ -19,14 +19,31 @@ namespace FreeCommerceDotNet.Controllers
         }
 
 
-        public ActionResult Categories()
+        public ActionResult Categories(bool subCategories)
         {
             List<CategoryBM> categories;
+
+           
             using (CategoryBusinessManager bm = new CategoryBusinessManager())
             {
-                categories = bm.Get();
+                if (subCategories)
+                {
+                    categories=new List<CategoryBM>();
+                    foreach (CategoryBM categoryBm in bm.Get())
+                    {
+                        if (categoryBm.Category.ParentId!=-1)
+                        {
+                            categories.Add(categoryBm);
+                        }
+                    }
+                    return View(categories);
+                }
+                else
+                {
+                    categories = bm.Get();
+                    return View(categories);
+                }
             }
-            return View(categories);
         }
 
         [HttpGet]
