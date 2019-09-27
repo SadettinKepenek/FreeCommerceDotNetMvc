@@ -443,7 +443,12 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult OrderDetail(int id)
         {
-            return View();
+            var orderMasterBm = new OrderMasterBM(null);
+            for (int i = 0; i <= 1; i++)
+            {
+                orderMasterBm.OrderDetails.Add(new OrderDetail());
+            }
+            return View(orderMasterBm);
         }
 
         [HttpGet]
