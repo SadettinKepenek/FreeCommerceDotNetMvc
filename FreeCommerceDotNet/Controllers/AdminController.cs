@@ -4,7 +4,6 @@ using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Web.Mvc;
 
 namespace FreeCommerceDotNet.Controllers
@@ -44,13 +43,13 @@ namespace FreeCommerceDotNet.Controllers
                 try
                 {
                     int inserted = businessManager.Add(bm);
-                    TempData["CategorySuccessMessage"] = "Category "+inserted.ToString()+" Has Been Added!";
+                    TempData["CategorySuccessMessage"] = "Category " + inserted.ToString() + " Has Been Added!";
                     return RedirectToAction("Categories");
 
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("AddCategoryError",e.StackTrace);
+                    ModelState.AddModelError("AddCategoryError", e.StackTrace);
                     return AddCategory(bm);
 
                 }
@@ -109,7 +108,7 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult ShippingGateways()
         {
-            
+
             using (ShippingBusinessManager bm = new ShippingBusinessManager())
             {
                 return View(bm.Get());
@@ -212,7 +211,7 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (PaymentBusinessManager businessManager=new PaymentBusinessManager())
+                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
                 {
                     businessManager.Add(bm);
                 }
@@ -247,7 +246,7 @@ namespace FreeCommerceDotNet.Controllers
             }
             catch (Exception e)
             {
-                TempData["PaymentGatewayMessage"] = "Database Update Error."+e.StackTrace;
+                TempData["PaymentGatewayMessage"] = "Database Update Error." + e.StackTrace;
 
             }
             return RedirectToAction("PaymentGateways");
@@ -320,7 +319,7 @@ namespace FreeCommerceDotNet.Controllers
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("AddError","Veri eklenirken veritabanında bir hata meydana geldi.");
+                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
                     return AddProduct(bm);
 
                 }
@@ -363,7 +362,7 @@ namespace FreeCommerceDotNet.Controllers
             {
                 manager.Delete(manager.GetById(id));
             }
-            
+
             return RedirectToAction("Customers", "Admin");
 
         }
@@ -407,7 +406,7 @@ namespace FreeCommerceDotNet.Controllers
             List<AttributeGroupBM> attributeGroupList;
             using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
             {
-                attributeGroupList =  manager.Get();
+                attributeGroupList = manager.Get();
             }
             return View(attributeGroupList);
         }
@@ -509,7 +508,7 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult ChangeReviewVisibility(int id)
         {
-            
+
             using (ReviewBusinessManager manager = new ReviewBusinessManager())
             {
                 var result = manager.GetById(id);
@@ -517,7 +516,130 @@ namespace FreeCommerceDotNet.Controllers
                 manager.Update(result);
             }
 
-            return RedirectToAction("Reviews","Admin");
+            return RedirectToAction("Reviews", "Admin");
+        }
+
+        public ActionResult Returns()
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                return View(bm.Get());
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddReturn()
+        {
+            return View(new OrderReturnBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddReturn(OrderReturnBM returnBm)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Add(returnBm);
+                TempData["OrderReturnSuccessMessage"] = "Has Been Added";
+                return RedirectToAction("Returns");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult UpdateReturn(int id)
+        {
+            return View(new OrderReturnBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateReturn(OrderReturnBM returnBm)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Update(returnBm);
+                TempData["OrderReturnSuccessMessage"] = "Has Been Updated";
+                return RedirectToAction("Returns");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteReturn(int id)
+        {
+            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            {
+                bm.Delete(new OrderReturnBM(id));
+                TempData["OrderReturnSuccessMessage"] = "Has Been Deleted";
+                return RedirectToAction("Returns");
+            }
+        }
+
+        public ActionResult Orders()
+        {
+            using (OrderMasterBusinessManager bm = new OrderMasterBusinessManager())
+            {
+                return View(bm.Get());
+            }
+        }
+
+        public ActionResult OrderDetail(int id)
+        {
+
+            var orderMasterBm = new OrderMasterBM(null);
+            for (int i = 0; i <= 1; i++)
+            {
+                orderMasterBm.OrderDetails.Add(new OrderDetail());
+            }
+            return View(orderMasterBm);
+
+        }
+
+        [HttpGet]
+        public ActionResult AddOrder()
+        {
+            var orderMasterBm = new OrderMasterBM(null);
+            for (int i = 0; i <= 1; i++)
+            {
+                orderMasterBm.OrderDetails.Add(new OrderDetail());
+            }
+            return View(orderMasterBm);
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddOrder(OrderMasterBM bm)
+        {
+
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Add(bm);
+                TempData["OrderMasterMessage"] = "Order Has Been Added";
+            }
+            return RedirectToAction("Orders");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateOrder(int id)
+        {
+            return View(new OrderMasterBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateOrder(OrderMasterBM bm)
+        {
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Update(bm);
+                TempData["OrderMasterMessage"] = "Order Has Been Updated";
+            }
+            return RedirectToAction("Orders");
+        }
+
+        public ActionResult DeleteOrder(int id)
+        {
+            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            {
+                manager.Delete(new OrderMasterBM(id));
+                TempData["OrderMasterMessage"] = "Order Has Been Deleted";
+            }
+            return RedirectToAction("Orders");
         }
     }
 }
