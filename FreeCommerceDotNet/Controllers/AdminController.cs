@@ -107,6 +107,93 @@ namespace FreeCommerceDotNet.Controllers
         }
 
 
+        public ActionResult ShippingGateways()
+        {
+            
+            using (ShippingBusinessManager bm = new ShippingBusinessManager())
+            {
+                return View(bm.Get());
+
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddShippingGateway()
+        {
+            return View(new ShippingBM(null));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddShippingGateway(ShippingBM bm)
+        {
+            try
+            {
+                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
+                {
+                    businessManager.Add(bm);
+                }
+                TempData["ShippingGatewayMessage"] = "Gateway Has Been Added.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["ShippingGatewayMessage"] = "Database Insert Error.";
+
+            }
+            return RedirectToAction("ShippingGateways");
+        }
+
+        [HttpGet]
+        public ActionResult UpdateShippingGateway(int id)
+        {
+            return View(new ShippingBM(id));
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult UpdateShippingGateway(ShippingBM bm)
+        {
+            try
+            {
+                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
+                {
+                    businessManager.Update(bm);
+                }
+                TempData["ShippingGatewayMessage"] = "Gateway Has Been Updated.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["ShippingGatewayMessage"] = "Database Update Error." + e.StackTrace;
+
+            }
+            return RedirectToAction("ShippingGateways");
+        }
+
+        public ActionResult DeleteShippingGateway(int id)
+        {
+            try
+            {
+                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                {
+                    businessManager.Delete(new PaymentBM(id));
+                }
+                TempData["ShippingGatewayMessage"] = "Gateway Has Been Deleted.";
+
+            }
+            catch (Exception e)
+            {
+                TempData["ShippingGatewayMessage"] = "Database Delete Error." + e.StackTrace;
+
+            }
+            return RedirectToAction("ShippingGateways");
+        }
+
+
+
+
+
+
+
         public ActionResult PaymentGateways()
         {
             using (PaymentBusinessManager bm = new PaymentBusinessManager())

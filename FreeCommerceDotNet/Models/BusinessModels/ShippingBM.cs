@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using FreeCommerceDotNet.Models.DbManager;
+﻿using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
+using System.Collections.Generic;
 
 namespace FreeCommerceDotNet.Models.BusinessModels
 {
@@ -8,9 +8,14 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     {
         public Shipping Shipping { get; set; }
         public List<OrderMaster> OrderMasterBms { get; set; }
+        public ShippingBM()
+        {
+            Shipping = new Shipping();
 
+        }
         public ShippingBM(int? id)
         {
+
             if (id == null)
             {
                 Shipping = new Shipping();
@@ -27,7 +32,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     OrderMasterBms =
                         m.GetByIntegerKey((int)id, "OrdersMaster", "ShippingId");
-                   
+
                 }
             }
         }
