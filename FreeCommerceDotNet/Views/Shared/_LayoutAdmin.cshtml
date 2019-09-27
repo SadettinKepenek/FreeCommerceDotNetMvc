@@ -141,15 +141,15 @@
                             <a class="sidebar-header" href="#"><i data-feather="box"></i> <span>Products</span><i class="fa fa-angle-right pull-right"></i></a>
                             <ul class="sidebar-submenu">
 
-                                <li><a href="category.html"><i class="fa fa-circle"></i>All Products</a></li>
-                                <li><a href="category-sub.html"><i class="fa fa-circle"></i>Add Product</a></li>
+                                <li><a href="~/Admin/Products"><i class="fa fa-circle"></i>All Products</a></li>
+                                <li><a href="~/Admin/AddProduct"><i class="fa fa-circle"></i>Add Product</a></li>
                                 <li>
                                     <a href="#">
                                         <i class="fa fa-circle"></i>
                                         <span>Attributes</span> <i class="fa fa-angle-right pull-right"></i>
                                     </a>
                                     <ul class="sidebar-submenu">
-                                        <li><a href="category-sub.html"><i class="fa fa-circle"></i>Add Attribute</a></li>
+                                        <li><a href=""><i class="fa fa-circle"></i>Add Attribute</a></li>
                                         <li><a href="category-sub.html"><i class="fa fa-circle"></i>Add Attribute Group</a></li>
                                         <li><a href="category-sub.html"><i class="fa fa-circle"></i>Attribute Group List</a></li>
                                         <li><a href="category-sub.html"><i class="fa fa-circle"></i>Attribute List</a></li>
@@ -177,17 +177,17 @@
                         <li>
                             <a class="sidebar-header" href="#"><i data-feather="list"></i> <span>Categories</span><i class="fa fa-angle-right pull-right"></i></a>
                             <ul class="sidebar-submenu">
-                                <li><a href="category.html"><i class="fa fa-circle"></i>All Categories</a></li>
-                                <li><a href="category-sub.html"><i class="fa fa-circle"></i>Sub Categories</a></li>
-                                <li><a href="category-sub.html"><i class="fa fa-circle"></i>Add Category</a></li>
+                                <li><a href="~/Admin/Categories"><i class="fa fa-circle"></i>All Categories</a></li>
+                                <li><a href="~/Admin/Categories"><i class="fa fa-circle"></i>Sub Categories</a></li>
+                                <li><a href="~/Admin/AddCategory"><i class="fa fa-circle"></i>Add Category</a></li>
                             </ul>
                         </li>
                         <li>
                             <a class="sidebar-header" href=""><i data-feather="dollar-sign"></i><span>Sales</span><i class="fa fa-angle-right pull-right"></i></a>
                             <ul class="sidebar-submenu">
-                                <li><a href="order.html"><i class="fa fa-circle"></i>Orders</a></li>
-                                <li><a href="order.html"><i class="fa fa-circle"></i>Returns</a></li>
-                                <li><a href="transactions.html"><i class="fa fa-circle"></i>Transactions</a></li>
+                                <li><a href="~/Admin/Orders"><i class="fa fa-circle"></i>Orders</a></li>
+                                <li><a href="~/Admin/Returns"><i class="fa fa-circle"></i>Returns</a></li>
+                                @*<li><a href="transactions.html"><i class="fa fa-circle"></i>Transactions</a></li>*@
                             </ul>
                         </li>
                         <li>
@@ -203,8 +203,8 @@
                         <li>
                             <a class="sidebar-header" href="#"><i data-feather="users"></i><span>Customers</span><i class="fa fa-angle-right pull-right"></i></a>
                             <ul class="sidebar-submenu">
-                                <li><a href="pages-list.html"><i class="fa fa-circle"></i>Customer List</a></li>
-                                <li>@Html.ActionLink("Add Customer","AddCustomer","Admin",null,null)<i class="fa fa-circle"></i></li>
+                                <li><a href="~/Admin/Customers"><i class="fa fa-circle"></i>Customer List</a></li>
+                                <li><a href="~/Admin/AddCustomer"><i class="fa fa-circle"></i>Customer Add</a><i class="fa fa-circle"></i></li>
                             </ul>
                         </li>
                         <li>
@@ -227,8 +227,8 @@
                             <ul class="sidebar-submenu">
                                 <li><a href="profile.html"><i class="fa fa-circle"></i>Site Settings</a></li>
                                 <li><a href="profile.html"><i class="fa fa-circle"></i>Profile Settings</a></li>
-                                <li><a href="profile.html"><i class="fa fa-circle"></i>Payment Gateways</a></li>
-                                <li><a href="profile.html"><i class="fa fa-circle"></i>Shipping Gateways</a></li>
+                                <li><a href="~/Admin/PaymentGateways"><i class="fa fa-circle"></i>Payment Gateways</a></li>
+                                <li><a href="~/Admin/ShippingGateways"><i class="fa fa-circle"></i>Shipping Gateways</a></li>
                             </ul>
                         </li>
                         <li><a class="sidebar-header" href="reports.html"><i data-feather="bar-chart"></i><span>Reports</span></a></li>

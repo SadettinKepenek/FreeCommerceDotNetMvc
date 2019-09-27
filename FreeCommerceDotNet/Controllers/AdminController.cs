@@ -170,9 +170,9 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
                 {
-                    businessManager.Delete(new PaymentBM(id));
+                    businessManager.Delete(new ShippingBM(id));
                 }
                 TempData["ShippingGatewayMessage"] = "Gateway Has Been Deleted.";
 
