@@ -194,6 +194,7 @@
     <Compile Include="Models\BusinessModels\UsersBM.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
+    <Compile Include="Models\DbManager\BrandManager.cs" />
     <Compile Include="Models\DbManager\CategoryManager.cs" />
     <Compile Include="Models\DbManager\CustomerManager.cs" />
     <Compile Include="Models\DbManager\OptionDetailManager.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="Models\DbManager\UsersManager.cs" />
     <Compile Include="Models\DbModels\Attribute.cs" />
     <Compile Include="Models\DbModels\AttributeGroup.cs" />
+    <Compile Include="Models\DbModels\Brand.cs" />
     <Compile Include="Models\DbModels\Category.cs" />
     <Compile Include="Models\DbModels\Customer.cs" />
     <Compile Include="Models\DbModels\OptionDetail.cs" />
