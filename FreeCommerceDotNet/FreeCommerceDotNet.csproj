@@ -152,6 +152,7 @@
     </Compile>
     <Compile Include="Models\BusinessManager\AttributeBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\AttributeGroupBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\BrandBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\CategoryBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\CustomerBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\OptionDetailBusinessManager.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\BusinessManager\UsersBusinessManager.cs" />
     <Compile Include="Models\BusinessModels\AttributeBM.cs" />
     <Compile Include="Models\BusinessModels\AttributeGroupBM.cs" />
+    <Compile Include="Models\BusinessModels\BrandBM.cs" />
     <Compile Include="Models\BusinessModels\CategoryBM.cs" />
     <Compile Include="Models\BusinessModels\CustomerBM.cs" />
     <Compile Include="Models\BusinessModels\OptionDetailBM.cs" />
