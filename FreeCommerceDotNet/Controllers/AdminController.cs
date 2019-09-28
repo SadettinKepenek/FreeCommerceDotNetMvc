@@ -314,8 +314,8 @@ namespace FreeCommerceDotNet.Controllers
                 foreach (var segment in segments)
                 {
 
-                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
-                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
+                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentId });
+                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentId });
 
 
                 }
@@ -359,8 +359,8 @@ namespace FreeCommerceDotNet.Controllers
                 foreach (var segment in segments)
                 {
 
-                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentName });
-                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentName });
+                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentId });
+                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentId });
 
 
                 }
