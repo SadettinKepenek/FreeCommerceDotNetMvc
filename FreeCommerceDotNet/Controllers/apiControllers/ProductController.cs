@@ -17,6 +17,7 @@ using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers.apiControllers
 {
+    [System.Web.Http.Authorize]
     public class ProductController : ApiController
     {
         private ProductManager productManager =new ProductManager();

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FreeCommerceDotNet.Models.BusinessManager;
+using FreeCommerceDotNet.Models.BusinessModels;
 
 namespace FreeCommerceDotNet.Controllers.apiControllers
 {
@@ -11,15 +13,21 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
     public class UserController : ApiController
     {
         // GET: api/User
-        public IEnumerable<string> Get()
+        public List<UsersBM> Get()
         {
-            return new string[] { "value1", "value2" };
+            using (UsersBusinessManager bm = new UsersBusinessManager())
+            {
+                return bm.Get();
+            }
         }
 
         // GET: api/User/5
-        public string Get(int id)
+        public UsersBM Get(int id)
         {
-            return "value";
+            using (UsersBusinessManager bm=new UsersBusinessManager())
+            {
+                return bm.GetById(id);
+            }
         }
 
         // POST: api/User
