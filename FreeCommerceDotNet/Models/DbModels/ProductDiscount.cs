@@ -8,6 +8,6 @@
         public string EndDate { get; set; }
         public int Quantity { get; set; }
         public double NewPrice { get; set; }
-        public string Segment { get; set; }
+        public int Segment { get; set; }
     }
 }

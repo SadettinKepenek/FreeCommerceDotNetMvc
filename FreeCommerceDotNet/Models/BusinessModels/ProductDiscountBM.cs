@@ -7,6 +7,14 @@ namespace FreeCommerceDotNet.Models.BusinessModels
     {
         public ProductDiscount ProductDiscount { get; set; }
         public Product Product;
+        public Segment Segment { get; set; }
+
+        public ProductDiscountBM()
+        {
+            ProductDiscount = new ProductDiscount();
+            Product=new Product();
+            Segment=new Segment();
+        }
         public ProductDiscountBM(int? id)
         {
             if (id != null)
@@ -19,6 +27,10 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 using (ProductManager m = new ProductManager())
                 {
                     Product = m.Get(ProductDiscount.ProductId);
+                }
+                using (SegmentManager m = new SegmentManager())
+                {
+                    Segment = m.Get(ProductDiscount.Segment);
                 }
                 return;
             }
