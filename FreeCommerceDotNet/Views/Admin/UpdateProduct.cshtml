@@ -1,17 +1,14 @@
-﻿@using System.ComponentModel
-@using System.Diagnostics
-@using FreeCommerceDotNet.Models.BusinessManager
-@using FreeCommerceDotNet.Models.BusinessModels
+﻿@model FreeCommerceDotNet.Models.BusinessModels.ProductBM
+
+@{
+    ViewBag.Title = "UpdateProduct";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
+@using FreeCommerceDotNet.Models.Util
 @using Attribute = FreeCommerceDotNet.Models.DbModels.Attribute
-@using System.Collections.Generic
-@using System.Web
-@using System.Web.Mvc
-
-@model FreeCommerceDotNet.Models.BusinessModels.ProductBM
-
-
 
 
 @helper SetHiddenAttributeFieldInstance(int count, List<Attribute> attributes)
@@ -26,6 +23,8 @@
     </div>
 
 }
+
+
 
 
 @{
@@ -69,6 +68,133 @@
 
 
 
+<script type="text/javascript">
+    var clickedImageDeleteButton = 0;
+    window.imageCount = 0;
+
+    function RemoveSessionImageValue(key) {
+        $(function () {
+            $.post('../Session/RemoveVariable',
+                { key: key }, function (data) {
+                });
+        });
+    }
+    function GetSessionImageValue(key)
+    {
+        $(function () {
+            $.post('../Session/GetVariable',
+                { key: key }, function (data) {
+                    console.log(data.success);
+                });
+        });
+    }
+    function SetSessionImageValue(key, value) {
+        $(function () {
+            $.post('../Session/SetVariable',
+                { key: key, value: value}, function (data)
+                {
+                    GetSessionImageValue(key);
+
+                });
+        });
+    }
+
+    function removeImageById(item) {
+        var id = $(item).attr("id").replace("removeImageItem", "");
+        console.log("Dosyayı sıfırla" + "#imageUploadInput" + id + "");
+        $('#imageUploadInput'+ id ).val('');
+        var element = $('#ImageRow' + id + '');
+        element.remove();
+        window.imageCount--;
+        RemoveSessionImageValue('#Image' + id);
+        if (window.imageCount == 0) {
+            $('#imagesContainer').append('<a id=\"noImageCountText\">Şuan da hiç resim bulunmamaktadır.</a>');
+        }
+    }
+
+    function imageIsLoaded(e) {
+
+        SetSessionImageValue("Image" + window.imageCount, e.target.result);
+        window.imageCount++;
+        if (window.imageCount != 0) {
+            $('#noImageCountText').remove();
+        }
+        if ($('#ImageRow' + window.imageCount + '').length) {
+            var yeniResim = '<div class=\"row\" id=\"ImageRow' +
+                window.imageCount +
+                '\"><div class=\"col-md-10\"><img src="' +
+                e.target.result +
+                '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' +
+                window.imageCount +
+                '\" onclick=\"removeImageById(this);\">Delete</button></div></div>';
+            $('#ImageRow' + window.imageCount + '').replaceWith(yeniResim);
+
+            console.log("Zaten image var" + window.imageCount);
+        } else {
+            $('#imagesContainer').append('<div class=\"row\" id=\"ImageRow' + window.imageCount + '\"><div class=\"col-md-10\"><img src="' + e.target.result + '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' + window.imageCount +'\" onclick=\"removeImageById(this);\">Delete</button></div></div>');
+
+        }
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = imageIsLoaded;
+            reader.onerror = function(event) {
+                console.log("Error during uploading image");
+            };
+            console.log(window.imageCount);
+            reader.readAsDataURL(input.files[0]);
+
+        }
+    }
+
+    var count = 0;
+    window.count = 0;
+    function setAttributeCountValue() {
+        window.count=window.count+1;
+    }
+    function getAttributeCountValue() {
+        return window.count;
+    }
+    function addUpdateAttributeField(optionValue, optionText,innerText,relationId) {
+        var attributeRow = $("#attributes-panel-tab");
+        var htmlString =
+            '<div class=\"row\" id=\"attribute-row-' + window.count + '\" ><input data-val="true" data-val-number="The field RelationId must be a number." data-val-required="RelationId alanı gereklidir." id="ProductAttributes_' + window.count + '__RelationId" name="ProductAttributes[' + window.count +'].RelationId" type="hidden" value="'+relationId+'" /><div class=\"col-md-4\">' +
+                @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+
+            '</div><div class=\"col-md-8\" >' +@Html.Raw(Json.Encode(Html.TextAreaFor(x=>x.ProductAttributes[count].AttributeDescription,new {@class="form-control",style= "min-width: 100%; min-height:90 %" }).ToHtmlString()))+
+                '<br/><button type=\"button\" class=\"btn btn-xs btn-danger pull-right\" onclick=\"$(\'#attribute-row-' + window.count + '\').remove();\">Delete</button><hr/></div></div><input type="hidden" name="ProductAttributes.Index" value="' + window.count + '">';
+
+        htmlString=htmlString.replace('ProductAttributes[0].AttributeId', 'ProductAttributes[' + window.count + '].AttributeId');
+        htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeId', 'ProductAttributes_'+window.count+'__AttributeId');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeDescription', 'ProductAttributes_' + window.count + '__AttributeDescription');
+        htmlString = htmlString.replace('<option value="1">Test Attribute</option>', '<option value="'+optionValue+'" selected>'+optionText+'</option>');
+        attributeRow.append(htmlString);
+        document.getElementById('ProductAttributes_' + window.count + '__AttributeDescription').innerText = innerText;
+        console.log(htmlString);
+        setAttributeCountValue();
+
+    }
+    function addNewAttributeField() {
+
+        var attributeRow = $("#attributes-panel-tab");
+        var htmlString =
+            '<div class=\"row\" id=\"attribute-row-' + window.count + '\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+'</div><div class=\"col-md-8\" >' +@Html.Raw(Json.Encode(Html.TextAreaFor(x=>x.ProductAttributes[count].AttributeDescription,new {@class="form-control",style= "min-width: 100%; min-height:90 %" }).ToHtmlString()))+'<br/><button type=\"button\" class=\"btn btn-xs btn-danger pull-right\" onclick=\"$(\'#attribute-row-'+window.count+'\').remove();\">Delete</button><hr/></div></div><input type="hidden" name="ProductAttributes.Index" value="'+window.count+'">' ;
+
+        htmlString=htmlString.replace('ProductAttributes[0].AttributeId', 'ProductAttributes[' + window.count + '].AttributeId');
+        htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeId', 'ProductAttributes_'+window.count+'__AttributeId');
+        htmlString = htmlString.replace('ProductAttributes_0__AttributeDescription', 'ProductAttributes_' + window.count +'__AttributeDescription');
+
+        console.log(htmlString);
+        attributeRow.append(htmlString);
+        document.getElementById('ProductAttributes_' + window.count + '__AttributeDescription').innerText = '';
+        setAttributeCountValue();
+
+    }
+</script>
 
 
 <!-- Container-fluid starts-->
@@ -106,10 +232,10 @@
                         <div class="col-xl-12">
 
                             <div class="form">
-                                @using (Html.BeginForm("AddProduct", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
+                                @using (Html.BeginForm("UpdateProduct", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                                 {
 
-
+                                    @Html.HiddenFor(x=>x.Product.ProductId)
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Product Name :</label>
                                         @Html.TextBoxFor(x => x.Product.ProductName, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom01", type = "text", required = "" })
@@ -119,7 +245,7 @@
                                     <div class="form-group mb-3 row">
                                         <label for="editor1" class="col-xl-3 col-sm-4 mb-0">Product Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            @Html.TextAreaFor(x => x.Product.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm",  name = "editor1", type = "text", required = "" })
+                                            @Html.TextAreaFor(x => x.Product.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm", name = "editor1", type = "text", required = "" })
                                         </div>
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Name.</div>
@@ -263,6 +389,18 @@
                                         <div class="tab-pane fade" id="product-attributes-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
                                             <div class="container" id="attributes-panel-tab">
+                                                @*Attributes
+                                                *@
+                                                @for (int Mod = 0; Mod < Model.ProductAttributes.Count; Mod++)
+                                                {
+
+                                                    int idx = attributes.IndexOf(attributes.FirstOrDefault(x => x.AttributeId == Model.ProductAttributes[Mod].AttributeId));
+
+
+
+                                                    <script type="text/javascript">addUpdateAttributeField(@idx,'@attributes.ElementAt(idx).AttributeName','@Model.ProductAttributes[Mod].AttributeDescription',@Model.ProductAttributes[Mod].RelationId);</script>
+
+                                                }
 
                                             </div>
                                             <div class="row">
@@ -281,11 +419,11 @@
 
                                                     <table class="table">
                                                         <thead>
-                                                        <tr>
-                                                            <th scope="col">#Segment</th>
-                                                            <th scope="col">Fiyat</th>
+                                                            <tr>
+                                                                <th scope="col">#Segment</th>
+                                                                <th scope="col">Fiyat</th>
 
-                                                        </tr>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                             @for (int i = 0; i < Model.ProductPrices.Count; i++)
@@ -383,11 +521,11 @@
 
                                     </div>
                                     <div class="offset-xl-3 offset-sm-4">
-                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
                                         <button type="button" class="btn btn-light">Discard</button>
                                     </div>
                                 }
-                             
+
                             </div>
 
                         </div>
@@ -400,121 +538,10 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    var clickedImageDeleteButton = 0;
-    window.imageCount = 0;
-
-    function RemoveSessionImageValue(key) {
-        $(function () {
-            $.post('../Session/RemoveVariable',
-                { key: key }, function (data) {
-                });
-        });
-    }
-    function GetSessionImageValue(key)
-    {
-        $(function () {
-            $.post('../Session/GetVariable',
-                { key: key }, function (data) {
-                    console.log(data.success);
-                });
-        });
-    }
-    function SetSessionImageValue(key, value) {
-        $(function () {
-            $.post('../Session/SetVariable',
-                { key: key, value: value}, function (data)
-                {
-                    GetSessionImageValue(key);
-
-                });
-        });
-    }
-
-    function removeImageById(item) {
-        var id = $(item).attr("id").replace("removeImageItem", "");
-        console.log("Dosyayı sıfırla" + "#imageUploadInput" + id + "");
-        $('#imageUploadInput'+ id ).val('');
-        var element = $('#ImageRow' + id + '');
-        element.remove();
-        window.imageCount--;
-        RemoveSessionImageValue('#Image' + id);
-        if (window.imageCount == 0) {
-            $('#imagesContainer').append('<a id=\"noImageCountText\">Şuan da hiç resim bulunmamaktadır.</a>');
-        }
-    }
-
-    function imageIsLoaded(e) {
-
-        SetSessionImageValue("Image" + window.imageCount, e.target.result);
-        window.imageCount++;
-        if (window.imageCount != 0) {
-            $('#noImageCountText').remove();
-        }
-        if ($('#ImageRow' + window.imageCount + '').length) {
-            var yeniResim = '<div class=\"row\" id=\"ImageRow' +
-                window.imageCount +
-                '\"><div class=\"col-md-10\"><img src="' +
-                e.target.result +
-                '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' +
-                window.imageCount +
-                '\" onclick=\"removeImageById(this);\">Delete</button></div></div>';
-            $('#ImageRow' + window.imageCount + '').replaceWith(yeniResim);
-
-            console.log("Zaten image var" + window.imageCount);
-        } else {
-            $('#imagesContainer').append('<div class=\"row\" id=\"ImageRow' + window.imageCount + '\"><div class=\"col-md-10\"><img src="' + e.target.result + '" alt=""  class="img-fluid image_zoom_1 blur-up lazyloaded"></div><hr/><div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-xs btn-danger\" id=\"removeImageItem' + window.imageCount +'\" onclick=\"removeImageById(this);\">Delete</button></div></div>');
-
-        }
-    }
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = imageIsLoaded;
-            reader.onerror = function(event) {
-                console.log("Error during uploading image");
-            };
-            console.log(window.imageCount);
-            reader.readAsDataURL(input.files[0]);
-
-        }
-    }
-
-    var count = 0;
-    window.count = 0;
-    function setAttributeCountValue() {
-        window.count=window.count+1;
-    }
-    function getAttributeCountValue() {
-        return window.count;
-    }
-    function addNewAttributeField() {
-        var attributeRow = $("#attributes-panel-tab");
-        var htmlString =
-            '<div class=\"row\" id=\"attribute-row-' + window.count + '\" ><div class=\"col-md-4\">' + @Html.Raw(Json.Encode(Html.DropDownListFor(x => x.ProductAttributes[count].AttributeId, new SelectList(attributes, "AttributeId", "AttributeName"), new { @class = "form-control", type = "input"}).ToHtmlString()))+'</div><div class=\"col-md-8\" >' +@Html.Raw(Json.Encode(Html.TextAreaFor(x=>x.ProductAttributes[count].AttributeDescription,new {@class="form-control",style= "min-width: 100%; min-height:90 %" }).ToHtmlString()))+'<br/><button type=\"button\" class=\"btn btn-xs btn-danger pull-right\" onclick=\"$(\'#attribute-row-'+window.count+'\').remove();\">Delete</button><hr/></div></div>';
-
-        htmlString=htmlString.replace('ProductAttributes[0].AttributeId', 'ProductAttributes[' + window.count + '].AttributeId');
-        htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
-        htmlString = htmlString.replace('ProductAttributes_0__AttributeId', 'ProductAttributes_'+window.count+'__AttributeId');
-        htmlString = htmlString.replace('ProductAttributes_0__AttributeDescription', 'ProductAttributes_' + window.count +'__AttributeDescription');
-        console.log(htmlString);
-        setAttributeCountValue();
-        attributeRow.append(htmlString);
-    }
-</script>
 
 
-<!-- latest jquery-->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
+
+
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
 <!-- Container-fluid Ends-->
-<script src="../assets/js/dashboard/form-validation-custom.js"></script>
-<!-- ckeditor js-->
-@*<script src="../assets/js/editor/ckeditor/ckeditor.js"></script>
-<script src="../assets/js/editor/ckeditor/styles.js"></script>
-<script src="../assets/js/editor/ckeditor/adapters/jquery.js"></script>
-<script src="../assets/js/editor/ckeditor/ckeditor.custom.js"></script>*@
-
-@*<script src="../assets/js/jquery.elevatezoom.js"></script>
-<script src="../assets/js/zoom-scripts.js"></script>*@
+<script src="~/assets/js/dashboard/form-validation-custom.js"></script>

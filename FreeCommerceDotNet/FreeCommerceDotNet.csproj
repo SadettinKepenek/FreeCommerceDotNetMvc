@@ -248,6 +248,7 @@
     <Compile Include="Models\Security.cs" />
     <Compile Include="Models\Util\DbForeignKeyModel.cs" />
     <Compile Include="Models\Util\DeleteResponseModel.cs" />
+    <Compile Include="Models\Util\ListModelBindingExtensions.cs" />
     <Compile Include="Models\Util\LogEntry.cs" />
     <Compile Include="Models\Util\LoggerExtensions.cs" />
     <Compile Include="Models\Util\Loggers.cs" />
@@ -3639,6 +3640,7 @@
     <Content Include="Views\Admin\Segments.cshtml" />
     <Content Include="Views\Admin\UpdateSegment.cshtml" />
     <Content Include="Views\Admin\AddSegment.cshtml" />
+    <Content Include="Views\Admin\UpdateProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

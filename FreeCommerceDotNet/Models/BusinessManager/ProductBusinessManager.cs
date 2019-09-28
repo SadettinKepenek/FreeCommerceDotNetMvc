@@ -4,6 +4,8 @@ using FreeCommerceDotNet.Models.DbModels;
 using FreeCommerceDotNet.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.BusinessManager
@@ -90,6 +92,55 @@ namespace FreeCommerceDotNet.Models.BusinessManager
 
         }
 
+        public bool UpdateProductAttributes(List<ProductAttribute> sonGelenler, List<ProductAttribute> ilkTutulan,int productId)
+        {
+            /// Son Gelen Listenin İçinde İlk Gelenlerden Yoksa Silinmiştir
+            /// Son Gelen Listenin İçinde İlk Gelenlerden Yoksa ve bu ilk gelenlerdede yoksa Eklenmiştir
+            /// Diğer durumda güncellenmiştir
+            
+            // Silinenleri Bulalım
+
+            List<ProductAttribute> silinenler=new List<ProductAttribute>();
+            List<ProductAttribute> eklenenler=new List<ProductAttribute>();
+            List<ProductAttribute> guncellenenler=new List<ProductAttribute>();
+
+
+            using (ProductAttributeManager m = new ProductAttributeManager())
+            {
+                foreach (ProductAttribute productAttribute in ilkTutulan)
+                {
+                    productAttribute.ProductId = productId;
+                    var isDeleted = sonGelenler.FirstOrDefault(x => x.RelationId == productAttribute.RelationId) == null;
+                    if (isDeleted)
+                    {
+                        m.Delete(productAttribute.RelationId);
+
+                    }
+                }
+                foreach (ProductAttribute attribute in sonGelenler)
+                {
+                    attribute.ProductId = productId;
+                    if (attribute.RelationId != 0)
+                    {
+                        //Update
+                        m.Update(attribute);
+                    }
+                    else
+                    {
+                        m.Add(attribute);
+                    }
+                }
+
+               
+            }
+           
+
+
+
+           
+            return true;
+        }
+
         public bool Update(ProductBM entry)
         {
             try
@@ -97,13 +148,13 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 using (ProductManager m = new ProductManager())
                 {
                     int insertedId = m.Update(entry.Product);
-                    using (ProductAttributeManager attributeManager = new ProductAttributeManager())
-                    {
-                        foreach (var entryProductAttribute in entry.ProductAttributes)
-                        {
-                            attributeManager.Update(entryProductAttribute);
-                        }
-                    }
+                    //using (ProductAttributeManager attributeManager = new ProductAttributeManager())
+                    //{
+                    //    foreach (var entryProductAttribute in entry.ProductAttributes)
+                    //    {
+                    //        attributeManager.Update(entryProductAttribute);
+                    //    }
+                    //}
 
                     using (ProductDiscountManager discountManager = new ProductDiscountManager())
                     {
@@ -144,6 +195,9 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 return false;
             }
         }
+
+
+
         public bool Delete(ProductBM entry)
         {
 

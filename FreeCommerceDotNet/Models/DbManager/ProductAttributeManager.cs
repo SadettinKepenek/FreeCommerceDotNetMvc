@@ -65,7 +65,6 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 return Utilities.ExecuteCommand<ProductAttribute>(sqlCommand, SqlCommandTypes.Select);
             }
@@ -73,7 +72,7 @@ namespace FreeCommerceDotNet.Models.DbManager
 
         public bool CheckIsExist(int id)
         {
-            return Utilities.CheckIsExist("ProductAttributes", "PriceId", id);
+            return Utilities.CheckIsExist("ProductAttributes", "RelationId", id);
         }
 
         public List<ProductAttribute> GetByIntegerKey(int id, string tbl, string key)

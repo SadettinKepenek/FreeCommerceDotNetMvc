@@ -302,7 +302,7 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult AddProduct()
         {
             var productBm = new ProductBM(null);
-            int ATTIBUTEMAXCOUNT = 30;
+            int ATTIBUTEMAXCOUNT = 1;
             for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
             {
                 productBm.ProductAttributes.Add(new ProductAttribute());
@@ -346,12 +346,21 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateProduct(int id)
         {
+            int ATTIBUTEMAXCOUNT = 1;
+
+
             var productBm = new ProductBM(id);
-            int ATTIBUTEMAXCOUNT = 30;
-            for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
+            if (productBm.ProductAttributes.Count == 0)
             {
-                productBm.ProductAttributes.Add(new ProductAttribute());
+                for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
+                {
+                    productBm.ProductAttributes.Add(new ProductAttribute());
+                }
             }
+
+            TempData["ProductAttributesCompare"] = productBm.ProductAttributes;
+            productBm.ProductAttributes.Capacity = 50;
+            int capacity = productBm.ProductAttributes.Capacity;
             productBm.ProductPrices = new List<ProductPrice>();
             using (SegmentManager m = new SegmentManager())
             {
@@ -375,14 +384,16 @@ namespace FreeCommerceDotNet.Controllers
             {
                 try
                 {
-                    TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde eklendi";
                     productManager.Update(bm);
+                    List<ProductAttribute> firstAttributes = TempData["ProductAttributesCompare"] as List<ProductAttribute>;
+                    productManager.UpdateProductAttributes(bm.ProductAttributes, firstAttributes,bm.Product.ProductId);
+                    TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde güncellendi";
                     return RedirectToAction("Products");
                 }
                 catch (Exception e)
                 {
                     ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
-                    return AddProduct(bm);
+                    return UpdateProduct(bm);
 
                 }
             }
