@@ -796,6 +796,20 @@ namespace FreeCommerceDotNet.Controllers
             TempData["MessageSegment"] = "Segment Updated!";
             return RedirectToAction("Segments", "Admin");
         }
-        //
+        [HttpGet]
+        public ActionResult AddSegment()
+        {
+            return View(new SegmentBM(null));
+        }
+        [HttpPost]
+        public ActionResult AddSegment(SegmentBM segmentBm)
+        {
+            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            {
+                manager.Add(segmentBm);
+            }
+            TempData["MessageSegment"] = "Segment Added!";
+            return RedirectToAction("Segments","Admin");
+        }
     }
 }
