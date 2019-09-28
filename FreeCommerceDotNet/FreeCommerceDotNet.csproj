@@ -153,6 +153,7 @@
     <Compile Include="Models\BusinessManager\AttributeBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\AttributeGroupBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\CategoryBusinessManager.cs" />
+    <Compile Include="Models\BusinessManager\CouponBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\CustomerBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\OptionDetailBusinessManager.cs" />
     <Compile Include="Models\BusinessManager\OptionMasterBusinessManager.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Models\BusinessModels\AttributeBM.cs" />
     <Compile Include="Models\BusinessModels\AttributeGroupBM.cs" />
     <Compile Include="Models\BusinessModels\CategoryBM.cs" />
+    <Compile Include="Models\BusinessModels\CouponBM.cs" />
     <Compile Include="Models\BusinessModels\CustomerBM.cs" />
     <Compile Include="Models\BusinessModels\OptionDetailBM.cs" />
     <Compile Include="Models\BusinessModels\OptionMasterBM.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\CategoryManager.cs" />
+    <Compile Include="Models\DbManager\CouponManager.cs" />
     <Compile Include="Models\DbManager\CustomerManager.cs" />
     <Compile Include="Models\DbManager\OptionDetailManager.cs" />
     <Compile Include="Models\DbManager\OptionMasterManager.cs" />
@@ -216,6 +219,7 @@
     <Compile Include="Models\DbModels\Attribute.cs" />
     <Compile Include="Models\DbModels\AttributeGroup.cs" />
     <Compile Include="Models\DbModels\Category.cs" />
+    <Compile Include="Models\DbModels\Coupon.cs" />
     <Compile Include="Models\DbModels\Customer.cs" />
     <Compile Include="Models\DbModels\OptionDetail.cs" />
     <Compile Include="Models\DbModels\OptionMaster.cs" />
