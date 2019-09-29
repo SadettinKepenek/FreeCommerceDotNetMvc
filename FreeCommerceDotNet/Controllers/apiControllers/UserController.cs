@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
 using FreeCommerceDotNet.Models.Abstracts;
 using FreeCommerceDotNet.Models.BusinessManager;
@@ -16,6 +18,7 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 {
     public class UserController : ApiController
     {
+        
         // GET: api/User
         [WebApiAuthorize(Roles = "Admin")]
         public List<UsersBM> Get()
@@ -31,10 +34,30 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         [WebApiAuthorize]
         public UsersBM Get(int id)
         {
+
+            ClaimsPrincipal principal = Request.GetRequestContext().Principal as ClaimsPrincipal;
+
+            var username = ClaimsPrincipal.Current.Identity.Name;
+
             using (UsersBusinessManager bm=new UsersBusinessManager())
             {
-                return bm.GetById(id);
+              
+                var usersBm = bm.GetById(id);
+                if (RequestContext.Principal.IsInRole("Admin"))
+                {
+                    return usersBm;
+                }
+             
+                if (usersBm.Users.Username==username)
+                {
+                    return usersBm;
+                }
+                else
+                {
+                    return new UsersBM(){Users = new Users(){Username = username}};
+                }
             }
+
         }
 
         // POST: api/User
