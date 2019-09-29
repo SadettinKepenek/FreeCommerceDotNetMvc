@@ -1,5 +1,7 @@
-﻿using System.Web.Routing;
+﻿using System.Data.SqlClient;
+using System.Web.Routing;
 using FreeCommerceDotNet.Models.BusinessManager;
+using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using Microsoft.Owin;
 
@@ -12,6 +14,7 @@ namespace FreeCommerceDotNet.Models.WebApi.Helper
             var username = context.Authentication.User.Identity.Name;
             using (UsersBusinessManager bm = new UsersBusinessManager())
             {
+                
                 var usersBm = bm.GetById(userId);
                 if (context.Authentication.User.IsInRole("Admin"))
                 {

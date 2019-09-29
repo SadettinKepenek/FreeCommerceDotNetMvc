@@ -139,7 +139,7 @@
             '</th><td colspan="2">' +
             @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
             '</td>' +
-            '<td><button type="button" id="deleteProduct'+window.productCount+'" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr>';
+            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
         htmlString =
             htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
         htmlString =

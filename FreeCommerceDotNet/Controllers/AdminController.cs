@@ -750,7 +750,16 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateOrder(int id)
         {
-            return View(new OrderMasterBM(id));
+            var orderMasterBm = new OrderMasterBM(id);
+            TempData["OrderDetailsCompare"] = orderMasterBm.OrderDetails;
+            if (orderMasterBm.OrderDetails.Count == 0)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    orderMasterBm.OrderDetails.Add(new OrderDetail());
+                }
+            }
+            return View(orderMasterBm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -759,6 +768,8 @@ namespace FreeCommerceDotNet.Controllers
             using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
             {
                 manager.Update(bm);
+                List<OrderDetail> firstAttributes = TempData["OrderDetailsCompare"] as List<OrderDetail>;
+                manager.UpdateOrderDetails(bm.OrderDetails, firstAttributes,bm.OrderMaster.OrderId);
                 TempData["OrderMasterMessage"] = "Order Has Been Updated";
             }
             return RedirectToAction("Orders");

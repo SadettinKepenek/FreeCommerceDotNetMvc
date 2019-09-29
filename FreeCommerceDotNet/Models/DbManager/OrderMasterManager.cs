@@ -29,7 +29,6 @@ namespace FreeCommerceDotNet.Models.DbManager
             using (SqlCommand command = new SqlCommand(sqlQuery))
             {
                 var sqlCommand = command;
-                sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Id", id);
                 var Products = new List<OrderMaster>();
                 Utilities.ExecuteCommand<OrderMaster>(sqlCommand, SqlCommandTypes.Select, ref Products);

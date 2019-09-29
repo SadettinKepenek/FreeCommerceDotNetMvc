@@ -170,10 +170,11 @@
         htmlString = htmlString.replace('ProductAttributes[0].AttributeDescription', 'ProductAttributes[' + window.count + '].AttributeDescription');
         htmlString = htmlString.replace('ProductAttributes_0__AttributeId', 'ProductAttributes_'+window.count+'__AttributeId');
         htmlString = htmlString.replace('ProductAttributes_0__AttributeDescription', 'ProductAttributes_' + window.count + '__AttributeDescription');
-        htmlString = htmlString.replace('<option value="1">Test Attribute</option>', '<option value="'+optionValue+'" selected>'+optionText+'</option>');
+
         attributeRow.append(htmlString);
+        var selectList = document.getElementsByName('ProductAttributes[' + window.count + '].AttributeId')[0];
+        selectList.selectedIndex = optionValue;
         document.getElementById('ProductAttributes_' + window.count + '__AttributeDescription').innerText = innerText;
-        console.log(htmlString);
         setAttributeCountValue();
 
     }
@@ -391,16 +392,22 @@
                                             <div class="container" id="attributes-panel-tab">
                                                 @*Attributes
                                                 *@
-                                                @for (int Mod = 0; Mod < Model.ProductAttributes.Count; Mod++)
+                                                
+                                                @if (Model.ProductAttributes != null )
                                                 {
+                                                    for (int Mod = 0; Mod < Model.ProductAttributes.Count; Mod++)
+                                                    {
+                                                        if (Model.ProductAttributes[Mod].AttributeId != 0)
+                                                        {
+                                                            int idx = attributes.IndexOf(attributes.FirstOrDefault(x => x.AttributeId == Model.ProductAttributes[Mod].AttributeId));
 
-                                                    int idx = attributes.IndexOf(attributes.FirstOrDefault(x => x.AttributeId == Model.ProductAttributes[Mod].AttributeId));
+                                                            <script type="text/javascript">addUpdateAttributeField(@idx,'@attributes.ElementAt(idx).AttributeName','@Model.ProductAttributes[Mod].AttributeDescription',@Model.ProductAttributes[Mod].RelationId);</script>
+                                                        }
+                                                        
 
-
-
-                                                    <script type="text/javascript">addUpdateAttributeField(@idx,'@attributes.ElementAt(idx).AttributeName','@Model.ProductAttributes[Mod].AttributeDescription',@Model.ProductAttributes[Mod].RelationId);</script>
-
+                                                     }
                                                 }
+                                                
 
                                             </div>
                                             <div class="row">

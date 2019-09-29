@@ -23,5 +23,7 @@
         public bool Status { get; set; }
 
         public int SegmentId { get; set; }
+        public int UserId { get; set; }
+
     }
 }

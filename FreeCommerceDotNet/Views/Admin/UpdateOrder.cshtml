@@ -30,7 +30,59 @@
         customers = m.GetAll();
     }
 }
+<script type="text/javascript">
 
+    var productCount = 0;
+    function incrementProductCount() {
+        window.productCount++;
+    }
+    function deleteProduct(count) {
+        console.log("How Many");
+        var tr = $('#productRow' + count);
+        tr.remove();
+        window.productCount--;
+    }
+    // <input data-val="true" data-val-number="The field OrderDetailId must be a number." data-val-required="OrderDetailId alanı gereklidir." id="OrderDetails_' + window.count + '__OrderDetailId" name="OrderDetails[' + window.count + '].OrderDetailId" type="hidden" value="' + relationId +'" />
+    function addNewUpdateProduct(OrderDetailId,optionValue) {
+        var tbody = $('#tableOrderDetailsProduct');
+        var htmlString = '<tr id="productRow' + window.productCount + '<input data-val="true" data-val-number="The field OrderDetailId must be a number." data-val-required="OrderDetailId alanı gereklidir." id="OrderDetails_' + window.count + '__OrderDetailId" name="OrderDetails[' + window.count + '].OrderDetailId" type="hidden" value="' + OrderDetailId +'" />' +
+            '<th scope="row">' +
+            @Html.Raw(Json.Encode(@Html.DropDownListFor(x => x.OrderDetails[0].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" }).ToHtmlString())) +
+            '</th><td colspan="2">' +
+            @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
+            '</td>' +
+            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
+        htmlString =
+            htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
+        htmlString =
+            htmlString.replace("OrderDetails[0].Quantity", "OrderDetails[" + window.productCount + "].Quantity");
+        tbody.append(htmlString);
+        var selectElement = document.getElementsByName("OrderDetails[" + window.productCount + "].ProductId")[0];
+        selectElement.selectedIndex = optionValue;
+        window.productCount++;
+        console.log(htmlString);
+    }
+    function addNewProduct() {
+        var tbody = $('#tableOrderDetailsProduct');
+        var htmlString = '<tr id="productRow' + window.productCount + '">' +
+            '<th scope="row">' +
+            @Html.Raw(Json.Encode(@Html.DropDownListFor(x => x.OrderDetails[0].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" }).ToHtmlString())) +
+            '</th><td colspan="2">' +
+            @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
+            '</td>' +
+            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
+        htmlString =
+            htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
+        htmlString =
+            htmlString.replace("OrderDetails[0].Quantity", "OrderDetails[" + window.productCount + "].Quantity");
+        tbody.append(htmlString);
+        document.getElementsByName('OrderDetails[' + window.productCount + '].Quantity')[0].value = '0';
+
+        window.productCount++;
+        console.log(htmlString);
+
+    }
+</script>
 
 <div class="container-fluid">
     <div class="page-header">
@@ -96,8 +148,9 @@
                                         <tbody id="tableOrderDetailsProduct">
                                             @for (int i = 0; i < Model.OrderDetails.Count; i++)
                                             {
-
-                                            <tr>
+                                                int idx = products.IndexOf(products.FirstOrDefault(x => x.ProductId == Model.OrderDetails[i].ProductId));
+                                                <script type="text/javascript">addNewUpdateProduct(@Model.OrderDetails[i].OrderDetailId, @idx)</script>
+                                            @*<tr>
                                                 <script>incrementProductCount();</script>
 
                                                 <th scope="row">
@@ -105,7 +158,7 @@
                                                 </th>
                                                 <td colspan="2">@Html.TextBoxFor(x => x.OrderDetails[i].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" })</td>
 
-                                            </tr>
+                                            </tr>*@
                                             }
 
 
@@ -115,7 +168,7 @@
                                 </div>
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
-                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                                 @Html.ActionLink("Discard", "Orders", "Admin", null, new { type = "button", @class = "btn btn-light" })
                             </div>
                         }
@@ -126,35 +179,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    
-    var productCount = 0;
-    function incrementProductCount() {
-        window.productCount++;
-    }
-    function deleteProduct(count) {
-        console.log("How Many");
-        var tr = $('#productRow' + count);
-        tr.remove();
-        window.productCount--;
-    }
-    function addNewProduct() {
-        var tbody = $('#tableOrderDetailsProduct');
-        var htmlString = '<tr id="productRow'+window.productCount+'"><th scope="row">' +
-            @Html.Raw(Json.Encode(@Html.DropDownListFor(x => x.OrderDetails[0].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" }).ToHtmlString())) +
-            '</th><td colspan="2">' +
-            @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
-            '</td>' +
-            '<td><button type="button" id="deleteProduct'+window.productCount+'" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr>';
-        htmlString =
-            htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
-        htmlString =
-            htmlString.replace("OrderDetails[0].Quantity", "OrderDetails[" + window.productCount + "].Quantity");
-        window.productCount++;
-        console.log(htmlString);
-        tbody.append(htmlString);
-    }
-</script>
+
 <script src="../assets/js/jquery-3.3.1.min.js"></script>
 <!-- Container-fluid Ends-->
 <script src="../assets/js/dashboard/form-validation-custom.js"></script>

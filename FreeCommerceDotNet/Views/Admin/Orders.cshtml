@@ -10,8 +10,8 @@
 @helper GetProductActionButtons(OrderMasterBM bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateCategory", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeleteCategory", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Update", "UpdateOrder", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteOrder", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-warning" })
         @Html.ActionLink("Detail", "OrderDetail", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-success" })
     </td>
 }

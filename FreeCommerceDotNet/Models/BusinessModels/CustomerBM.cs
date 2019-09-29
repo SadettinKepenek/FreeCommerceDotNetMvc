@@ -11,6 +11,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public List<Reviews> Reviews { get; set; }
         public List<OrderMaster> OrderMasters { get; set; }
         public List<OrderReturn> OrderReturns { get; set; }
+        public Users User { get; set; }
 
         public CustomerBM() { }
         public CustomerBM(int? id)
@@ -22,6 +23,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 Reviews = new List<Reviews>();
                 OrderMasters = new List<OrderMaster>();
                 OrderReturns = new List<OrderReturn>();
+                User=new Users();
             }
             else
             {
@@ -52,6 +54,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 {
                     OrderReturns = m.GetByIntegerKey(key, "OrdersReturns", "CustomerId");
                     
+                }
+
+                using (UsersManager m=new UsersManager())
+                {
+                    User = m.Get(Customer.UserId);
                 }
             }
         }

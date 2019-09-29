@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
@@ -38,9 +39,7 @@ namespace FreeCommerceDotNet.Models.BusinessManager
         {
             using (OrderMasterManager m = new OrderMasterManager())
             {
-                entry.OrderMaster.CustomerId = entry.CustomerBm.CustomerId;
-                entry.OrderMaster.PaymentGatewayId = entry.PaymentBm.PaymentId;
-                entry.OrderMaster.ShippingId = entry.ShippingBm.ShippingId;
+              
 
                 int id= m.Add(entry.OrderMaster);
                 using (OrderDetailManager detailManager = new OrderDetailManager())
@@ -95,6 +94,38 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 {
                     return false;
                 }
+            }
+        }
+
+        public void UpdateOrderDetails(List<OrderDetail> sonGelenler, List<OrderDetail> ilkTutulan,int orderMasterId)
+        {
+            using (OrderDetailManager m = new OrderDetailManager())
+            {
+                foreach (OrderDetail orderDetail in ilkTutulan)
+                {
+                    orderDetail.OrderId = orderMasterId;
+                    var isDeleted = sonGelenler.FirstOrDefault(x => x.OrderDetailId == orderDetail.OrderDetailId) == null;
+                    if (isDeleted)
+                    {
+                        m.Delete(orderDetail.OrderDetailId);
+
+                    }
+                }
+                foreach (OrderDetail orderDetail in sonGelenler)
+                {
+                    orderDetail.OrderId = orderMasterId;
+                    if (orderDetail.OrderDetailId != 0)
+                    {
+                        //Update
+                        m.Update(orderDetail);
+                    }
+                    else
+                    {
+                        m.Add(orderDetail);
+                    }
+                }
+
+
             }
         }
     }
