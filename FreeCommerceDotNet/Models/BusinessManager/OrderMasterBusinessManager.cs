@@ -66,19 +66,18 @@ namespace FreeCommerceDotNet.Models.BusinessManager
                 entry.OrderMaster.ShippingId = entry.ShippingBm.ShippingId;
 
                 int id = m.Update(entry.OrderMaster);
-                using (OrderDetailManager detailManager = new OrderDetailManager())
-                {
-                    foreach (OrderDetail detail in entry.OrderDetails)
-                    {
-                        detail.OrderId = id;
-                        detailManager.Update(detail);
-                    }
+                //using (OrderDetailManager detailManager = new OrderDetailManager())
+                //{
+                //    foreach (OrderDetail detail in entry.OrderDetails)
+                //    {
+                //        detail.OrderId = id;
+                //        detailManager.Update(detail);
+                //    }
 
-                }
-
+                //}
+                return true;
             }
 
-            return false;
         }
 
         public bool Delete(OrderMasterBM entry)

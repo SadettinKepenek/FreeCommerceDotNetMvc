@@ -40,18 +40,18 @@
         console.log("How Many");
         var tr = $('#productRow' + count);
         tr.remove();
-        window.productCount--;
     }
     // <input data-val="true" data-val-number="The field OrderDetailId must be a number." data-val-required="OrderDetailId alanı gereklidir." id="OrderDetails_' + window.count + '__OrderDetailId" name="OrderDetails[' + window.count + '].OrderDetailId" type="hidden" value="' + relationId +'" />
+    //onclick=\"$(\'#attribute-row-' + window.count + '\').remove();\"
     function addNewUpdateProduct(OrderDetailId,optionValue) {
         var tbody = $('#tableOrderDetailsProduct');
-        var htmlString = '<tr id="productRow' + window.productCount + '<input data-val="true" data-val-number="The field OrderDetailId must be a number." data-val-required="OrderDetailId alanı gereklidir." id="OrderDetails_' + window.count + '__OrderDetailId" name="OrderDetails[' + window.count + '].OrderDetailId" type="hidden" value="' + OrderDetailId +'" />' +
+        var htmlString = '<tr id="productRow' + window.productCount + '">' + '<input data-val="true" data-val-number="The field OrderDetailId must be a number." data-val-required="OrderDetailId alanı gereklidir." id="OrderDetails_' + window.count + '__OrderDetailId" name="OrderDetails[' + window.count + '].OrderDetailId" type="hidden" value="' + OrderDetailId +'" />'+
             '<th scope="row">' +
             @Html.Raw(Json.Encode(@Html.DropDownListFor(x => x.OrderDetails[0].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" }).ToHtmlString())) +
             '</th><td colspan="2">' +
             @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
             '</td>' +
-            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
+            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick=\"$(\'#productRow' + window.productCount + '\').remove();\">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
         htmlString =
             htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
         htmlString =
@@ -70,7 +70,7 @@
             '</th><td colspan="2">' +
             @Html.Raw(Json.Encode(Html.TextBoxFor(x => x.OrderDetails[0].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" }).ToHtmlString())) +
             '</td>' +
-            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick="deleteProduct(window.productCount)">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
+            '<td><button type="button" id="deleteProduct' + window.productCount + '" class="btn btn-xs btn-primary" onclick=\"$(\'#productRow' + window.productCount + '\').remove();\">X</button></td></tr><input type="hidden" name="OrderDetails.Index" value="' + window.productCount + '">';
         htmlString =
             htmlString.replace("OrderDetails[0].ProductId", "OrderDetails[" + window.productCount + "].ProductId");
         htmlString =
