@@ -1165,7 +1165,7 @@
         $.notify({
             icon: 'fa fa-check',
             title: 'Success!',
-            message: 'Item Successfully added in wishlist'
+            message: 'Item Successfully added in wishlist...'
         },{
             element: 'body',
             position: null,

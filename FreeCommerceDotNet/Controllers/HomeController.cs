@@ -9,16 +9,8 @@ namespace FreeCommerceDotNet.Controllers
     {
         public ActionResult Index(string p1)
         {
-            using (ProductBusinessManager m = new ProductBusinessManager())
-            {
-                var result = m.DeleteEntry(16);
-                if (!result.removable)
-                    result.msg.ForEach(x => Debug.WriteLine(x));
-
-            }
             return View();
         }
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

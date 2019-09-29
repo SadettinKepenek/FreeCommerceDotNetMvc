@@ -82,7 +82,6 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
         // PUT: api/User/5
         [WebApiAuthorize(Roles = "Admin")]
-
         public HttpResponseModel<Users> Put(int id, [FromBody]Users user)
         {
             Users updated;
