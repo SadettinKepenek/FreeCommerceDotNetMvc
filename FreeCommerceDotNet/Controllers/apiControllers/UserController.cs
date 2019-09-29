@@ -12,6 +12,7 @@ using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using FreeCommerceDotNet.Models.WebApi;
+using FreeCommerceDotNet.Models.WebApi.Helper;
 using FreeCommerceDotNet.Models.WebApi.ResponseModels;
 
 namespace FreeCommerceDotNet.Controllers.apiControllers
@@ -32,31 +33,31 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
         // GET: api/User/5
 
         [WebApiAuthorize]
-        public UsersBM Get(int id)
+        public HttpResponseModel<Users> Get(int id)
         {
+            var username = Request.GetOwinContext().Authentication.User.Identity.Name;
+            var isAuth = WebAPIHelper.isAuthorized(Request.GetOwinContext(), id);
 
-            ClaimsPrincipal principal = Request.GetRequestContext().Principal as ClaimsPrincipal;
-
-            var username = ClaimsPrincipal.Current.Identity.Name;
-
-            using (UsersBusinessManager bm=new UsersBusinessManager())
+            if (isAuth)
             {
-              
-                var usersBm = bm.GetById(id);
-                if (RequestContext.Principal.IsInRole("Admin"))
+                var user = new UsersBM(id);
+                return new UserResponseModel()
                 {
-                    return usersBm;
-                }
-             
-                if (usersBm.Users.Username==username)
-                {
-                    return usersBm;
-                }
-                else
-                {
-                    return new UsersBM(){Users = new Users(){Username = username}};
-                }
+                    ResponseObject = user.Users,
+                    ResponseText = string.Format("{0} Kullanıcısının verisi getirildi", username),
+                    StatusCode = HttpStatusCode.OK
+                };
             }
+            else
+            {
+                return new UserResponseModel()
+                {
+                    ResponseObject = null,
+                    ResponseText = "Unauthorized Attempt",
+                    StatusCode = HttpStatusCode.Unauthorized
+                };
+            }
+
 
         }
 
@@ -81,7 +82,6 @@ namespace FreeCommerceDotNet.Controllers.apiControllers
 
         // PUT: api/User/5
         [WebApiAuthorize(Roles = "Admin")]
-
         public HttpResponseModel<Users> Put(int id, [FromBody]Users user)
         {
             Users updated;

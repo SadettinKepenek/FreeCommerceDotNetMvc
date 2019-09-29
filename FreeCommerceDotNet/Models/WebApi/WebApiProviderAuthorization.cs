@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net;
 using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -50,6 +51,7 @@ namespace FreeCommerceDotNet.Models.WebApi
                         var roles = reader[4].ToString();
                         ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
                         identity.AddClaim(new Claim("sub", context.UserName));
+                        identity.AddClaim(new Claim(System.IdentityModel.Claims.ClaimTypes.Name, context.UserName));
                         foreach (var role in roles.Split(';'))
                         {
                             identity.AddClaim(new Claim(ClaimTypes.Role, role));
@@ -57,6 +59,7 @@ namespace FreeCommerceDotNet.Models.WebApi
                         }
 
                         context.Validated(identity);
+                        
                         
                     }
 

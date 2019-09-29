@@ -11,6 +11,7 @@ namespace FreeCommerceDotNet.Models.WebApi
 {
     public class WebApiAuthorize : AuthorizeAttribute
     {
+
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
             actionContext.Response = new HttpResponseMessage
