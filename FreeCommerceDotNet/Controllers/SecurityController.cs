@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using FreeCommerceDotNet.Models;
+using FreeCommerceDotNet.Models.ControllerModels;
 using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FreeCommerceDotNet.Models
+namespace FreeCommerceDotNet.Models.ControllerModels
 {
     public class Security
     {

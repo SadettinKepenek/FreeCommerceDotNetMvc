@@ -715,11 +715,8 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult OrderDetail(int id)
         {
 
-            var orderMasterBm = new OrderMasterBM(null);
-            for (int i = 0; i <= 1; i++)
-            {
-                orderMasterBm.OrderDetails.Add(new OrderDetail());
-            }
+            var orderMasterBm = new OrderMasterBM(id);
+            
             return View(orderMasterBm);
 
         }

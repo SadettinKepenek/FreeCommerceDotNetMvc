@@ -480,7 +480,7 @@
     <Compile Include="Models\Interfaces\IBusinessOperations.cs" />
     <Compile Include="Models\Interfaces\IDBOperations.cs" />
     <Compile Include="Models\Interfaces\ILogger.cs" />
-    <Compile Include="Models\Security.cs" />
+    <Compile Include="Models\ControllerModels\Security.cs" />
     <Compile Include="Models\Util\DbForeignKeyModel.cs" />
     <Compile Include="Models\Util\DeleteResponseModel.cs" />
     <Compile Include="Models\Util\ListModelBindingExtensions.cs" />
