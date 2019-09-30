@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.ControllerModels.Client;
 using System.Collections.Generic;
+using FreeCommerceDotNet.Models.ControllerModels.Client.ClientFilters;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -29,18 +30,15 @@ namespace FreeCommerceDotNet.Controllers
 
         }
 
-        public ActionResult Category(int id,int page=0)
+        public ActionResult Category(int id,int page=0,CategoryFilters filters=null)
         {
             Category category;
-            category = new Category(id, page);
+            category = new Category(id, page,filters);
             
             return View(category);
         }
 
-        public void ApplyCategoryFilters()
-        {
-
-        }
+      
     
     }
 }

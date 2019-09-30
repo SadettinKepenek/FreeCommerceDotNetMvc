@@ -47,8 +47,8 @@
                     @foreach (Category subCategory in Model.CategoryBm.SubCategories)
                     {
                         <div class="custom-control custom-checkbox collection-filter-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="@subCategory.CategoryName.Replace(" ", "")">
-                            <label class="custom-control-label" for="@subCategory.CategoryName.Replace(" ", "")">@subCategory.CategoryName</label>
+                            <input type="checkbox" class="custom-control-input" onchange="changeSubCategoryId(this.id);" id="subcategory_@subCategory.CategoryId">
+                            <label class="custom-control-label" for="subcategory_@subCategory.CategoryId">@subCategory.CategoryName</label>
                         </div>
                     }
 
@@ -69,8 +69,8 @@
                 @foreach (Brand brand in Model.BrandBms)
                 {
                     <div class="custom-control custom-checkbox collection-filter-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="@brand.BrandName.Replace(" ", "")">
-                        <label class="custom-control-label" for="@brand.BrandName.Replace(" ", "")">@brand.BrandName</label>
+                        <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
+                        <label class="custom-control-label" for="brand_@brand.BrandId">@brand.BrandName</label>
                     </div>
                 }
 
@@ -85,6 +85,41 @@
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
 }
 
+
+<script type="text/javascript">
+    window.subCategoryId = 0;
+    window.brandId = 0;
+    function changeBrandId(id) {
+        var Id = id.replace("brand_", "");
+        window.brandId = Id;
+        console.log(Id);
+
+
+    }
+    function changeSubCategoryId(id) {
+        var Id = id.replace("subcategory_","");
+        window.subCategoryId = Id;
+        console.log(Id);
+    }
+    function applyFilters() {
+        var categoryId =@Model.CategoryBm.Category.CategoryId;
+        var data = {
+            BrandId: window.brandId,
+            AltKategoriId: window.subCategoryId
+    };
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Category", "Home")',
+            contentType: "application/json; charset=utf-8",
+            data: {
+                id: categoryId, page: @Model.Page, filters: JSON.stringify(data) },
+            dataType: "json",
+            success: function() { alert('Success'); },
+            error: function (result) { alert(result); }
+        });
+    }
+</script>
+
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
@@ -98,6 +133,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="~/Home">Anasayfa</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@Model.CategoryBm.Category.CategoryName</li>
+                      
                     </ol>
                 </nav>
             </div>
@@ -165,7 +201,12 @@
                             </div>
                         </div>
                         <div class="collection-collapse-block border-0 open">
-                            <button type="button" class="btn btn-info">Apply Filters</button>
+                            <!--
+                            Sessionda SubCategoryId,BrandId tutulur burdan apply filtersa basıldığında sessionda eğer veri varsa
+                            Bu veri filters çağırır.
+                            Cookie de aynı işlem yapılabilir.
+                            -->
+                            <button type="button" class="btn btn-info" onclick="applyFilters();">Apply Filters</button>
                             <button type="button" class="btn btn-danger">Clear Filters</button>
                         </div>
                     </div>

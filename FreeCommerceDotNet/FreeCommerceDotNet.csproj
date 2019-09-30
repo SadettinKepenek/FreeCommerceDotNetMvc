@@ -432,6 +432,7 @@
     <Compile Include="Models\BusinessModels\StoreBM.cs" />
     <Compile Include="Models\BusinessModels\UsersBM.cs" />
     <Compile Include="Models\ControllerModels\Client\Category.cs" />
+    <Compile Include="Models\ControllerModels\Client\ClientFilters\CategoryFilters.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\BrandManager.cs" />
@@ -3888,7 +3889,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\ControllerModels\Client\ClientFilters\" />
     <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
