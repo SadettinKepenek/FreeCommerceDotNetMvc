@@ -206,8 +206,6 @@ namespace FreeCommerceDotNet.Controllers
 
 
 
-
-
         public ActionResult PaymentGateways()
         {
             using (PaymentBusinessManager bm = new PaymentBusinessManager())
