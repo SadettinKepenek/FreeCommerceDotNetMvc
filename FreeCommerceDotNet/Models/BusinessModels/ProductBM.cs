@@ -14,6 +14,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
         public List<ProductOption> ProductOptions { get; set; }
         public List<ProductPrice> ProductPrices { get; set; }
         public List<Reviews> Reviews { get; set; }
+        public Brand brand { get; set; }
         public Category Category { get; set; }
         public int Id { get; set; }
 
@@ -27,6 +28,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             this.ProductPrices = new List<ProductPrice>();
             this.Reviews = new List<Reviews>();
             this.Category = new Category();
+            this.brand=new Brand();
         }
         public ProductBM(int? id)
         {
@@ -40,6 +42,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
                 this.ProductPrices = new List<ProductPrice>();
                 this.Reviews = new List<Reviews>();
                 this.Category=new Category();
+                this.brand = new Brand();
 
             }
             else
@@ -102,6 +105,11 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             {
                 this.Reviews = m.GetByIntegerKey(key, "Reviews", "ProductId");
               
+            }
+
+            using (var m=new BrandManager())
+            {
+                this.brand = m.Get(Product.Brand);
             }
 
 

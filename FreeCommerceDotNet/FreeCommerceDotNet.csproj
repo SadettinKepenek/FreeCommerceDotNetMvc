@@ -431,6 +431,7 @@
     <Compile Include="Models\BusinessModels\ShippingBM.cs" />
     <Compile Include="Models\BusinessModels\StoreBM.cs" />
     <Compile Include="Models\BusinessModels\UsersBM.cs" />
+    <Compile Include="Models\ControllerModels\Client\Category.cs" />
     <Compile Include="Models\DbManager\AttributeGroupManager.cs" />
     <Compile Include="Models\DbManager\AttributeManager.cs" />
     <Compile Include="Models\DbManager\BrandManager.cs" />
@@ -3882,10 +3883,10 @@
     <Content Include="Views\Admin\AddSegment.cshtml" />
     <Content Include="Views\Admin\UpdateProduct.cshtml" />
     <Content Include="Views\Home\Product.cshtml" />
+    <Content Include="Views\Home\Category.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\ControllerModels\Client\" />
     <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>

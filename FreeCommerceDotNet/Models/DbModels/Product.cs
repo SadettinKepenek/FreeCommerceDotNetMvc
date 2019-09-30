@@ -190,9 +190,9 @@ namespace FreeCommerceDotNet.Models.DbModels
             set { _status = value; }
         }
 
-        private string _brand;
+        private int _brand;
 
-        public string Brand
+        public int Brand
         {
             get { return _brand; }
             set { _brand = value; }
