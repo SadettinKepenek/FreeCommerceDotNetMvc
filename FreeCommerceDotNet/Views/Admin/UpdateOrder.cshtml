@@ -137,6 +137,33 @@
                                 @Html.DropDownListFor(x => x.OrderMaster.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Track Number:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.TrackNumber, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Oder Date:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Date:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery date:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Comment:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryComment, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Status:</label>
+                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryStatus, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                            </div>
+                            <div class="form-group">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <caption>Order Details</caption>
@@ -152,15 +179,15 @@
                                             {
                                                 int idx = products.IndexOf(products.FirstOrDefault(x => x.ProductId == Model.OrderDetails[i].ProductId));
                                                 <script type="text/javascript">addNewUpdateProduct(@Model.OrderDetails[i].OrderDetailId, @idx)</script>
-                                            @*<tr>
-                                                <script>incrementProductCount();</script>
+                                                @*<tr>
+                                    <script>incrementProductCount();</script>
 
-                                                <th scope="row">
-                                                    @Html.DropDownListFor(x => x.OrderDetails[i].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" })
-                                                </th>
-                                                <td colspan="2">@Html.TextBoxFor(x => x.OrderDetails[i].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" })</td>
+                                    <th scope="row">
+                                        @Html.DropDownListFor(x => x.OrderDetails[i].ProductId, new SelectList(products, "ProductId", "ProductName"), new { @class = "form-control", id = "validationCustom02", required = "" })
+                                    </th>
+                                    <td colspan="2">@Html.TextBoxFor(x => x.OrderDetails[i].Quantity, new { @class = "form-control", id = "validationCustom02", type = "number", required = "" })</td>
 
-                                            </tr>*@
+                                </tr>*@
                                             }
 
 
