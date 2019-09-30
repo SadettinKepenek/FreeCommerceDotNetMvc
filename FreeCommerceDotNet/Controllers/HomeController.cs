@@ -25,9 +25,9 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
-        public void Test()
+        public ActionResult Test()
         {
-
+            return View();
         }
     }
 }
