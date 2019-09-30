@@ -1,6 +1,7 @@
 ﻿@using FreeCommerceDotNet.Models.BusinessManager
 @using FreeCommerceDotNet.Models.BusinessModels
-@using FreeCommerceDotNet.Models.DbModels
+@using FreeCommerceDotNet.Models.ControllerModels.Client
+@using Category = FreeCommerceDotNet.Models.DbModels.Category
 @*@{
         ViewBag.Title = "_LayoutFrontEnd";
     }*@
@@ -81,10 +82,10 @@
     {
         categories = bm.Get();
     }
+
 }
 @helper GetSideBarCategories(List<CategoryBM> categories)
 {
-
 
     foreach (CategoryBM bm in categories.Where(x => x.Category.ParentId == -1))
     {
@@ -99,17 +100,6 @@
                             <div class="col-xl-4">
                                 <div class="link-section">
                                     <h5>@category.CategoryName</h5>
-                                    <ul>
-
-                                        @foreach (var subCategory in new CategoryBM(category.CategoryId).SubCategories)
-                                        {
-                                            <li>
-                                                <a href="#">@subCategory.CategoryName</a>
-                                            </li>
-                                        }
-
-
-                                    </ul>
                                 </div>
                             </div>
                         }
@@ -136,25 +126,8 @@
                     {
                         <li>
                             <a href="#">@category.CategoryName</a>
-                            @{
-                                var subofSub = new CategoryBM(category.CategoryId).SubCategories;
-
-                                if (subofSub.Count != 0)
-                                {
-                                    <ul>
-
-                                        @foreach (var sub in subofSub)
-                                        {
-                                            <li>
-                                                <a href="product-page.html">@sub.CategoryName</a>
-                                            </li>
-                                        }
-
-
-
-                                    </ul>
-                                }
-                            }
+                           
+                            
 
 
                         </li>
@@ -284,8 +257,8 @@
     <!-- header end -->
 
     @RenderBody()
-<br/><br />
-<hr />
+    <br /><br />
+    <hr />
     <!-- footer -->
     <footer>
         <div class="dark-layout">

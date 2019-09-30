@@ -1,6 +1,7 @@
 ﻿using FreeCommerceDotNet.Models.BusinessManager;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.ControllerModels.Client;
 
@@ -20,10 +21,13 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
-        public ActionResult Category(int id)
+        public ActionResult Category(int id,int page=0)
         {
-            var Category = new Category(id);
-            return View(Category);
+            Category category;
+            category = page!=0 ? new Category(id) : new Category(id, page);
+            
+            return View(category);
         }
+    
     }
 }
