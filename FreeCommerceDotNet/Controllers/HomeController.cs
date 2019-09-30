@@ -3,6 +3,7 @@ using FreeCommerceDotNet.Models.BusinessModels;
 using System;
 using System.Diagnostics;
 using System.Web.Mvc;
+using FreeCommerceDotNet.Models.ControllerModels.Client;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -18,6 +19,12 @@ namespace FreeCommerceDotNet.Controllers
         {          
             var productModel = new ProductBM(id);
             return View(productModel);
+        }
+
+        public ActionResult Category(int id)
+        {
+            var Category = new Category(id);
+            return View(Category);
         }
     }
 }

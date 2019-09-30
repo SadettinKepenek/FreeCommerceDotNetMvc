@@ -30,7 +30,6 @@ namespace FreeCommerceDotNet.Models.BusinessManager
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public List<BrandBM> Get()
