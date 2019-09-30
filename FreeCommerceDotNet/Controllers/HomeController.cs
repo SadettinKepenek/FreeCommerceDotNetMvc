@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using FreeCommerceDotNet.Models.ControllerModels.Client;
+using System.Collections.Generic;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -17,9 +18,15 @@ namespace FreeCommerceDotNet.Controllers
         
         // Develop Branch
         public ActionResult Product(int id)
-        {          
-            var productModel = new ProductBM(id);
-            return View(productModel);
+        {
+            
+            using (ProductBusinessManager manager = new ProductBusinessManager())
+            {
+                var products = manager.GetById(id);
+                return View(products);
+            }
+            
+
         }
 
         public ActionResult Category(int id,int page=0)
