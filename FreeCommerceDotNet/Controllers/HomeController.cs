@@ -32,9 +32,14 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Category(int id,int page=0)
         {
             Category category;
-            category = page!=0 ? new Category(id) : new Category(id, page);
+            category = new Category(id, page);
             
             return View(category);
+        }
+
+        public void ApplyCategoryFilters()
+        {
+
         }
     
     }
