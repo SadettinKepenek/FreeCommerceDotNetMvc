@@ -12,5 +12,9 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
         // Develop Branch
+        public ActionResult Product()
+        {
+            return View();
+        }
     }
 }
