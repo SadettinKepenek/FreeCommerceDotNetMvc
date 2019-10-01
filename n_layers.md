@@ -11,6 +11,19 @@
   Database
 
 
+## Flow
+
+
+    1)Model -->
+  
+    1.a)BLL
+    
+    1.b)MVC Project(Controller) --> BLL
+    
+    1.b.1)BLL --> DAL
+    
+    1.b.2)DAL --> Database
+
 ## UI Layer --> Models Layer
   
   
