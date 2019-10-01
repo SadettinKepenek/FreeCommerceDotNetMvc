@@ -21,3 +21,8 @@
   https://www.amazon.com/dp/073562609X/
   
   https://stackoverflow.com/questions/30965059/converting-asp-net-mvc-standard-application-into-n-tier-application
+
+
+# Software Engineering
+
+  https://softwareengineering.stackexchange.com/questions/176639/why-put-the-business-logic-in-the-model-what-happens-when-i-have-multiple-types
