@@ -18,7 +18,7 @@
   
   Entity Model Nesnesi
   
-  Repositoryler Her biri kendisi için interface ile tanımlanacak
+  Repositoryler Bir interface den oluşacak.
   
   Web API için aynı katmanlar kullanılacak.
 
