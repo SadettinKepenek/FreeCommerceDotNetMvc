@@ -18,7 +18,7 @@
   
   Entity Model Nesnesi
   
- 
+  Repositoryler Her biri kendisi için interface ile tanımlanacak
 
 ## Flow
 
