@@ -19,6 +19,8 @@
   Entity Model Nesnesi
   
   Repositoryler Her biri kendisi için interface ile tanımlanacak
+  
+  Web API için aynı katmanlar kullanılacak.
 
 ## Flow
 
