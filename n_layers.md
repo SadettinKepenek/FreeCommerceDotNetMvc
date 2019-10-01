@@ -10,6 +10,15 @@
   
   Database
 
+### Notes
+
+  Repository Database Access Layer Nesnesi
+  
+  Business Nesnesi Business Logic Layer Nesnesi
+  
+  Entity Model Nesnesi
+  
+ 
 
 ## Flow
 
