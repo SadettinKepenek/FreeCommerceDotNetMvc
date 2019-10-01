@@ -4,6 +4,6 @@ namespace FreeCommerceDotNet.Entities.Concrete
 {
     public class Store:IEntity
     {
-        
+       // Store
     }
 }
