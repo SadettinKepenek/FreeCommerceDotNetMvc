@@ -23,14 +23,15 @@
     1.b.1)BLL --> DAL
     
     1.b.2)DAL --> Database
-
-## UI Layer --> Models Layer
   
-  
-## Models Layer --> BLL  
+## Models Layer --> Controller or BLL
+ 
+## Models Layer or Controller --> BLL  
   
   Dosya Adı : 
   ProductEntity
+  
+  Hem Controller hem Business Logic Layer aynı Modeli Kullanacak.
   
 ## Business Logic Layer --> DAL
   
