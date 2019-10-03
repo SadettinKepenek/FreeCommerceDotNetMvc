@@ -10,5 +10,10 @@
         public string ReturnReason { get; set; }
         public string Comment { get; set; }
         public string ReturnResponse { get; set; }
+
+        public OrderMaster OrderBM { get; set; }
+        public Product ProductBm { get; set; }
+        public Customer CustomerBm { get; set; }
+
     }
 }

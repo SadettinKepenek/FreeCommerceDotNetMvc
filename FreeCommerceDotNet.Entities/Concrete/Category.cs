@@ -1,9 +1,13 @@
-﻿using FreeCommerceDotNet.Entities.Abstract;
+﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
 {
     public class Category:IEntity
     {
+        public List<Product> Products { get; set; }
+        public List<Category> SubCategories { get; set; }
+
         private int _CategoryId;
 
         public int CategoryId

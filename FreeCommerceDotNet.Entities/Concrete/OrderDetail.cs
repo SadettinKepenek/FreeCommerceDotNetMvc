@@ -8,5 +8,8 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int ProductId { get; set; }
         public int OrderId { get; set; }
         public int Quantity { get; set; }
+
+        public OrderMaster OrderMaster { get; set; }
+        public Product ProductBm { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FreeCommerceDotNet.Entities.Abstract;
+﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
 {
@@ -13,5 +14,13 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public string DeliveryDate { get; set; }
         public string DeliveryComment { get; set; }
         public string DeliveryStatus { get; set; }
+
+        public List<OrderDetail> OrderDetails { get; set; }
+        public OrderReturn OrderReturn { get; set; }
+        public Customer CustomerBm { get; set; }
+        public Payment PaymentBm { get; set; }
+        public Shipping ShippingBm { get; set; }
+
+
     }
 }

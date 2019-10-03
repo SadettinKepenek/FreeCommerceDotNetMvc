@@ -10,5 +10,8 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int Quantity { get; set; }
         public double AdditionalPrice { get; set; }
         public double AdditionalWeight { get; set; }
+
+        public OptionDetail OptionDetails { get; set; }
+        public Product Product { get; set; }
     }
 }

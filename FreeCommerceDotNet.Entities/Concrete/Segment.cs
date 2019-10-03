@@ -1,4 +1,5 @@
-﻿using FreeCommerceDotNet.Entities.Abstract;
+﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
 {
@@ -7,5 +8,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int SegmentId { get; set; }
         public string SegmentName { get; set; }
         public string Priorty { get; set; }
+        public List<Customer> CustomersBms { get; set; }
+
     }
 }

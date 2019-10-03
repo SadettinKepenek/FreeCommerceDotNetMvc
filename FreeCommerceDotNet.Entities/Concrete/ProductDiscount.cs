@@ -10,6 +10,9 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public string EndDate { get; set; }
         public int Quantity { get; set; }
         public double NewPrice { get; set; }
-        public int Segment { get; set; }
+        public int SegmentId { get; set; }
+
+        public Product Product;
+        public Segment SegmentEntity { get; set; }
     }
 }

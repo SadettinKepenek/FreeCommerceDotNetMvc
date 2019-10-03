@@ -1,6 +1,7 @@
 ﻿using System;
+using FreeCommerceDotNet.Entities.Abstract;
 
-public class Class1:IEntity
+public class Reviews:IEntity
 {
     public int ReviewId { get; set; }
     public int ProductId { get; set; }

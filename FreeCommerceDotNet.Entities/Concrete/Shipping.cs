@@ -1,4 +1,5 @@
-﻿using FreeCommerceDotNet.Entities.Abstract;
+﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
 {
@@ -11,5 +12,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int Rating { get; set; }
         public string Date { get; set; }
         public bool Status { get; set; }
+        public List<OrderMaster> OrderMasterBms { get; set; }
+
     }
 }

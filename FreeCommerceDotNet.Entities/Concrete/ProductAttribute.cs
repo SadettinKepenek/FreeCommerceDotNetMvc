@@ -8,5 +8,8 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int ProductId { get; set; }
         public int AttributeId { get; set; }
         public string AttributeDescription { get; set; }
+
+        public Attribute AttributeBm { get; set; }
+
     }
 }

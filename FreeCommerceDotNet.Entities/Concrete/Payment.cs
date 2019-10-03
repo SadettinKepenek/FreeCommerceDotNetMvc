@@ -1,4 +1,5 @@
-﻿using FreeCommerceDotNet.Entities.Abstract;
+﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
 {
@@ -27,5 +28,8 @@ namespace FreeCommerceDotNet.Entities.Concrete
             get { return _PaymentDescription; }
             set { _PaymentDescription = value; }
         }
+
+        public List<OrderMaster> OrderMasterBms { get; set; }
+
     }
 }

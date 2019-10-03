@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using FreeCommerceDotNet.Entities.Abstract;
+using FreeCommerceDotNet.Entities.Concrete;
 
 public class Product:IEntity
 {
@@ -204,7 +207,6 @@ public class Product:IEntity
     }
     public List<ProductAttribute> ProductAttributes { get; set; }
     public List<ProductDiscount> ProductDiscounts { get; set; }
-    public List<ProductImage> ProductImages { get; set; }
     public List<ProductOption> ProductOptions { get; set; }
     public List<ProductPrice> ProductPrices { get; set; }
     public List<Reviews> Reviews { get; set; }
