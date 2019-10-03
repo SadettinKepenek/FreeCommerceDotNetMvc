@@ -21,7 +21,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int SegmentId { get; set; }
         public int UserId { get; set; }
 
-        public Models.DbModels.Segment Segment { get; set; }
+        public Segment Segment { get; set; }
         public List<Reviews> Reviews { get; set; }
         public List<OrderMaster> OrderMasters { get; set; }
         public List<OrderReturn> OrderReturns { get; set; }
