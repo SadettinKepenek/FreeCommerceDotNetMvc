@@ -9,5 +9,7 @@
         public int Rating { get; set; }
         public string Date { get; set; }
         public bool Status { get; set; }
+        public Product Products { get; set; }
+        public Customer Customers { get; set; }
     }
 }

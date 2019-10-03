@@ -204,9 +204,8 @@ namespace FreeCommerceDotNet.Models.DbModels
             get { return _imageUrl; }
             set { _imageUrl = value; }
         }
+             
 
 
-        
-        
     }
 }
