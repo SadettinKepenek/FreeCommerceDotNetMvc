@@ -42,7 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IEntity.cs" />
-    <Compile Include="Concrete\Store.cs" />
+    <Compile Include="Concrete\Attribute.cs" />
+    <Compile Include="Concrete\AttributeGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
