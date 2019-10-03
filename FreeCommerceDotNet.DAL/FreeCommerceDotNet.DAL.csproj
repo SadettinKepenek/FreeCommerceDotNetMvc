@@ -43,9 +43,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IAttributeGroupDal.cs" />
     <Compile Include="Abstract\IRepository.cs" />
-    <Compile Include="Abstract\IStoreDal.cs" />
     <Compile Include="Concrete\AttributeGroupRepository.cs" />
-    <Compile Include="Concrete\StoreRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
