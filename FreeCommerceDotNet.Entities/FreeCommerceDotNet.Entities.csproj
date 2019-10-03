@@ -54,12 +54,15 @@
     <Compile Include="Concrete\OrderMaster.cs" />
     <Compile Include="Concrete\OrderReturn.cs" />
     <Compile Include="Concrete\Payment.cs" />
+    <Compile Include="Concrete\Product.cs" />
     <Compile Include="Concrete\ProductAttribute.cs" />
     <Compile Include="Concrete\ProductDiscount.cs" />
     <Compile Include="Concrete\ProductOption.cs" />
     <Compile Include="Concrete\ProductPrice.cs" />
+    <Compile Include="Concrete\Reviews.cs" />
     <Compile Include="Concrete\Segment.cs" />
     <Compile Include="Concrete\Shipping.cs" />
+    <Compile Include="Concrete\Store.cs" />
     <Compile Include="Concrete\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
