@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCommerceDotNet.Entities
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCommerceDotNet.Common", "FreeCommerceDotNet.Common\FreeCommerceDotNet.Common.csproj", "{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCommerceDotNet.LayerTest", "FreeCommerceDotNet.LayerTest\FreeCommerceDotNet.LayerTest.csproj", "{CF770769-3063-4719-AB10-8FC43DF15082}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF770769-3063-4719-AB10-8FC43DF15082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF770769-3063-4719-AB10-8FC43DF15082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF770769-3063-4719-AB10-8FC43DF15082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF770769-3063-4719-AB10-8FC43DF15082}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

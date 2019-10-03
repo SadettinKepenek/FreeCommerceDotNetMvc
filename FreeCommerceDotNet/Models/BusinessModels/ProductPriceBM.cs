@@ -15,8 +15,7 @@ namespace FreeCommerceDotNet.Models.BusinessModels
             {
                 ProductPrice = new ProductPrice();
                 Segment=new Segment();
-                Product=new Product();
-
+                Product = new Product();
             }
             else
             {

@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{711F481D-F2D7-4586-ACED-44FFC1C64BC2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FreeCommerceDotNet.DAL</RootNamespace>
-    <AssemblyName>FreeCommerceDotNet.DAL</AssemblyName>
+    <ProjectGuid>{CF770769-3063-4719-AB10-8FC43DF15082}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FreeCommerceDotNet.LayerTest</RootNamespace>
+    <AssemblyName>FreeCommerceDotNet.LayerTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,18 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IAttributeGroupDal.cs" />
-    <Compile Include="Abstract\IRepository.cs" />
-    <Compile Include="Abstract\IStoreDal.cs" />
-    <Compile Include="Concrete\AttributeGroupRepository.cs" />
-    <Compile Include="Concrete\StoreRepository.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FreeCommerceDotNet.Entities\FreeCommerceDotNet.Entities.csproj">
-      <Project>{CE187959-6E41-45FA-9218-BDAC376B5AA8}</Project>
-      <Name>FreeCommerceDotNet.Entities</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
