@@ -55,15 +55,24 @@ namespace FreeCommerceDotNet.Common.Concrete
         public void BeginTransaction()
         {
             SqlTransaction transaction;
-            if (OpenConnection())
+            if (this.connection!=null)
             {
+                OpenConnection();
                 var sqlConnection = this.connection;
-                if (sqlConnection != null)
-                {
-                    transaction = sqlConnection.BeginTransaction();
-                    this.Transaction = transaction;
-                }
+
+                transaction = sqlConnection.BeginTransaction();
+                this.Transaction = transaction;
             }
+            else
+            {
+                CreateConnection();
+                OpenConnection();
+                var sqlConnection = this.connection;
+
+                transaction = sqlConnection.BeginTransaction();
+                this.Transaction = transaction;
+            }
+           
         }
 
         public void RollbackTranscation()
@@ -105,17 +114,22 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         private DataTable ExecuteSqlCommand(SqlCommand command)
         {
-            using (this.connection)
+            using (var conn=this.connection)
             {
+                BeginTransaction();
                 try
                 {
-                    var dataReader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    command.Connection = conn;
+                    command.Transaction=this.Transaction;
+                    var dataReader = command.ExecuteReader();
                     var dataTable = new DataTable();
                     dataTable.Load(dataReader);
+                    CommitTranscation();
                     return dataTable;
                 }
                 catch (Exception e)
                 {
+                    RollbackTranscation();
                     throw new Exception("Do Query Has Been Failed. Error Info -->\n" + e.StackTrace);
                 }
             }

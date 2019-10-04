@@ -14,6 +14,7 @@ namespace FreeCommerceDotNet.LayerTest
         static void Main(string[] args)
         {
             //TestAttributeGroupRepository();
+            TestReview();
 
         }
 
@@ -23,6 +24,15 @@ namespace FreeCommerceDotNet.LayerTest
             var attributeGroup = new AttributeGroup() {AttributeGroupName = "DB Layer Test Group Name", AttributeGroupId = 15};
             DBResult result = repository.Delete(attributeGroup.AttributeGroupId);
             Console.WriteLine("Deleted Entity ID " + result.Id + " Message " + result.Message);
+            Console.ReadKey();
+        }
+
+        private static void TestReview()
+        {
+            IRepository<Reviews> repository = new ReviewRepository();
+            var reviews = new Reviews() { CustomerId = 14, ProductId = 3, Title = "test", Text = "test", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
+            DBResult result = repository.Insert(reviews);
+            Console.WriteLine("Added Entity ID " + result.Id + " Message " + result.Message);
             Console.ReadKey();
         }
     }
