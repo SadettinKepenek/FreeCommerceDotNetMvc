@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FreeCommerceDotNet.Common\FreeCommerceDotNet.Common.csproj">
+      <Project>{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}</Project>
+      <Name>FreeCommerceDotNet.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FreeCommerceDotNet.Entities\FreeCommerceDotNet.Entities.csproj">
       <Project>{CE187959-6E41-45FA-9218-BDAC376B5AA8}</Project>
       <Name>FreeCommerceDotNet.Entities</Name>
