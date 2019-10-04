@@ -2,14 +2,15 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace FreeCommerceDotNet.Common.Concrete
 {
     public class MsSQLDatabase : IDatabase
     {
         private readonly string _connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
-        public SqlConnection connection;
-        public SqlTransaction Transaction;
+        private SqlConnection connection;
+        private SqlTransaction Transaction;
         public MsSQLDatabase()
         {
             this.connection = new SqlConnection(_connectionString);
@@ -96,15 +97,19 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         public DataTable DoQuery(string query = null, SqlCommand command = null)
         {
-            if (command != null)
+            if (command != null && String.IsNullOrEmpty(query))
             {
                 return ExecuteSqlCommand(command);
             }
-            else if (!String.IsNullOrEmpty(query))
+            else if (!String.IsNullOrEmpty(query) && command==null)
             {
                 SqlCommand sqlCommand = new SqlCommand(query);
                 return ExecuteSqlCommand(sqlCommand);
 
+            }
+            else if (command!=null && !String.IsNullOrEmpty(query))
+            {
+                throw new AmbiguousMatchException("Query ve Command aynı anda gönderilemez.");
             }
             else
             {
