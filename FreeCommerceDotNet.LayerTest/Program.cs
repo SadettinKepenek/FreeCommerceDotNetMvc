@@ -29,8 +29,8 @@ namespace FreeCommerceDotNet.LayerTest
         private static void TestReview()
         {
             IRepository<Reviews> repository = new ReviewRepository();
-             var reviews = new Reviews() { ReviewId = 4,CustomerId = 14, ProductId = 3, Title = "test1", Text = "reviewUpdateTest", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
-              DBResult result = repository.Delete(4);
+             var reviews = new Reviews() { ReviewId = 5,CustomerId = 14, ProductId = 3, Title = "test12", Text = "reviewUpdateTest", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
+              DBResult result = repository.Update(reviews);
              Console.WriteLine("Updated Entity ID " + result.Id + " Message " + result.Message);
             
             Console.ReadKey();
