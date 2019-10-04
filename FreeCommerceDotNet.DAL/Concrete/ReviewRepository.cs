@@ -11,11 +11,26 @@ namespace FreeCommerceDotNet.DAL.Abstract
 {
     public class ReviewRepository:IReviewDal
     {
-        string connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
         MsSQLDatabase database = new MsSQLDatabase();
         public DBResult Delete(int id)
         {
-            throw new NotImplementedException();
+            string query = "ReviewInsertUpdateDelete";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Action", "DELETE");
+                command.Parameters.AddWithValue("@ReviewId", id);
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    DBResult result = new DBResult();
+                    result.Id = (int)datatable.Rows[0]["ReturnValue"];
+                    result.Message = datatable.Rows[0]["Message"].ToString();
+                    return result;
+                }
+            }
+            return null;
         }
 
         public DBResult Insert(Reviews entity)
@@ -61,6 +76,30 @@ namespace FreeCommerceDotNet.DAL.Abstract
         public DBResult Update(Reviews entity)
         {
             string query = "ReviewInsertUpdateDelete";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Action", "UPDATE");
+                command.Parameters.AddWithValue("@CustomerId", entity.CustomerId);
+                command.Parameters.AddWithValue("@ProductId", entity.ProductId);
+                command.Parameters.AddWithValue("@ReviewId", entity.ReviewId);
+                command.Parameters.AddWithValue("@Title", entity.Title);
+                command.Parameters.AddWithValue("@Comment", entity.Text);
+                command.Parameters.AddWithValue("@Rating", entity.Rating);
+                command.Parameters.AddWithValue("@PublishDate", entity.Date);
+                command.Parameters.AddWithValue("@LikeCount", entity.LikeCount);
+                command.Parameters.AddWithValue("@DislikeCount", entity.DislikeCount);
+                command.Parameters.AddWithValue("@Status", entity.Status);
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    DBResult result = new DBResult();
+                    result.Id = (int)datatable.Rows[0]["ReturnValue"];
+                    result.Message = datatable.Rows[0]["Message"].ToString();
+                    return result;
+                }
+            }
             return null;
         }
     }
