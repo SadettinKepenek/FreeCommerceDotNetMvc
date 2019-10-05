@@ -15,21 +15,26 @@ namespace FreeCommerceDotNet.LayerTest
         {
             //TestAttributeGroupRepository();
             //TestReview();
-            //TestBrandRepository();
+            TestBrandRepository();
         }
 
         private static void TestBrandRepository()
         {
             IRepository<Brand> brandRepository=new BrandRepository();
-            var brandEntity=new Brand(){BrandName = "Test Brand Procedure Layer Insert Inserted",BrandDescription = "Test Brand Description"};
-            var result = brandRepository.Insert(brandEntity);
-            Console.WriteLine(String.Format("Id : {0} Message {1}", result.Id, result.Message));
-            brandEntity.BrandId = result.Id;
+            //var brandEntity=new Brand(){BrandName = "Test Brand Procedure Layer Insert Insert Procedure",BrandDescription = "Test Brand Description"};
+            //var result = brandRepository.Insert(brandEntity);
+            //Console.WriteLine(String.Format("Id : {0} Message {1}", result.Id, result.Message));
+            //brandEntity.BrandId = result.Id;
             //brandEntity.BrandName = "Brand Name Updated by Repo";
             //result = brandRepository.Update(brandEntity);
             //Console.WriteLine(String.Format("Id : {0} Message {1}", result.Id, result.Message));
             //result = brandRepository.Delete(brandEntity.BrandId);
             //Console.WriteLine(String.Format("Id : {0} Message {1}", result.Id, result.Message));
+            foreach (Brand brand in brandRepository.SelectAll())
+            {
+                Console.WriteLine(brand.BrandName);
+                Console.WriteLine(brand.BrandDescription);
+            }
             Console.ReadKey();
         }
 
