@@ -49,6 +49,7 @@
     <Compile Include="Abstract\IProductAttributeDal.cs" />
     <Compile Include="Abstract\IProductDal.cs" />
     <Compile Include="Abstract\IProductDiscountDal.cs" />
+    <Compile Include="Abstract\IProductPriceDal.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IReviewDal.cs" />
     <Compile Include="Abstract\ISegmentDal.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Concrete\OrderDetailRepository.cs" />
     <Compile Include="Concrete\ProductAttributeRepository.cs" />
     <Compile Include="Concrete\ProductDiscountRepository.cs" />
+    <Compile Include="Concrete\ProductPriceRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Concrete\ReviewRepository.cs" />
     <Compile Include="Concrete\SegmentRepository.cs" />

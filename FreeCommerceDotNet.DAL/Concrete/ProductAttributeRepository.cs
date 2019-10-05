@@ -17,6 +17,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn=db.CreateConnection())
             {
                 SqlCommand cmd=new SqlCommand(query,conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Action", "INSERT");
                 cmd.Parameters.AddWithValue("@ProductId", entity.ProductId);
                 cmd.Parameters.AddWithValue("@AttributeId", entity.AttributeId);
@@ -33,6 +34,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Action", "UPDATE");
                 cmd.Parameters.AddWithValue("@RelationId", entity.RelationId);
                 cmd.Parameters.AddWithValue("@ProductId", entity.ProductId);
@@ -49,6 +51,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Action", "DELETE");
                 cmd.Parameters.AddWithValue("@RelationId", id);
                 var result = db.DoQuery(command: cmd);
@@ -62,6 +65,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@RelationId", id);
                 var result = db.DoQuery(command: cmd);
                 if (result.Rows.Count!=0)
@@ -97,6 +101,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@ProductId", id);
                 var result = db.DoQuery(command: cmd);
                 if (result.Rows.Count != 0)
@@ -116,6 +121,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 foreach (DBFilter filter in filters)
                 {
                     cmd.Parameters.AddWithValue(filter.ParamName, filter.ParamValue);
@@ -138,6 +144,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var conn = db.CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 var result = db.DoQuery(command: cmd);
                 if (result.Rows.Count != 0)
                 {
