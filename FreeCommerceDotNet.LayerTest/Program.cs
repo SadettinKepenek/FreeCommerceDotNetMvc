@@ -19,14 +19,15 @@ namespace FreeCommerceDotNet.LayerTest
 
             //TestBrandRepository(); //sen şimdi ne pull ettin bana filterları mı  tamamdır
             // CategoryDalTest();
+            //  TestOrderDetail();
+            //TestBrandRepository();
+            //CategoryDalTest();
+            TestOrderMaster();
+           
             //TestOrderDetail();
             //TestBrandRepository();
             //CategoryDalTest();
-
-
-
             TestProductAttributeRepository();
-
             Console.ReadKey();
 
         }
@@ -143,6 +144,16 @@ namespace FreeCommerceDotNet.LayerTest
                 Console.WriteLine("order id:"+item.OrderId);
                 Console.WriteLine("ProductPrice:"+item.isDiscountedPrice);
             }
+            Console.ReadKey();
+        }
+        private static void TestOrderMaster()
+        {
+            IRepository<OrderMaster> repository = new OrderMasterRepository();
+           // OrderMaster om = new OrderMaster() { OrderId = 11,DeliveryComment = "test1" ,TrackNumber = "test",ShippingId = 1,PaymentGatewayId = 1,DeliveryDate = "test",DeliveryStatus = "test",OrderDate = "test",CustomerId = 13};
+            DBResult result = repository.Delete(11);
+
+
+
             Console.ReadKey();
         }
     }
