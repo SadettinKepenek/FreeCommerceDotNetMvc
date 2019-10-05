@@ -29,9 +29,15 @@ namespace FreeCommerceDotNet.LayerTest
         private static void TestReview()
         {
             IRepository<Reviews> repository = new ReviewRepository();
-             var reviews = new Reviews() { ReviewId = 5,CustomerId = 14, ProductId = 3, Title = "test12", Text = "reviewUpdateTest", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
-              DBResult result = repository.Update(reviews);
-             Console.WriteLine("Updated Entity ID " + result.Id + " Message " + result.Message);
+            var reviews = new List<Reviews>();
+            reviews = repository.SelectAll();
+            foreach (var item in reviews)
+            {
+                Console.WriteLine("ReviewId:" + item.ReviewId );
+                Console.WriteLine("Comment:" + item.Text );
+                Console.WriteLine("CustomerId:" + item.CustomerId);
+                Console.WriteLine("CustomerFirstName:" + item.customer.Firstname);
+            }
             
             Console.ReadKey();
         }
