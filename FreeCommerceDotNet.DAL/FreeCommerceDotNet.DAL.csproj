@@ -45,10 +45,7 @@
     <Compile Include="Abstract\ICategoryDal.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IReviewDal.cs" />
-
-
     <Compile Include="Abstract\ISegmentDal.cs" />
-    <Compile Include="Concrete\AttributeGroupRepository.cs" />
     <Compile Include="Concrete\BrandRepository.cs" />
     <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Concrete\ReviewRepository.cs" />
