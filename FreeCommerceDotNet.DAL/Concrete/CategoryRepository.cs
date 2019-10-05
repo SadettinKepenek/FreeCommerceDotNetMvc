@@ -194,13 +194,12 @@ namespace FreeCommerceDotNet.DAL.Concrete
             List<Product> products = new List<Product>();
 
             // Gelen Dataları product id ye göre gruplar
-            var groupedQueryResult = queryResult.AsEnumerable()
-                .GroupBy(row => row.Field<int>("ProductId"))
-                .Select(grp => grp);
+
+            var groupedQueryResult = LinqHelper.GroupDataTableByField<int>(queryResult:queryResult,fieldName: "ProductId");
             foreach (IGrouping<int, DataRow> group in groupedQueryResult)
             {
-                int productId = @group.Key;
-                DataRow mainRow = @group.FirstOrDefault();
+                int productId = group.Key;
+                DataRow mainRow = group.FirstOrDefault();
                 Product product = new Product();
                 List<ProductDiscount> productDiscounts = new List<ProductDiscount>();
                 List<ProductPrice> productPrices = new List<ProductPrice>();
