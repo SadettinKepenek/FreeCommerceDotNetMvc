@@ -14,6 +14,7 @@ namespace FreeCommerceDotNet.LayerTest
         static void Main(string[] args)
         {
             //TestAttributeGroupRepository();
+
             //TestReview();
             TestBrandRepository();
         }
@@ -36,6 +37,9 @@ namespace FreeCommerceDotNet.LayerTest
                 Console.WriteLine(brand.BrandDescription);
             }
             Console.ReadKey();
+
+            TestReview();
+
         }
 
         private static void TestAttributeGroupRepository()
@@ -50,9 +54,16 @@ namespace FreeCommerceDotNet.LayerTest
         private static void TestReview()
         {
             IRepository<Reviews> repository = new ReviewRepository();
-            var reviews = new Reviews() { CustomerId = 14, ProductId = 3, Title = "test", Text = "test", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
-            DBResult result = repository.Insert(reviews);
-            Console.WriteLine("Added Entity ID " + result.Id + " Message " + result.Message);
+            var reviews = new List<Reviews>();
+            reviews = repository.SelectAll();
+            foreach (var item in reviews)
+            {
+                Console.WriteLine("ReviewId:" + item.ReviewId );
+                Console.WriteLine("Comment:" + item.Text );
+                Console.WriteLine("CustomerId:" + item.CustomerId);
+                Console.WriteLine("CustomerFirstName:" + item.customer.Firstname);
+            }
+            
             Console.ReadKey();
         }
     }
