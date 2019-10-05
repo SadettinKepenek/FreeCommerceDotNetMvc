@@ -54,15 +54,15 @@ namespace FreeCommerceDotNet.LayerTest
         private static void TestReview()
         {
             IRepository<Reviews> repository = new ReviewRepository();
-            var reviews = new List<Reviews>();
-            reviews = repository.SelectAll();
-            foreach (var item in reviews)
-            {
-                Console.WriteLine("ReviewId:" + item.ReviewId );
-                Console.WriteLine("Comment:" + item.Text );
-                Console.WriteLine("CustomerId:" + item.CustomerId);
-                Console.WriteLine("CustomerFirstName:" + item.customer.Firstname);
-            }
+            var reviews = new Reviews();
+            reviews = repository.SelectById(5);
+            
+            
+                Console.WriteLine("ReviewId:" + reviews.ReviewId );
+                Console.WriteLine("Comment:" + reviews.Text );
+                Console.WriteLine("CustomerId:" + reviews.CustomerId);
+                Console.WriteLine("CustomerFirstName:" + reviews.customer.Firstname);
+            
             
             Console.ReadKey();
         }
