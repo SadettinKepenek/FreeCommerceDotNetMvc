@@ -2,14 +2,15 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace FreeCommerceDotNet.Common.Concrete
 {
     public class MsSQLDatabase : IDatabase
     {
         private readonly string _connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
-        public SqlConnection connection;
-        public SqlTransaction Transaction;
+        private SqlConnection connection;
+        private SqlTransaction Transaction;
         public MsSQLDatabase()
         {
             this.connection = new SqlConnection(_connectionString);
@@ -55,15 +56,24 @@ namespace FreeCommerceDotNet.Common.Concrete
         public void BeginTransaction()
         {
             SqlTransaction transaction;
-            if (OpenConnection())
+            if (this.connection!=null)
             {
+                OpenConnection();
                 var sqlConnection = this.connection;
-                if (sqlConnection != null)
-                {
-                    transaction = sqlConnection.BeginTransaction();
-                    this.Transaction = transaction;
-                }
+
+                transaction = sqlConnection.BeginTransaction();
+                this.Transaction = transaction;
             }
+            else
+            {
+                CreateConnection();
+                OpenConnection();
+                var sqlConnection = this.connection;
+
+                transaction = sqlConnection.BeginTransaction();
+                this.Transaction = transaction;
+            }
+           
         }
 
         public void RollbackTranscation()
@@ -87,15 +97,19 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         public DataTable DoQuery(string query = null, SqlCommand command = null)
         {
-            if (command != null)
+            if (command != null && String.IsNullOrEmpty(query))
             {
                 return ExecuteSqlCommand(command);
             }
-            else if (!String.IsNullOrEmpty(query))
+            else if (!String.IsNullOrEmpty(query) && command==null)
             {
                 SqlCommand sqlCommand = new SqlCommand(query);
                 return ExecuteSqlCommand(sqlCommand);
 
+            }
+            else if (command!=null && !String.IsNullOrEmpty(query))
+            {
+                throw new AmbiguousMatchException("Query ve Command aynı anda gönderilemez.");
             }
             else
             {
@@ -105,17 +119,22 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         private DataTable ExecuteSqlCommand(SqlCommand command)
         {
-            using (this.connection)
+            using (var conn=this.connection)
             {
+                BeginTransaction();
                 try
                 {
-                    var dataReader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                    command.Connection = conn;
+                    command.Transaction=this.Transaction;
+                    var dataReader = command.ExecuteReader();
                     var dataTable = new DataTable();
                     dataTable.Load(dataReader);
+                    CommitTranscation();
                     return dataTable;
                 }
                 catch (Exception e)
                 {
+                    RollbackTranscation();
                     throw new Exception("Do Query Has Been Failed. Error Info -->\n" + e.StackTrace);
                 }
             }
