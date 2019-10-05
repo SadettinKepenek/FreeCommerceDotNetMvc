@@ -3,6 +3,7 @@ using FreeCommerceDotNet.DAL.Abstract;
 using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 using System;
+
 using System.Collections.Generic;
 
 namespace FreeCommerceDotNet.LayerTest
@@ -30,7 +31,7 @@ namespace FreeCommerceDotNet.LayerTest
             });
             foreach (Category category in categoryRepository.SelectByFilter(filters))
             {
-                Console.WriteLine(category.CategoryName);
+                Console.WriteLine(category.CategoryName);//vardı 
                 foreach (Category subCategory in category.SubCategories)
                 {
                     Console.WriteLine(subCategory.CategoryName);
@@ -78,17 +79,14 @@ namespace FreeCommerceDotNet.LayerTest
             foreach (var items in repository.SelectAll())
             {
 
-                Console.WriteLine("ReviewId:" + item.ReviewId);
-                Console.WriteLine("Comment:" + item.Text);
-                Console.WriteLine("CustomerId:" + item.CustomerId);
-                Console.WriteLine("CustomerFirstName:" + item.customer.Firstname);
-            }
-
-                Console.Write("ReviewId:"+items.ReviewId+"\n");
+                Console.Write("ReviewId:" + items.ReviewId + "\n");
                 Console.Write("Comment:" + items.Text + "\n");
                 Console.Write("Title:" + items.Title + "\n");
                 Console.Write("Status:" + items.Status + "\n");
+
             }
+
+
             Console.ReadKey();
         }
 
