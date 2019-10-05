@@ -5,6 +5,7 @@ using FreeCommerceDotNet.Entities.Concrete;
 using System;
 
 using System.Collections.Generic;
+using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 
 namespace FreeCommerceDotNet.LayerTest
 {
@@ -19,6 +20,20 @@ namespace FreeCommerceDotNet.LayerTest
             //TestBrandRepository(); //sen şimdi ne pull ettin bana filterları mı  tamamdır
             // CategoryDalTest();
             TestOrderDetail();
+            //TestBrandRepository();
+            //CategoryDalTest();
+            ProductRepository productRepository=new ProductRepository();
+            foreach (Product product in productRepository.SelectAll())
+            {
+                Console.WriteLine(product.ProductName);
+                foreach (ProductAttribute attribute in product.ProductAttributes)
+                {
+                    Console.WriteLine(" Attribute "+attribute.AttributeDescription);
+                }
+            }
+
+            Console.ReadKey();
+
         }
 
         private static void CategoryDalTest()
@@ -30,14 +45,15 @@ namespace FreeCommerceDotNet.LayerTest
                 ParamName = "@CategoryId",
                 ParamValue = 1
             });
-            foreach (Category category in categoryRepository.SelectByFilter(filters))
+            foreach (Product product in categoryRepository.SelectById(1).Products)
             {
                 Console.WriteLine(category.CategoryName);//çok bieşy pamdım
                 foreach (Category subCategory in category.SubCategories)
+                Console.WriteLine(product.ProductName);
+                foreach (var productProductPrice in product.ProductPrices)
                 {
-                    Console.WriteLine(subCategory.CategoryName);
+                    Console.WriteLine(productProductPrice.Price);
                 }
-
                 Console.ReadKey();
             }
 

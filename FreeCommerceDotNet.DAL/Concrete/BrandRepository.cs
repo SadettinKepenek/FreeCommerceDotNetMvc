@@ -109,9 +109,9 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
-        List<Brand> IRepository<Brand>.SelectByFilter(List<DBFilter> filters)
+        public List<Brand> SelectByFilter(List<DBFilter> filters)
         {
-            return null;
+            return SelectAll();
         }
 
 
