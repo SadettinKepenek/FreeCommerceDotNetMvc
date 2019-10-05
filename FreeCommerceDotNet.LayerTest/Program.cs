@@ -5,6 +5,7 @@ using FreeCommerceDotNet.Entities.Concrete;
 using System;
 
 using System.Collections.Generic;
+using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 
 namespace FreeCommerceDotNet.LayerTest
 {
@@ -17,7 +18,14 @@ namespace FreeCommerceDotNet.LayerTest
             //TestReview();
 
             //TestBrandRepository();
-            CategoryDalTest();
+            //CategoryDalTest();
+            AttributeGroupRepository groupRepository=new AttributeGroupRepository();
+            foreach (Attribute attribute in groupRepository.SelectById(1).Attributes)
+            {
+                Console.WriteLine(attribute.AttributeGroupId + "  "+attribute.AttributeId+" "+attribute.AttributeName );
+            }
+
+            Console.ReadKey();
         }
 
         private static void CategoryDalTest()
