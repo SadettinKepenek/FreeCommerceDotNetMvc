@@ -47,8 +47,7 @@ namespace FreeCommerceDotNet.LayerTest
             });
             foreach (Product product in categoryRepository.SelectById(1).Products)
             {
-                Console.WriteLine(category.CategoryName);//çok bieşy pamdım
-                foreach (Category subCategory in category.SubCategories)
+
                 Console.WriteLine(product.ProductName);
                 foreach (var productProductPrice in product.ProductPrices)
                 {
