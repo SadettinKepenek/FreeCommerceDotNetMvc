@@ -23,19 +23,25 @@ namespace FreeCommerceDotNet.LayerTest
             //TestBrandRepository();
             //CategoryDalTest();
             TestOrderMaster();
-            ProductRepository productRepository=new ProductRepository();
-            foreach (Product product in productRepository.SelectAll())
-            {
-                Console.WriteLine(product.ProductName);
-                foreach (ProductAttribute attribute in product.ProductAttributes)
-                {
-                    Console.WriteLine(" Attribute "+attribute.AttributeDescription);
-                }
-            }
-
+           
+            //TestOrderDetail();
+            //TestBrandRepository();
+            //CategoryDalTest();
+            TestProductAttributeRepository();
             Console.ReadKey();
 
         }
+
+        private static void TestProductAttributeRepository()
+        {
+            ProductAttributeRepository productAttributeRepository=new ProductAttributeRepository();
+            foreach (ProductAttribute attribute in productAttributeRepository.SelectAll())
+            {
+                Console.WriteLine(attribute.ProductId+" "+attribute.AttributeId+" "+attribute.AttributeDescription);
+            }
+
+        }
+
 
         private static void CategoryDalTest()
         {

@@ -89,10 +89,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
-        public List<Segment> SelectByFilter(List<DBFilter> filters)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public Segment SelectById(int id)
         {
