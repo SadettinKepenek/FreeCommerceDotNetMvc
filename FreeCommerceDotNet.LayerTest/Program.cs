@@ -17,6 +17,9 @@ namespace FreeCommerceDotNet.LayerTest
 
             //TestReview();
 
+            //TestBrandRepository(); //sen şimdi ne pull ettin bana filterları mı  tamamdır
+            // CategoryDalTest();
+            TestOrderDetail();
             //TestBrandRepository();
             //CategoryDalTest();
             ProductRepository productRepository=new ProductRepository();
@@ -30,6 +33,7 @@ namespace FreeCommerceDotNet.LayerTest
             }
 
             Console.ReadKey();
+
         }
 
         private static void CategoryDalTest()
@@ -43,6 +47,8 @@ namespace FreeCommerceDotNet.LayerTest
             });
             foreach (Product product in categoryRepository.SelectById(1).Products)
             {
+                Console.WriteLine(category.CategoryName);//çok bieşy pamdım
+                foreach (Category subCategory in category.SubCategories)
                 Console.WriteLine(product.ProductName);
                 foreach (var productProductPrice in product.ProductPrices)
                 {
@@ -100,7 +106,7 @@ namespace FreeCommerceDotNet.LayerTest
 
             Console.ReadKey();
         }
-
+        
         private static void TestSegment()
         {
             IRepository<Segment> repository = new SegmentRepository();
@@ -112,6 +118,26 @@ namespace FreeCommerceDotNet.LayerTest
             Console.WriteLine("Name:" + segments.SegmentName);
 
 
+            Console.ReadKey();
+        }
+        private static void TestOrderDetail()
+        {
+            IRepository<OrderDetail> repo = new OrderDetailRepository();
+            OrderDetail orderdetail = new OrderDetail();
+          /*  orderdetail.ProductBm = new Product();
+            orderdetail.ProductBm.ProductPrices = new List<ProductPrice>();
+            orderdetail.ProductBm.ProductPrices.Add(new ProductPrice { Price = 50});
+            orderdetail.Quantity = 5;
+            orderdetail.isDiscountedPrice = false;
+            orderdetail.OrderId = 7;
+            orderdetail.ProductId = 3;  */
+            var result = repo.SelectAll();
+
+            foreach (var item in result)
+            {
+                Console.WriteLine("order id:"+item.OrderId);
+                Console.WriteLine("ProductPrice:"+item.isDiscountedPrice);
+            }
             Console.ReadKey();
         }
     }
