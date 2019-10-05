@@ -15,6 +15,8 @@ namespace FreeCommerceDotNet.LayerTest
         {
             //TestAttributeGroupRepository();
 
+            //TestReview();
+            TestBrandRepository();
         }
 
         private static void TestBrandRepository()
