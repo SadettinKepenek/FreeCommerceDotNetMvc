@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using FreeCommerceDotNet.Entities.Abstract;
+using FreeCommerceDotNet.Entities.Concrete;
 
 public class Reviews:IEntity
 {
@@ -13,4 +15,6 @@ public class Reviews:IEntity
     public string Date { get; set; }
     public string Title { get; set; }
     public bool Status { get; set; }
+
+    public Customer customer{ get; set; }
 }

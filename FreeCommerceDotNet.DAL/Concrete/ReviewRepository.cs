@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Abstract;
 using FreeCommerceDotNet.Entities.Concrete;
@@ -65,7 +66,52 @@ namespace FreeCommerceDotNet.DAL.Abstract
 
         public List<Reviews> SelectAll()
         {
-            throw new NotImplementedException();
+            string query = "SP_GetReview";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;    
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                   
+                   
+                    List<Reviews> list = new List<Reviews>();                   
+                    foreach (DataRow dr in datatable.Rows)
+                    {
+                        Reviews review = new Reviews();
+                        review.customer = new Customer();
+                        int reviewId = (int)dr["ReviewId"];
+                        string reviewTitle = dr["ReviewTitle"].ToString();
+                        string reviewComment = dr["ReviewComment"].ToString();
+                        int reviewRating = (int)dr["ReviewRating"];                      
+                        string reviewPublishDate = dr["ReviewPublishDate"].ToString();
+                        bool reviewStatus = (bool)dr["ReviewStatus"];
+                        int reviewLike = (int)dr["ReviewLike"];
+                        int reviewDislike = (int)dr["ReviewDislike"];
+                        int customerId = (int)dr["CustomerId"];
+                        string customerFirstname = dr["CustomerFirstname"].ToString();
+                        string customerLastname = dr["CustomerLastname"].ToString();
+                        string customerEmail = dr["CustomerEmail"].ToString();
+                        review.CustomerId = customerId;
+                        review.customer.Firstname = customerFirstname;
+                        review.customer.Lastname = customerLastname;
+                        review.customer.Email = customerEmail;
+                        review.ReviewId = reviewId;
+                        review.Title = reviewTitle;
+                        review.Text = reviewComment;
+                        review.Status = reviewStatus;
+                        review.Rating = reviewRating;
+                        review.Date = reviewPublishDate;
+                        review.LikeCount = reviewLike;
+                        review.DislikeCount = reviewDislike;
+                        list.Add(review);
+                    }
+                    return list;
+                }
+                
+            }
+            return null;
         }
 
         public Reviews SelectById(int id)
