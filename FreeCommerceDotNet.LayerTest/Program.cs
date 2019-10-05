@@ -14,6 +14,7 @@ namespace FreeCommerceDotNet.LayerTest
             //TestAttributeGroupRepository();
 
             //TestReview();
+
             //TestBrandRepository();
             CategoryDalTest();
         }
@@ -39,6 +40,9 @@ namespace FreeCommerceDotNet.LayerTest
             }
 
             Console.ReadKey();
+            // TestBrandRepository();
+            TestSegment();
+
         }
 
         private static void TestBrandRepository()
@@ -68,15 +72,36 @@ namespace FreeCommerceDotNet.LayerTest
         private static void TestReview()
         {
             IRepository<Reviews> repository = new ReviewRepository();
-            var reviews = new List<Reviews>();
-            reviews = repository.SelectAll();
-            foreach (var item in reviews)
+            // var reviews = new Reviews() { ReviewId = 4,CustomerId = 14, ProductId = 3, Title = "test1", Text = "reviewUpdateTest", Date = "test", LikeCount = 5, DislikeCount = 0, Rating = 5, Status = true };
+            //  DBResult result = repository.Delete(4);
+            // Console.WriteLine("Updated Entity ID " + result.Id + " Message " + result.Message);
+            foreach (var items in repository.SelectAll())
             {
+
                 Console.WriteLine("ReviewId:" + item.ReviewId);
                 Console.WriteLine("Comment:" + item.Text);
                 Console.WriteLine("CustomerId:" + item.CustomerId);
                 Console.WriteLine("CustomerFirstName:" + item.customer.Firstname);
             }
+
+                Console.Write("ReviewId:"+items.ReviewId+"\n");
+                Console.Write("Comment:" + items.Text + "\n");
+                Console.Write("Title:" + items.Title + "\n");
+                Console.Write("Status:" + items.Status + "\n");
+            }
+            Console.ReadKey();
+        }
+
+        private static void TestSegment()
+        {
+            IRepository<Segment> repository = new SegmentRepository();
+            var segments = repository.SelectById(3);
+            
+            
+            
+                Console.WriteLine("Id:"+ segments.SegmentId);
+            Console.WriteLine("Name:" + segments.SegmentName);
+
 
             Console.ReadKey();
         }

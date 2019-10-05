@@ -121,7 +121,34 @@ namespace FreeCommerceDotNet.DAL.Abstract
 
         public Reviews SelectById(int id)
         {
-            throw new NotImplementedException();
+            string query = "SP_GetReview";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query,connection);
+                command.Parameters.AddWithValue("@ReviewId",id);
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    Reviews reviews = new Reviews();
+                    reviews.customer = new Customer();
+                    reviews.ReviewId = (int)datatable.Rows[0]["ReviewId"];
+                    reviews.Title = datatable.Rows[0]["ReviewTitle"].ToString();
+                    reviews.Text = datatable.Rows[0]["ReviewComment"].ToString();
+                    reviews.Rating = (int)datatable.Rows[0]["ReviewRating"];
+                    reviews.Date = datatable.Rows[0]["ReviewPublishDate"].ToString();
+                    reviews.Status = (bool)datatable.Rows[0]["ReviewStatus"];
+                    reviews.LikeCount = (int)datatable.Rows[0]["ReviewLike"];
+                    reviews.DislikeCount = (int)datatable.Rows[0]["ReviewDislike"];
+                    reviews.CustomerId = (int)datatable.Rows[0]["CustomerId"];
+                    reviews.customer.Firstname = datatable.Rows[0]["CustomerFirstname"].ToString();
+                    reviews.customer.Lastname = datatable.Rows[0]["CustomerLastname"].ToString();
+                    reviews.customer.Email = datatable.Rows[0]["CustomerEmail"].ToString();
+                    return reviews;
+
+
+                }
+            }
+                return null;
         }
 
         public DBResult Update(Reviews entity)
