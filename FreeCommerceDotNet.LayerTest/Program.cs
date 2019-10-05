@@ -16,7 +16,7 @@ namespace FreeCommerceDotNet.LayerTest
 
             //TestReview();
 
-            //TestBrandRepository();
+            //TestBrandRepository(); //sen şimdi ne pull ettin bana filterları mı  tamamdır
             CategoryDalTest();
         }
 
@@ -31,7 +31,7 @@ namespace FreeCommerceDotNet.LayerTest
             });
             foreach (Category category in categoryRepository.SelectByFilter(filters))
             {
-                Console.WriteLine(category.CategoryName);//vardı 
+                Console.WriteLine(category.CategoryName);//çok bieşy pamdım
                 foreach (Category subCategory in category.SubCategories)
                 {
                     Console.WriteLine(subCategory.CategoryName);
