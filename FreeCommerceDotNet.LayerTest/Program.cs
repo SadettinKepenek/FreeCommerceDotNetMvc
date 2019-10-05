@@ -16,7 +16,8 @@ namespace FreeCommerceDotNet.LayerTest
             //TestAttributeGroupRepository();
 
             //TestReview();
-            TestBrandRepository();
+            // TestBrandRepository();
+            TestSegment();
         }
 
         private static void TestBrandRepository()
@@ -64,6 +65,19 @@ namespace FreeCommerceDotNet.LayerTest
                 Console.Write("Title:" + items.Title + "\n");
                 Console.Write("Status:" + items.Status + "\n");
             }
+            Console.ReadKey();
+        }
+
+        private static void TestSegment()
+        {
+            IRepository<Segment> repository = new SegmentRepository();
+            var segments = repository.SelectById(3);
+            
+            
+            
+                Console.WriteLine("Id:"+ segments.SegmentId);
+            Console.WriteLine("Name:" + segments.SegmentName);
+
             Console.ReadKey();
         }
     }
