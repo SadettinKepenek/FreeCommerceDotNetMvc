@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using FreeCommerceDotNet.Entities.Concrete;
 
 namespace FreeCommerceDotNet.Common.Concrete
 {
@@ -28,15 +29,23 @@ namespace FreeCommerceDotNet.Common.Concrete
             }
             catch (Exception e)
             {
-                return false;
+                throw new ConnectionException("Bağlantı Başlatılamadı "+e.StackTrace);
+                
             }
         }
 
         public bool CloseConnection()
         {
-            if (connection.State == ConnectionState.Open)
+            try
             {
-                connection.Close();
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ConnectionException("Bağlantı Kapatılamadı "+e.StackTrace);
             }
             return false;
         }
@@ -78,13 +87,15 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         public void RollbackTranscation()
         {
-            this.Transaction.Rollback();
+            SqlTransaction sqlTransaction = this.Transaction;
+            if (sqlTransaction != null) sqlTransaction.Rollback();
             this.Transaction = null;
         }
 
         public void CommitTranscation()
         {
-            this.Transaction.Commit();
+            var sqlTransaction = this.Transaction;
+            if (sqlTransaction != null) sqlTransaction.Commit();
             this.Transaction = null;
         }
 
@@ -117,6 +128,20 @@ namespace FreeCommerceDotNet.Common.Concrete
             }
         }
 
+        public DBResult ReadResultFromDataTable(DataTable table)
+        {
+            if (table.Rows.Count != 0)
+            {
+                DBResult result = new DBResult()
+                {
+                    Id = (int)table.Rows[0]["ReturnValue"],
+                    Message = table.Rows[0]["Message"] as string
+                };
+                return result;
+            }
+            return null;
+        }
+
         private DataTable ExecuteSqlCommand(SqlCommand command)
         {
             using (var conn=this.connection)
@@ -139,6 +164,8 @@ namespace FreeCommerceDotNet.Common.Concrete
                 }
             }
         }
+
+
 
         public void Dispose()
         {

@@ -64,6 +64,11 @@ namespace FreeCommerceDotNet.DAL.Abstract
             return null;
         }
 
+        public List<Reviews> SelectByFilter(List<DBFilter> filters)
+        {
+            return null;
+        }
+
         public List<Reviews> SelectAll()
         {
             string query = "SP_GetReview";

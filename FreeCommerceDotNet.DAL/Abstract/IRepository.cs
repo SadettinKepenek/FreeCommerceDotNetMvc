@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 
 namespace FreeCommerceDotNet.DAL.Abstract
@@ -9,6 +10,7 @@ namespace FreeCommerceDotNet.DAL.Abstract
         DBResult Update(TEntity entity);
         DBResult Delete(int id);
         TEntity SelectById(int id);
+        List<TEntity> SelectByFilter(List<DBFilter> filters);
         List<TEntity> SelectAll();
     }
 }
