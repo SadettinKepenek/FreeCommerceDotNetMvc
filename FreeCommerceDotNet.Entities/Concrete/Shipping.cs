@@ -5,13 +5,9 @@ namespace FreeCommerceDotNet.Entities.Concrete
 {
     public class Shipping:IEntity
     {
-        public int ReviewId { get; set; }
-        public int ProductId { get; set; }
-        public int CustomerId { get; set; }
-        public string Text { get; set; }
-        public int Rating { get; set; }
-        public string Date { get; set; }
-        public bool Status { get; set; }
+        public int ShippingId { get; set; }
+        public string ShippingName { get; set; }
+        public string ShippingDescription { get; set; }
         public List<OrderMaster> OrderMasterBms { get; set; }
 
     }
