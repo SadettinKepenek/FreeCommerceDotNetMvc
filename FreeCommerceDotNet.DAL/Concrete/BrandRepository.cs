@@ -109,6 +109,12 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
+        List<Brand> IRepository<Brand>.SelectByFilter(List<DBFilter> filters)
+        {
+            return null;
+        }
+
+
         public List<Brand> SelectAll()
         {
             string query = "SP_GetBrand";
@@ -136,5 +142,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             }
             return null;
         }
+
+       
     }
 }
