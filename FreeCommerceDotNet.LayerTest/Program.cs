@@ -19,10 +19,14 @@ namespace FreeCommerceDotNet.LayerTest
 
             //TestBrandRepository();
             //CategoryDalTest();
-            AttributeGroupRepository groupRepository=new AttributeGroupRepository();
-            foreach (Attribute attribute in groupRepository.SelectById(1).Attributes)
+            ProductRepository productRepository=new ProductRepository();
+            foreach (Product product in productRepository.SelectAll())
             {
-                Console.WriteLine(attribute.AttributeGroupId + "  "+attribute.AttributeId+" "+attribute.AttributeName );
+                Console.WriteLine(product.ProductName);
+                foreach (ProductAttribute attribute in product.ProductAttributes)
+                {
+                    Console.WriteLine(" Attribute "+attribute.AttributeDescription);
+                }
             }
 
             Console.ReadKey();
