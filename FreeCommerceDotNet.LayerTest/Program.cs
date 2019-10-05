@@ -29,14 +29,13 @@ namespace FreeCommerceDotNet.LayerTest
                 ParamName = "@CategoryId",
                 ParamValue = 1
             });
-            foreach (Category category in categoryRepository.SelectByFilter(filters))
+            foreach (Product product in categoryRepository.SelectById(1).Products)
             {
-                Console.WriteLine(category.CategoryName);//vardı 
-                foreach (Category subCategory in category.SubCategories)
+                Console.WriteLine(product.ProductName);
+                foreach (var productProductPrice in product.ProductPrices)
                 {
-                    Console.WriteLine(subCategory.CategoryName);
+                    Console.WriteLine(productProductPrice.Price);
                 }
-
                 Console.ReadKey();
             }
 
