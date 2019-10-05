@@ -46,6 +46,7 @@
     <Compile Include="Abstract\IBrandDal.cs" />
     <Compile Include="Abstract\ICategoryDal.cs" />
     <Compile Include="Abstract\IOrderDetailDal.cs" />
+    <Compile Include="Abstract\IProductAttributeDal.cs" />
     <Compile Include="Abstract\IProductDal.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IReviewDal.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="Concrete\BrandRepository.cs" />
     <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Concrete\OrderDetailRepository.cs" />
-
+    <Compile Include="Concrete\ProductAttributeRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Concrete\ReviewRepository.cs" />
     <Compile Include="Concrete\SegmentRepository.cs" />
