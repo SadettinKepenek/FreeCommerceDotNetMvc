@@ -22,12 +22,13 @@ namespace FreeCommerceDotNet.LayerTest
             //  TestOrderDetail();
             //TestBrandRepository();
             //CategoryDalTest();
-            TestOrderMaster();
+            //TestOrderMaster();
            
             //TestOrderDetail();
             //TestBrandRepository();
             //CategoryDalTest();
-            TestProductAttributeRepository();
+           // TestProductAttributeRepository();
+            TestCustomer();
             Console.ReadKey();
 
         }
@@ -153,8 +154,30 @@ namespace FreeCommerceDotNet.LayerTest
             DBResult result = repository.Delete(11);
 
 
-
             Console.ReadKey();
+        }
+
+        private static void TestCustomer()
+        {
+            IRepository<Customer> customer = new CustomerRepositorycs();
+            Customer cus = new Customer();
+          /*  cus.TaxAddress = "test";
+            cus.Firstname = "sadettin";
+            cus.Lastname = "kepenek";
+            cus.CustomerId = 20;
+            cus.Password = "sifre";
+            cus.Telephone = "test";
+            cus.Status = false;
+            cus.SegmentId = 1;
+            cus.Address1 = "test";
+            cus.Address2 = "test";
+            cus.Email = "test";
+            cus.TaxAddress = "test";
+            cus.UserId = 3;*/
+            DBResult result = customer.Delete(20);
+            Console.WriteLine("Updated Entity ID " + result.Id + " Message " + result.Message);
+
+
         }
     }
 }
