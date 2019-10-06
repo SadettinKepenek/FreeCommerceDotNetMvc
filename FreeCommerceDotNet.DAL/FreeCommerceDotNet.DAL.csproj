@@ -48,6 +48,7 @@
     <Compile Include="Abstract\ICustomerDal.cs" />
     <Compile Include="Abstract\IOrderDetailDal.cs" />
     <Compile Include="Abstract\IOrderMasterDal.cs" />
+    <Compile Include="Abstract\IOrderReturnDal.cs" />
     <Compile Include="Abstract\IProductAttributeDal.cs" />
     <Compile Include="Abstract\IProductDal.cs" />
     <Compile Include="Abstract\IProductDiscountDal.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Concrete\CustomerRepositorycs.cs" />
     <Compile Include="Concrete\OrderDetailRepository.cs" />
     <Compile Include="Concrete\OrderMasterRepository.cs" />
+    <Compile Include="Concrete\OrderReturnRepository.cs" />
     <Compile Include="Concrete\ProductAttributeRepository.cs" />
     <Compile Include="Concrete\ProductDiscountRepository.cs" />
     <Compile Include="Concrete\ProductPriceRepository.cs" />
