@@ -5,6 +5,7 @@ using FreeCommerceDotNet.Entities.Concrete;
 using System;
 
 using System.Collections.Generic;
+using System.Reflection;
 using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 
 namespace FreeCommerceDotNet.LayerTest
@@ -28,9 +29,29 @@ namespace FreeCommerceDotNet.LayerTest
             //TestBrandRepository();
             //CategoryDalTest();
            // TestProductAttributeRepository();
-            TestCustomer();
+            //TestCustomer();
+            TestOrderReturnsRepository();
             Console.ReadKey();
 
+        }
+
+        private static void TestOrderReturnsRepository()
+        {
+            OrderReturnRepository orderReturnRepository=new OrderReturnRepository();
+            foreach (OrderReturn orderReturn in orderReturnRepository.SelectAll())
+            {
+                foreach (PropertyInfo info in orderReturn.GetType().GetProperties())
+                {
+                   
+                    Console.WriteLine(info.GetValue(orderReturn));
+                }
+
+                foreach (PropertyInfo info in orderReturn.CustomerBm.GetType().GetProperties())
+                {
+
+                    Console.WriteLine(info.GetValue(orderReturn.CustomerBm));
+                }
+            }
         }
 
         private static void TestProductAttributeRepository()

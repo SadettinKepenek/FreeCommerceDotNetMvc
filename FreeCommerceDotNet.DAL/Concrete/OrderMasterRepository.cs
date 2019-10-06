@@ -76,7 +76,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 List<OrderMaster> ordermaster = new List<OrderMaster>();
                 if (datatable.Rows.Count != 0)
                 {
-                    var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: datatable, "OrderId");
+                    var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: datatable, fieldName:"OrderId");
                     foreach (var group in groupedData)
                     {
                         ordermaster.Add(GetOrderMaster(group));
@@ -104,7 +104,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 List<OrderMaster> ordermaster = new List<OrderMaster>();
                 if (datatable.Rows.Count != 0)
                 {
-                    var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: datatable, "OrderId");
+                    var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: datatable, fieldName:"OrderId");
                     foreach (var group in groupedData)
                     {
                         ordermaster.Add(GetOrderMaster(group));
@@ -164,7 +164,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
             if (table.Rows.Count != 0)
             {
-                var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: table, "OrderId");
+                var groupedData = LinqHelper.GroupDataTableByField<int>(queryResult: table, fieldName:"OrderId");
                 var group = groupedData.FirstOrDefault(x => x.Key == id);
                 if (group != null)
                 {
