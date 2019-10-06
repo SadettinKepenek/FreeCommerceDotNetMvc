@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace FreeCommerceDotNet.DAL.Concrete
 {
-    public class ShippingRepository : IShippingDal
+    public class PaymentGatewayRepository : IPaymentGatewayDal
     {
         MsSQLDatabase database = new MsSQLDatabase();
 
-        public DBResult Insert(Shipping entity)
+        public DBResult Insert(Payment entity)
         {
-            string query = "ShippingInsertUpdateDelete";
+            string query = "PaymentGatewayInsertUpdateDelete";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Action", "INSERT");
-                command.Parameters.AddWithValue("@ShippingName", entity.ShippingName);
-                command.Parameters.AddWithValue("@ShippingDescription", entity.ShippingDescription);
+                command.Parameters.AddWithValue("@PaymentName", entity.PaymentName);
+                command.Parameters.AddWithValue("@PaymentDescription", entity.PaymentDescription);
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
@@ -37,17 +37,17 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
             return null;
         }
-        public DBResult Update(Shipping entity)
+        public DBResult Update(Payment entity)
         {
-            string query = "ShippingInsertUpdateDelete";
+            string query = "PaymentGatewayInsertUpdateDelete";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Action", "UPDATE");
-                command.Parameters.AddWithValue("@ShippingName", entity.ShippingName);
-                command.Parameters.AddWithValue("@ShippingId", entity.ShippingId);
-                command.Parameters.AddWithValue("@ShippingDescription", entity.ShippingDescription);
+                command.Parameters.AddWithValue("@PaymentName", entity.PaymentName);
+                command.Parameters.AddWithValue("@PaymentId", entity.PaymentId);
+                command.Parameters.AddWithValue("@PaymentDescription", entity.PaymentDescription);
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
@@ -62,59 +62,57 @@ namespace FreeCommerceDotNet.DAL.Concrete
         }
         public DBResult Delete(int id)
         {
-            string query = "ShippingInsertUpdateDelete";
+            string query = "PaymentGatewayInsertUpdateDelete";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Action", "DELETE");
-                command.Parameters.AddWithValue("@ShippingId", id);
+                command.Parameters.AddWithValue("@PaymentId", id);
                 DataTable datatable = database.DoQuery(command: command);
-             
+                if (datatable.Rows.Count != 0)
+                {
                     DBResult result = new DBResult();
                     result.Id = (int)datatable.Rows[0]["ReturnValue"];
                     result.Message = datatable.Rows[0]["Message"].ToString();
                     return result;
-                
+                }
             }
-          
+            return null;
         }
 
-        public Shipping SelectById(int id)
+
+        public List<Payment> SelectAll()
         {
-            string query = "SP_GetShipping";
+            string query = "SP_GetPayment";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                DataTable datatable = database.DoQuery(command: command);
+                return GetPayments(datatable);
+            }
+        }
+        public Payment SelectById(int id)
+        {
+            string query = "SP_GetPayment";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
                 DataTable datatable = database.DoQuery(command: command);
                 var rows = datatable.Rows;
-                
-                    Shipping shipping = new Shipping();
-                    shipping.ShippingId = (int)rows[0]["ShippingId"];
-                    shipping.ShippingName = rows[0]["ShippingName"] as string;
-                    shipping.ShippingDescription = rows[0]["ShippingDescription"] as string;
-                    return shipping;
-                              
+                Payment payment = new Payment();
+                payment.PaymentName = rows[0]["PaymentName"] as string;
+                payment.PaymentId = (int)rows[0]["PaymentId"];
+                payment.PaymentDescription = rows[0]["PaymentDescription"] as string;
+                return payment;
             }
         }
 
-        public List<Shipping> SelectAll()
+        public List<Payment> SelectByFilter(List<DBFilter> filters)
         {
-            string query = "SP_GetShipping";
-            using (var connection = database.CreateConnection())
-            {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.CommandType = CommandType.StoredProcedure;
-                DataTable datatable = database.DoQuery(command: command);
-                return GetShippings(datatable);
-            }
-
-        }
-
-        public List<Shipping> SelectByFilter(List<DBFilter> filters)
-        {
-            string query = "SP_GetShipping";
+            string query = "SP_GetPayment";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -124,28 +122,28 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     command.Parameters.AddWithValue(item.ParamName, item.ParamValue);
                 }
                 DataTable datatable = database.DoQuery(command: command);
-                return GetShippings(datatable);
+                return GetPayments(datatable);
             }
         }
-        private List<Shipping> GetShippings(DataTable table)
+
+        private List<Payment> GetPayments(DataTable table)
         {
             var rows = table.Rows;
             if (rows.Count != 0)
             {
-                List<Shipping> shippings = new List<Shipping>();
+                List<Payment> payments = new List<Payment>();
                 foreach (DataRow row in rows)
                 {
-                    Shipping shipping = new Shipping();
-                    shipping.ShippingId = (int)row["ShippingId"];
-                    shipping.ShippingName = row["ShippingName"] as string;
-                    shipping.ShippingDescription = row["ShippingDescription"] as string;
-                    shippings.Add(shipping);
+                    Payment payment = new Payment();
+                    payment.PaymentName = row["PaymentName"] as string;
+                    payment.PaymentId = (int)row["PaymentId"];
+                    payment.PaymentDescription = row["PaymentDescription"] as string;
+                    payments.Add(payment);
                 }
-                return shippings;
+                return payments;
             }
             return null;
         }
-
 
 
     }
