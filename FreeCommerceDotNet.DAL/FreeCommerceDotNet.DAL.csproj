@@ -55,6 +55,7 @@
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IReviewDal.cs" />
     <Compile Include="Abstract\ISegmentDal.cs" />
+    <Compile Include="Abstract\IShippingDal.cs" />
     <Compile Include="Abstract\IStoreDal.cs" />
     <Compile Include="Abstract\IUserDal.cs" />
     <Compile Include="Concrete\AttributeGroupRepository.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Concrete\ReviewRepository.cs" />
     <Compile Include="Concrete\SegmentRepository.cs" />
+    <Compile Include="Concrete\ShippingRepository.cs" />
     <Compile Include="Concrete\StoreRepository.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
