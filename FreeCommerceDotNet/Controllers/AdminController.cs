@@ -12,13 +12,10 @@ namespace FreeCommerceDotNet.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
-
         public ActionResult Index()
         {
             return View();
         }
-
-
         public ActionResult Categories(bool subCategories)
         {
             List<CategoryBM> categories;
