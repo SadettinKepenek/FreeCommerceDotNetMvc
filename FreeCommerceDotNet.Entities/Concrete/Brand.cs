@@ -7,7 +7,9 @@ namespace FreeCommerceDotNet.Entities.Concrete
     {
         
         public int BrandId { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage ="Brand Adı Boş Olamaz" )]
         public string BrandName { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Brand Açıklaması Boş Olamaz")]
         public string BrandDescription { get; set; }
         public string BrandUrl { get; set; }
         public string BrandImageUrl { get; set; }

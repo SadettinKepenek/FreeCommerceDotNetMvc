@@ -10,7 +10,7 @@ namespace FreeCommerceDotNet.BLL.Concrete
 {
     public class BrandManager : IBrandService
     {
-        private IBrandDal _brandRepository;
+        private readonly IBrandDal _brandRepository;
         
         public BrandManager()
         {
