@@ -44,15 +44,26 @@
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICategoryService.cs" />
     <Compile Include="Abstract\IOrderReturnService.cs" />
+    <Compile Include="Abstract\IPaymentGatewayService.cs" />
+    <Compile Include="Abstract\IProductAttributeService.cs" />
+    <Compile Include="Abstract\IProductDiscountService.cs" />
+    <Compile Include="Abstract\IProductPriceService.cs" />
     <Compile Include="Abstract\IProductService.cs" />
     <Compile Include="Abstract\IService.cs" />
+    <Compile Include="Abstract\IShippingService.cs" />
     <Compile Include="Abstract\IStoreService.cs" />
+    <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
+    <Compile Include="Concrete\PaymentGatewayManager.cs" />
+    <Compile Include="Concrete\ProductAttributeManager.cs" />
+    <Compile Include="Concrete\ProductDiscountManager.cs" />
+    <Compile Include="Concrete\ProductPriceManager.cs" />
+    <Compile Include="Concrete\ShippingManager.cs" />
     <Compile Include="Concrete\StoreManager.cs" />
-
     <Compile Include="Concrete\CategoryManager.cs" />
     <Compile Include="Concrete\OrderReturnManager.cs" />
     <Compile Include="Concrete\ProductManager.cs" />
+    <Compile Include="Concrete\UserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
