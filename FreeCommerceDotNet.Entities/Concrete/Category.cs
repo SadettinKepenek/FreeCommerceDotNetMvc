@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
@@ -17,7 +18,6 @@ namespace FreeCommerceDotNet.Entities.Concrete
         }
 
         private int _ParentId;
-
         public int ParentId
         {
             get { return _ParentId; }
@@ -26,6 +26,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
 
         private string _CategoryName;
 
+        [Required(ErrorMessage = "Category ismi boş geçilemez")]
         public string CategoryName
         {
             get { return _CategoryName; }
@@ -33,7 +34,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         }
 
         private string _Description;
-
+        [Required(ErrorMessage = "Category Açıklaması boş geçilemez")]
         public string Description
         {
             get { return _Description; }
