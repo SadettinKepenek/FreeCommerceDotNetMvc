@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
@@ -14,6 +15,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         }
         private string _AttributeGroupName;
 
+        [Required(ErrorMessage = "AttributeGroupName boş geçilemez")]
         public string AttributeGroupName
         {
             get { return _AttributeGroupName; }

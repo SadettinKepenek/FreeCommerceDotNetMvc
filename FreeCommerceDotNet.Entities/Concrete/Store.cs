@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 
 public class Store:IEntity
@@ -35,6 +36,7 @@ public class Store:IEntity
     }
     private string _StoreName;
 
+    [Required(ErrorMessage = "StoreName boş geçilemez")]
     public string StoreName
     {
         get { return _StoreName; }
@@ -42,6 +44,7 @@ public class Store:IEntity
     }
     private string _StoreOwner;
 
+    [Required(ErrorMessage = "StoreOwner boş geçilemez")]
     public string StoreOwner
     {
         get { return _StoreOwner; }
@@ -65,6 +68,8 @@ public class Store:IEntity
     }
 
     private string _Phone;
+
+    [Required(ErrorMessage = "Phone boş geçilemez")]
 
     public string Phone
     {
