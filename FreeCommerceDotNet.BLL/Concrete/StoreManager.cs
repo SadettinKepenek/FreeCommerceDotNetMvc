@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace FreeCommerceDotNet.BLL.Concrete
 {
-    public class StoreManager : IStoreService
+    public class StoreManager : 
+        IStoreService
     {
         private IStoreDal _storeRepository;
         public StoreManager()
@@ -77,8 +78,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
             return _storeRepository.SelectByFilter(filters);
         }
 
-        
 
-        
+        public void Dispose()
+        {
+        }
     }
 }

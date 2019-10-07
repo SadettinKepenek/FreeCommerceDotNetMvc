@@ -48,5 +48,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
         {
             return _productDal.SelectAll();
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

@@ -51,5 +51,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
         {
             return _segmentRepository.SelectById(id);
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

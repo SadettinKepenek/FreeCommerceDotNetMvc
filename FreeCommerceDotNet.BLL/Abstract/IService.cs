@@ -5,7 +5,7 @@ using FreeCommerceDotNet.Entities.Concrete;
 
 namespace FreeCommerceDotNet.BLL.Abstract
 {
-    public interface IService<T>
+    public interface IService<T>:IDisposable
     {
         ServiceResult Insert(T entity);
         ServiceResult Update(T entity);

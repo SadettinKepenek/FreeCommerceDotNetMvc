@@ -81,5 +81,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
             return _brandRepository.SelectAll();
 
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

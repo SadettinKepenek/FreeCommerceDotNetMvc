@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace FreeCommerceDotNet.BLL.Concrete
 {
-    public class CustomerManager : ICustomerService
+    public class CustomerManager : 
+        ICustomerService
     {
         private ICustomerDal _customerRepository;
         public CustomerManager() { }
@@ -50,6 +51,10 @@ namespace FreeCommerceDotNet.BLL.Concrete
         public Customer SelectById(int id)
         {
             return _customerRepository.SelectById(id);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

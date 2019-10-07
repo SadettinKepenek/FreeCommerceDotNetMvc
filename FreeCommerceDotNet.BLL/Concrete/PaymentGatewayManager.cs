@@ -48,5 +48,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
         {
             return _paymentGatewayDal.SelectAll();
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
