@@ -49,6 +49,11 @@ namespace FreeCommerceDotNet.BLL.Concrete
             return _categoryDal.SelectAll();
         }
 
+        public List<Category> GetLayoutCategories()
+        {
+            return _categoryDal.GetLayoutCategories();
+        }
+
         public void Dispose()
         {
         }

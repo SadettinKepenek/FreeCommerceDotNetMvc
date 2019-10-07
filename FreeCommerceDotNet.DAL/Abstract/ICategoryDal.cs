@@ -6,5 +6,6 @@ namespace FreeCommerceDotNet.DAL.Abstract
 {
     public interface ICategoryDal:IRepository<Category>
     {
+        List<Category> GetLayoutCategories();
     }
 }

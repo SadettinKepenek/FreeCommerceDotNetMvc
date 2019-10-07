@@ -68,11 +68,5 @@
     <Compile Include="Concrete\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FreeCommerceDotNet\FreeCommerceDotNet.csproj">
-      <Project>{E70DD921-A970-472F-B116-10197D037A5E}</Project>
-      <Name>FreeCommerceDotNet</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

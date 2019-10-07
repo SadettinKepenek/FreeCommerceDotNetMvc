@@ -1,7 +1,10 @@
-﻿@using FreeCommerceDotNet.Models.BusinessManager
+﻿@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Models.BusinessManager
 @using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.ControllerModels.Client
-@using Category = FreeCommerceDotNet.Models.DbModels.Category
+@using FreeCommerceDotNet.Entities.Concrete
+@using Category = FreeCommerceDotNet.Entities.Concrete.Category
 @*@{
         ViewBag.Title = "_LayoutFrontEnd";
     }*@
@@ -77,57 +80,82 @@
     }
 }
 @{
-    List<CategoryBM> categories;
-    using (CategoryBusinessManager bm = new CategoryBusinessManager())
-    {
-        categories = bm.Get();
-    }
+    var manager = new CategoryManager(new CategoryRepository());
+    
+
+    var categories = manager.GetLayoutCategories();
+
 
 }
-@helper GetSideBarCategories(List<CategoryBM> categories)
+@helper GetSideBarCategories(List<Category> categories)
 {
-
-    foreach (CategoryBM bm in categories.Where(x => x.Category.ParentId == -1))
+    foreach (Category categoryBm in categories)
     {
         <li>
-            <a href="#">@bm.Category.CategoryName</a>
-            <ul class="mega-menu clothing-menu">
-                <li>
-                    <div class="row m-0">
+            <a href="#">@categoryBm.CategoryName</a>
+            @if (categoryBm.SubCategories.Count!=0)
+            {
+                <ul class="mega-menu clothing-menu">
+                    <li>
+                        <div class="row m-0">
 
-                        @foreach (Category category in bm.SubCategories.Take(3))
-                        {
-                            <div class="col-xl-4">
-                                <div class="link-section">
-                                    <h5>@category.CategoryName</h5>
-                                </div>
-                            </div>
-                        }
+                            @foreach (Category category in categoryBm.SubCategories.Take(3))
+                            {
+                                <div class="col-xl-4">
+                                    <div class="link-section">
+                                        <h5 ><a href="#">@category.CategoryName</a></h5>
+                                        @if (category.SubCategories.Count!=0)
+                                        {
+                                            
+                                            <ul>
+                                                @foreach (var sub in category.SubCategories)
+                                                {
+                                                    <li><a href="#">@sub.CategoryName</a></li>
+                                                }
+                                            </ul>
+                                        }
+                                   
+                                    </div>
+                                </div>//hatırlamy9om bakalım burdan
+                            }
 
 
-                    </div>
-                </li>
-            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+            }
         </li>
     }
+
 }
 
-@helper GetNavbarCategories(List<CategoryBM> categories)
+@helper GetNavbarCategories(List<Category> categories)
 {
-    foreach (var categoryBm in categories.Where(x => x.Category.ParentId == -1).Take(8))
+    foreach (var categoryBm in categories)
     {
         <li>
-            <a href="#">@categoryBm.Category.CategoryName</a>
+            <a href="#">@categoryBm.CategoryName</a>
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul>
 
                     @foreach (var category in categoryBm.SubCategories)
                     {
-                        <li>
+                        <li>    
                             <a href="#">@category.CategoryName</a>
-                           
+                            @if (category.SubCategories.Count!=0)
+                            {
+                                <ul>
+                                    @foreach (Category categorySubCategory in category.SubCategories)
+                                    {
+                                    <li> <a href="#">@categorySubCategory.CategoryName</a></li>
+                                    }
+                                </ul>
+                            }
                             
+
+
 
 
                         </li>
