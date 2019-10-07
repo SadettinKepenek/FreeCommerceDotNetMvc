@@ -41,17 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IAttributeGroupService.cs" />
+    <Compile Include="Abstract\IAttributeService.cs" />
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICategoryService.cs" />
+    <Compile Include="Abstract\ICustomerService.cs" />
+    <Compile Include="Abstract\IOrderDetailService.cs" />
+    <Compile Include="Abstract\IOrderMasterService.cs" />
     <Compile Include="Abstract\IOrderReturnService.cs" />
+    <Compile Include="Abstract\IReviewService.cs" />
+    <Compile Include="Abstract\ISegmentService.cs" />
     <Compile Include="Abstract\IService.cs" />
     <Compile Include="Abstract\IStoreService.cs" />
+    <Compile Include="Concrete\AttributeGroupManager.cs" />
+    <Compile Include="Concrete\AttributeManager.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
+    <Compile Include="Concrete\CustomerManager.cs" />
+    <Compile Include="Concrete\OrderDetailManager.cs" />
+    <Compile Include="Concrete\OrderMasterManager.cs" />
+    <Compile Include="Concrete\ReviewManager.cs" />
+    <Compile Include="Concrete\SegmentManager.cs" />
     <Compile Include="Concrete\StoreManager.cs" />
-
     <Compile Include="Concrete\CategoryManager.cs" />
     <Compile Include="Concrete\OrderReturnManager.cs" />
-
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
