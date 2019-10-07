@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\IService.cs" />
+    <Compile Include="Abstract\IStoreService.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
+    <Compile Include="Concrete\StoreManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
