@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 
 namespace FreeCommerceDotNet.Entities.Concrete
@@ -14,7 +15,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         }
 
         private string _PaymentName;
-
+        [Required(ErrorMessage = "Payment Adı Zorunludur")]
         public string PaymentName
         {
             get { return _PaymentName; }
@@ -22,7 +23,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         }
 
         private string _PaymentDescription;
-
+        [Required(ErrorMessage = "Payment Description Zorunludur")]
         public string PaymentDescription
         {
             get { return _PaymentDescription; }
