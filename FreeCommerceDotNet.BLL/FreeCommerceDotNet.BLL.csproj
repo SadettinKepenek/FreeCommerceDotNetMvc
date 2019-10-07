@@ -42,10 +42,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IBrandService.cs" />
+    <Compile Include="Abstract\ICategoryService.cs" />
+    <Compile Include="Abstract\IOrderReturnService.cs" />
     <Compile Include="Abstract\IService.cs" />
     <Compile Include="Abstract\IStoreService.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\StoreManager.cs" />
+
+    <Compile Include="Concrete\CategoryManager.cs" />
+    <Compile Include="Concrete\OrderReturnManager.cs" />
+
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
