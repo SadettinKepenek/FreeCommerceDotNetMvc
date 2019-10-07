@@ -1,16 +1,14 @@
-﻿using System;
+﻿using FreeCommerceDotNet.BLL.Concrete;
+using FreeCommerceDotNet.Common.Concrete;
+using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Models.ControllerModels;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using FreeCommerceDotNet.Models;
-using FreeCommerceDotNet.Models.ControllerModels;
-using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -19,7 +17,7 @@ namespace FreeCommerceDotNet.Controllers
         // GET: Security
         public ActionResult Index()
         {
-            return RedirectToAction("Login",new object(){} );
+            return RedirectToAction("Login", new object() { });
         }
         [AllowAnonymous]
         [HttpGet]
@@ -32,56 +30,49 @@ namespace FreeCommerceDotNet.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel login,string returnUrl)
+        public ActionResult Login(LoginModel login, string returnUrl)
         {
             Debug.WriteLine(returnUrl);
             if (ModelState.IsValid)
             {
-                
-                string sqlQuery = "select * from Users where Username=@username and Password=@password";
-                SqlCommand cmd=new SqlCommand(sqlQuery);
-                cmd.Parameters.AddWithValue("@username", login.Username);
-                cmd.Parameters.AddWithValue("@password", login.Password);
+                List<DBFilter> filters = new List<DBFilter>();
+                filters.Add(new DBFilter() { ParamName = "@username", ParamValue = login.Username });
+                filters.Add(new DBFilter() { ParamName = "@password", ParamValue = login.Password });
 
-                using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+                using (var manager = new UserManager(new UserRepository()))
                 {
-                    cmd.Connection = connection;
-                    if(connection.State==ConnectionState.Closed)
-                        connection.Open();
-                    var reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    var selectByFilter = manager.SelectByFilter(filters);
+                    if (selectByFilter != null)
                     {
-                        if (reader.Read())
-                        {
-                            var roles = reader[4].ToString();
-                            var authTicket = new FormsAuthenticationTicket(
-                                1,                             // version
-                                login.Username,                      // user name
-                                DateTime.Now,                  // created
-                                DateTime.Now.AddMinutes(20),   // expires
-                                login.rememberMe,                    // persistent?
-                                roles                     // can be used to store roles
-                            );
+                        Entities.Concrete.User user = selectByFilter.FirstOrDefault();
 
-                            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                            System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
-                            connection.Close();
-                        }
+                        var userRoles = user.Role;
+                        var authTicket = new FormsAuthenticationTicket(
+                            1,                             // version
+                            login.Username,                      // user name
+                            DateTime.Now,                  // created
+                            DateTime.Now.AddMinutes(20),   // expires
+                            login.rememberMe,                    // persistent?
+                            userRoles                     // can be used to store roles
+                        );
 
+                        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                        System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
                         if (String.IsNullOrEmpty(returnUrl))
                             returnUrl = "~/Home/Index";
                         return Redirect(returnUrl);
+
+
                     }
                     else
                     {
-                        ModelState.AddModelError("LoginAttempt","Username or Password are Invalid.");
-                        connection.Close();
+                        ModelState.AddModelError("LoginAttempt", "Username or Password are Invalid.");
                         return View(login);
                     }
-
-
                 }
+
+
             }
             else
                 return View(login);

@@ -1,12 +1,13 @@
 ﻿@using FreeCommerceDotNet.Models.BusinessManager
 @using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
+@using Store = Store
 @{
     var identityName = HttpContext.Current.User.Identity.Name;
     Store storeBm;
     using (StoreBusinessManager m=new StoreBusinessManager())
     {
-        storeBm= m.Get().FirstOrDefault()?.Store;
+        storeBm= m.Get().FirstOrDefault().Store;
     }
 }
 <!DOCTYPE html>

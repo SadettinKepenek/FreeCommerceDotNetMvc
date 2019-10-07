@@ -163,6 +163,106 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
+        public List<Category> GetLayoutCategories()
+        {
+
+            string query = "SP_GetLayoutCategories";
+            using (var conn = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, conn);
+                //ayrı olması gerekir sanırım
+                command.CommandType = CommandType.StoredProcedure;
+                DataTable queryResult = database.DoQuery(command: command);
+
+                if (queryResult.Rows.Count != 0)
+                {
+                    var groupedCategorys =
+                        LinqHelper.GroupDataTableByField<int>(fieldName: "CategoryId", queryResult: queryResult);
+                    List<Category> categories=new List<Category>();
+                    foreach (IGrouping<int, DataRow> group in groupedCategorys)
+                    {
+                        var mr = group.FirstOrDefault();
+                        int categoryId = group.Key;
+
+                        Category category=new Category();
+                        category.CategoryId = categoryId;
+                        category.ParentId = (int)mr["ParentId"];
+                        category.CategoryName = mr["CategoryName"] as string;
+                        category.ShowNavbar = (bool) mr["ShowNavbar"];
+                        category.isActive= (bool) mr["isActive"];
+                        category.SubCategories=new List<Category>();
+                        if (category.ParentId==-1)
+                        {
+                            if (categories.FirstOrDefault(x=>x.CategoryId==category.CategoryId)!=null)
+                            {
+                                continue;
+                                
+                            }
+                            foreach (DataRow dr in group)
+                            {
+                                // CategoryId = 1 için gezilen rowlar
+                                // Hem Subı Hemden Subın sub'ını içerir. kanka bilmiyom ki 
+                                if (dr["SUBCATEGORYID"] != DBNull.Value)
+                                {
+                                    int subId = (int)dr["SUBCATEGORYID"];
+                                    var Sub = category.SubCategories.FirstOrDefault(x => x.CategoryId == subId);
+                                    if (Sub == null)
+                                    {
+
+                                        var sub = new Category();
+                                        sub.CategoryId = (int)dr["SUBCATEGORYID"];
+                                        sub.CategoryName = dr["SUBCATEGORYNAME"] as string;
+                                        sub.ShowNavbar = (bool)dr["SUBCATEGORYSHOWNAVBAR"];
+                                        sub.isActive = (bool)dr["SUBCATEGORYISACTIVE"];
+                                        sub.SubCategories = new List<Category>();
+                                        AddSubOfSub(dr, sub);
+                                        category.SubCategories.Add(sub);
+
+
+                                    }
+                                    else
+                                    {
+                                        if (Sub.SubCategories == null)
+                                        {
+                                            Sub.SubCategories = new List<Category>();
+                                        }
+                                        AddSubOfSub(dr, Sub);
+                                    }
+                                }
+
+                               
+
+
+
+                            }
+                            categories.Add(category);
+
+                        }
+
+                    }
+
+                    return categories;
+                }
+            }
+            return null;
+        }
+
+        private static void AddSubOfSub(DataRow dr, Category sub)
+        {
+            if (dr["SUBOFSUBCATEGORYID"] != DBNull.Value)
+            {
+                var subs = new Category();
+                subs.CategoryId = (int) dr["SUBOFSUBCATEGORYID"];
+                if (sub.SubCategories.FirstOrDefault(x => x.CategoryId == subs.CategoryId) == null)
+                {
+                    subs.CategoryName = dr["SUBOFSUBCATEGORYNAME"] as string;
+                    subs.ShowNavbar = (bool) dr["SUBOFSUBCATEGORYSHOWNAVBAR"];
+                    subs.isActive = (bool) dr["SUBOFSUBCATEGORYISACTIVE"];
+                    sub.SubCategories.Add(subs);
+                }
+            }
+        }
+
 
         #region Utilities
 

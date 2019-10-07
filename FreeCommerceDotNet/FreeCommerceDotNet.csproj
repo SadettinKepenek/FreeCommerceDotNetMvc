@@ -3907,6 +3907,24 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeCommerceDotNet.BLL\FreeCommerceDotNet.BLL.csproj">
+      <Project>{7d9d5384-5a56-47e0-aedb-1d8423143c46}</Project>
+      <Name>FreeCommerceDotNet.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FreeCommerceDotNet.Common\FreeCommerceDotNet.Common.csproj">
+      <Project>{11c3a042-1684-49f9-a1ad-ab0c7af9c850}</Project>
+      <Name>FreeCommerceDotNet.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FreeCommerceDotNet.DAL\FreeCommerceDotNet.DAL.csproj">
+      <Project>{711F481D-F2D7-4586-ACED-44FFC1C64BC2}</Project>
+      <Name>FreeCommerceDotNet.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FreeCommerceDotNet.Entities\FreeCommerceDotNet.Entities.csproj">
+      <Project>{ce187959-6e41-45fa-9218-bdac376b5aa8}</Project>
+      <Name>FreeCommerceDotNet.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
