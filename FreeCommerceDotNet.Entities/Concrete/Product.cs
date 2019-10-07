@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 using FreeCommerceDotNet.Entities.Concrete;
 
@@ -15,6 +16,7 @@ public class Product:IEntity
 
     private int _categoryId;
 
+    [Required(ErrorMessage = "CategoryId Alanı Zorunludur")]
     public int CategoryId
     {
         get { return _categoryId; }
@@ -22,7 +24,7 @@ public class Product:IEntity
     }
 
     private string _productName;
-
+    [Required(ErrorMessage = "Product İsmi Alanı Zorunludur")]
     public string ProductName
     {
         get { return _productName; }
@@ -30,7 +32,7 @@ public class Product:IEntity
     }
 
     private string _productDescription;
-
+    [Required(ErrorMessage = "Product Açıklaması Alanı Zorunludur")]
     public string ProductDescription
     {
         get { return _productDescription; }
@@ -72,7 +74,7 @@ public class Product:IEntity
     }
 
     private string _productCode;
-
+    [Required(ErrorMessage = "Product Code Alanı Zorunludur")]
     public string ProductCode
     {
         get { return _productCode; }
@@ -128,7 +130,7 @@ public class Product:IEntity
     }
 
     private int _quantity;
-
+    [Required(ErrorMessage = "Product Quantity Alanı Zorunludur")]
     public int Quantity
     {
         get { return _quantity; }
@@ -136,7 +138,7 @@ public class Product:IEntity
     }
 
     private string _outofStockStatus;
-
+    [Required(ErrorMessage = "Product OutofStockStatus Alanı Zorunludur")]
     public string OutofStockStatus
     {
         get { return _outofStockStatus; }
