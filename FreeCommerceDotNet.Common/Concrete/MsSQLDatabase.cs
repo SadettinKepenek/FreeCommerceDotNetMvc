@@ -135,7 +135,7 @@ namespace FreeCommerceDotNet.Common.Concrete
                 DBResult result = new DBResult()
                 {
                     Id = (int)table.Rows[0]["ReturnValue"],
-                    Message = table.Rows[0]["Message"] as string
+                    Message =  table.Rows[0]["Message"] as string 
                 };
                 return result;
             }

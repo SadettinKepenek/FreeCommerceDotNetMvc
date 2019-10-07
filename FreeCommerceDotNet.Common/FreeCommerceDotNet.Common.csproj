@@ -44,8 +44,11 @@
     <Compile Include="Abstract\IDatabase.cs" />
     <Compile Include="Concrete\ConnectionException.cs" />
     <Compile Include="Concrete\DBFilter.cs" />
+    <Compile Include="Concrete\DBResult.cs" />
     <Compile Include="Concrete\LinqHelper.cs" />
     <Compile Include="Concrete\MsSQLDatabase.cs" />
+    <Compile Include="Concrete\ServiceHelper.cs" />
+    <Compile Include="Concrete\SqlReturnMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

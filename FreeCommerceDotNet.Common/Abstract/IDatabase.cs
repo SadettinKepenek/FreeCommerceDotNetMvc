@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 
 namespace FreeCommerceDotNet.Common.Abstract

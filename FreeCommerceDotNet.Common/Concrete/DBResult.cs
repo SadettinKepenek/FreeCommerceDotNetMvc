@@ -1,4 +1,5 @@
-﻿namespace FreeCommerceDotNet.Entities.Concrete
+﻿
+namespace FreeCommerceDotNet.Common.Concrete
 {
     public class DBResult
     {

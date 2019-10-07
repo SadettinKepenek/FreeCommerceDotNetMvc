@@ -28,10 +28,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
-                    DBResult result = new DBResult();
-                    result.Id = (int)datatable.Rows[0]["ReturnValue"];
-                    result.Message = datatable.Rows[0]["Message"].ToString();
-                    return result;
+                    return database.ReadResultFromDataTable(datatable);
+
                 }
             }
 
@@ -51,10 +49,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
-                    DBResult result = new DBResult();
-                    result.Id = (int)datatable.Rows[0]["ReturnValue"];
-                    result.Message = datatable.Rows[0]["Message"].ToString();
-                    return result;
+                    return database.ReadResultFromDataTable(datatable);
+
                 }
             }
 
@@ -72,10 +68,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
-                    DBResult result = new DBResult();
-                    result.Id = (int)datatable.Rows[0]["ReturnValue"];
-                    result.Message = datatable.Rows[0]["Message"].ToString();
-                    return result;
+                    return database.ReadResultFromDataTable(datatable);
+
                 }
             }
             return null;
