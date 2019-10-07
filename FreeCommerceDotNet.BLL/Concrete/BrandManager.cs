@@ -11,7 +11,7 @@ namespace FreeCommerceDotNet.BLL.Concrete
     public class BrandManager : IBrandService
     {
         private IBrandDal _brandRepository;
-
+        
         public BrandManager()
         {
 
@@ -20,8 +20,6 @@ namespace FreeCommerceDotNet.BLL.Concrete
         {
             _brandRepository = brandRepository;
         }
-
-
         public ServiceResult Insert(Brand entity)
         {
             if (!String.IsNullOrEmpty(entity.BrandName) && !String.IsNullOrEmpty(entity.BrandDescription))
