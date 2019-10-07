@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IStoreService.cs" />
-    <Compile Include="Concrete\StoreManager.cs" />
+    <Compile Include="Abstract\IBrandService.cs" />
+    <Compile Include="Abstract\IService.cs" />
+    <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\FreeCommerceDotNet.Common\FreeCommerceDotNet.Common.csproj">
+      <Project>{11C3A042-1684-49F9-A1AD-AB0C7AF9C850}</Project>
+      <Name>FreeCommerceDotNet.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FreeCommerceDotNet.DAL\FreeCommerceDotNet.DAL.csproj">
       <Project>{711F481D-F2D7-4586-ACED-44FFC1C64BC2}</Project>
       <Name>FreeCommerceDotNet.DAL</Name>

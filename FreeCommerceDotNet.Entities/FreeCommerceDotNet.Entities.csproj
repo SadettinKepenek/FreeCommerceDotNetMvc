@@ -45,10 +45,10 @@
     <Compile Include="Concrete\Attribute.cs" />
     <Compile Include="Concrete\AttributeGroup.cs" />
     <Compile Include="Concrete\Brand.cs" />
+    <Compile Include="Concrete\ServiceResult.cs" />
     <Compile Include="Concrete\Category.cs" />
     <Compile Include="Concrete\Coupon.cs" />
     <Compile Include="Concrete\Customer.cs" />
-    <Compile Include="Concrete\DBResult.cs" />
     <Compile Include="Concrete\OptionDetail.cs" />
     <Compile Include="Concrete\OptionMaster.cs" />
     <Compile Include="Concrete\OrderDetail.cs" />
