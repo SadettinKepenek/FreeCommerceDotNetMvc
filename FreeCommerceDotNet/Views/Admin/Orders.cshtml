@@ -67,7 +67,7 @@
                                 <tr>
                                     <th scope="row">@bm.OrderId</th>
                                     <td>@bm.CustomerBm.Firstname @bm.CustomerBm.Lastname</td>
-                                    <td>@bm.OrderDetails.Count</td>
+                                    <td>@(bm.OrderDetails?.Count)</td>
                                     <td>@bm.PaymentBm.PaymentName</td>
                                     <td>@bm.ShippingBm.ShippingName</td>
                                     @GetProductActionButtons(bm)
