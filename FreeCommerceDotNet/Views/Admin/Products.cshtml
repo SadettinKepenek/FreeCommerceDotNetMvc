@@ -1,8 +1,9 @@
 ﻿@using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
-@model List<FreeCommerceDotNet.Models.BusinessModels.ProductBM>
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
+@model List<FreeCommerceDotNet.Entities.Concrete.Product>
 
-@helper GetProductPrice(ProductBM bm)
+@helper GetProductPrice(Product bm)
 {
     if (bm.ProductPrices != null)
     {
@@ -21,22 +22,22 @@
         <td>Fiyat Bulunamadı </td>
     }
 }
-@helper GetProductStock(ProductBM bm)
+@helper GetProductStock(Product bm)
 {
-    if (bm.Product.Quantity == 0)
+    if (bm.Quantity == 0)
     {
         <td>Out of Stock</td>
     }
     else
     {
-        <td>@bm.Product.Quantity Adet</td>
+        <td>@bm.Quantity Adet</td>
 
     }
 }
 
-@helper GetProductStatus(ProductBM bm)
+@helper GetProductStatus(Product bm)
 {
-    if (bm.Product.Status)
+    if (bm.Status)
     {
         <td class="alert-success">Aktif</td>
     }
@@ -47,12 +48,12 @@
     }
 }
 
-@helper GetProductActionButtons(ProductBM bm)
+@helper GetProductActionButtons(Product bm)
 {
         <td class="text-center">
-            @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-danger" })
-            @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-warning" })
-            @Html.ActionLink("Show", "Product", "Admin", new { id = bm.Product.ProductId }, new { @class = "btn btn-sm btn-success" })
+            @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-danger" })
+            @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-warning" })
+            @Html.ActionLink("Show", "Product", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-success" })
         </td>
 }
 
@@ -107,11 +108,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (ProductBM bm in Model)
+                            @foreach (Product bm in Model)
                             {
                                 <tr>
-                                    <th scope="row">@bm.Product.ProductId</th>
-                                    <td>@bm.Product.ProductName</td>
+                                    <th scope="row">@bm.ProductId</th>
+                                    <td>@bm.ProductName</td>
                                     <td>@bm.Category.CategoryName</td>
 
                                     @GetProductPrice(bm)

@@ -1,4 +1,6 @@
-﻿namespace FreeCommerceDotNet.BLL.Abstract
+﻿using FreeCommerceDotNet.Entities.Concrete;
+
+namespace FreeCommerceDotNet.BLL.Abstract
 {
     public interface IProductService:IService<Product>
     {

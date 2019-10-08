@@ -314,7 +314,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 product.Status = (bool)mainRow["ProductStatus"];
                 int brandId = (int)mainRow["BrandId"];
                 product.Brand = brandId;
-                product.brand = new Brand()
+                product.BrandEntity = new Brand()
                 {
                     BrandName = mainRow["BrandName"] as string,
                     BrandId = brandId
