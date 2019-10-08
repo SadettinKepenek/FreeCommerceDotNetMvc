@@ -229,10 +229,12 @@ namespace FreeCommerceDotNet.DAL.Concrete
                         product.BrandEntity = brand;
 
                         orderdetail.ProductBm = product;
-
+                        orderDetails.Add(orderdetail);
                     }
                 }
             }
+
+            ordermaster.OrderDetails = orderDetails;
             return ordermaster;
         }
 

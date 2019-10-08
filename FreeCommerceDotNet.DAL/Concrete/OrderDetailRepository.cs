@@ -44,7 +44,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 command.Parameters.AddWithValue("@Action", "INSERT");
                 command.Parameters.AddWithValue("@OrderId", entity.OrderId);
                 command.Parameters.AddWithValue("@Quantity", entity.Quantity);
-                command.Parameters.AddWithValue("@ProductPrice", entity.ProductBm.ProductPrices.FirstOrDefault().Price);
+                command.Parameters.AddWithValue("@ProductPrice", entity.ProductPrice);
                 command.Parameters.AddWithValue("@ProductId", entity.ProductId);
                 command.Parameters.AddWithValue("@IsDiscountedPrice", entity.isDiscountedPrice);
 
@@ -143,7 +143,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 command.Parameters.AddWithValue("@OrderId", entity.OrderId);
                 command.Parameters.AddWithValue("@OrderDetailId", entity.OrderDetailId);
                 command.Parameters.AddWithValue("@Quantity", entity.Quantity);
-                command.Parameters.AddWithValue("@ProductPrice", entity.ProductBm.ProductPrices.FirstOrDefault().Price);
+                command.Parameters.AddWithValue("@ProductPrice", entity.ProductPrice);
                 command.Parameters.AddWithValue("@ProductId", entity.ProductId);
                 command.Parameters.AddWithValue("@IsDiscountedPrice", entity.isDiscountedPrice);
 

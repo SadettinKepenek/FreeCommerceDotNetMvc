@@ -837,6 +837,7 @@ namespace FreeCommerceDotNet.Controllers
         {
 
             var orderMasterBm = new OrderMaster();
+            orderMasterBm.OrderDetails=new List<Entities.Concrete.OrderDetail>();
             for (int i = 0; i <= 1; i++)
             {
                 orderMasterBm.OrderDetails.Add(new Entities.Concrete.OrderDetail());
@@ -850,9 +851,22 @@ namespace FreeCommerceDotNet.Controllers
 
             using (OrderMasterManager manager = new OrderMasterManager(new OrderMasterRepository()))
             {
-                manager.Insert(bm);
-                TempData["OrderMasterMessage"] = "Order Has Been Added";
+                int orderMasterId=manager.Insert(bm).Id;
+                bm.OrderId = orderMasterId;
+                
             }
+
+            using (OrderDetailManager m=new OrderDetailManager(new OrderDetailRepository()))
+            {
+                foreach (Entities.Concrete.OrderDetail detail in bm.OrderDetails)
+                {
+                    detail.OrderId = bm.OrderId;
+                    m.Insert(detail);
+
+                }
+            }
+            TempData["OrderMasterMessage"] = "Order Has Been Added";
+
             return RedirectToAction("Orders");
         }
 
@@ -861,6 +875,7 @@ namespace FreeCommerceDotNet.Controllers
         {
             var orderMasterBm = new OrderMasterManager(new OrderMasterRepository()).SelectById(id);
             TempData["OrderDetailsCompare"] = orderMasterBm.OrderDetails;
+            orderMasterBm.OrderDetails = orderMasterBm.OrderDetails ?? new List<Entities.Concrete.OrderDetail>();
             if (orderMasterBm.OrderDetails.Count == 0)
             {
                 for (int i = 0; i < 1; i++)
