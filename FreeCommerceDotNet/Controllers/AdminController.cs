@@ -821,39 +821,36 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Orders()
         {
-            using (OrderMasterBusinessManager bm = new OrderMasterBusinessManager())
-            {
-                return View(bm.Get());
-            }
+            
+            return View(new OrderMasterManager(new OrderMasterRepository()).SelectAll());
         }
 
         public ActionResult OrderDetail(int id)
         {
 
-            var orderMasterBm = new OrderMasterBM(id);
-            
-            return View(orderMasterBm);
+            return View(new OrderMasterManager(new OrderMasterRepository()).SelectById(id));
 
         }
 
         [HttpGet]
         public ActionResult AddOrder()
         {
-            var orderMasterBm = new OrderMasterBM(null);
+
+            var orderMasterBm = new OrderMaster();
             for (int i = 0; i <= 1; i++)
             {
-                orderMasterBm.OrderDetails.Add(new OrderDetail());
+                orderMasterBm.OrderDetails.Add(new Entities.Concrete.OrderDetail());
             }
             return View(orderMasterBm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddOrder(OrderMasterBM bm)
+        public ActionResult AddOrder(OrderMaster bm)
         {
 
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            using (OrderMasterManager manager = new OrderMasterManager(new OrderMasterRepository()))
             {
-                manager.Add(bm);
+                manager.Insert(bm);
                 TempData["OrderMasterMessage"] = "Order Has Been Added";
             }
             return RedirectToAction("Orders");
@@ -862,26 +859,26 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateOrder(int id)
         {
-            var orderMasterBm = new OrderMasterBM(id);
+            var orderMasterBm = new OrderMasterManager(new OrderMasterRepository()).SelectById(id);
             TempData["OrderDetailsCompare"] = orderMasterBm.OrderDetails;
             if (orderMasterBm.OrderDetails.Count == 0)
             {
                 for (int i = 0; i < 1; i++)
                 {
-                    orderMasterBm.OrderDetails.Add(new OrderDetail());
+                    orderMasterBm.OrderDetails.Add(new Entities.Concrete.OrderDetail());
                 }
             }
             return View(orderMasterBm);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateOrder(OrderMasterBM bm)
+        public ActionResult UpdateOrder(OrderMaster bm)
         {
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            using (OrderMasterManager manager = new OrderMasterManager(new OrderMasterRepository()))
             {
                 manager.Update(bm);
-                List<OrderDetail> firstAttributes = TempData["OrderDetailsCompare"] as List<OrderDetail>;
-                manager.UpdateOrderDetails(bm.OrderDetails, firstAttributes,bm.OrderMaster.OrderId);
+                List<Entities.Concrete.OrderDetail> firstAttributes = TempData["OrderDetailsCompare"] as List<Entities.Concrete.OrderDetail>;
+                UpdateOrderDetails(bm.OrderDetails, firstAttributes,bm.OrderId);
                 TempData["OrderMasterMessage"] = "Order Has Been Updated";
             }
             return RedirectToAction("Orders");
@@ -896,6 +893,39 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("Orders");
         }
+
+        private void UpdateOrderDetails(List<Entities.Concrete.OrderDetail> sonGelenler, List<Entities.Concrete.OrderDetail> ilkTutulan, int orderMasterId)
+        {
+            using (OrderDetailManager m = new OrderDetailManager(new OrderDetailRepository()))
+            {
+                foreach (Entities.Concrete.OrderDetail orderDetail in ilkTutulan)
+                {
+                    orderDetail.OrderId = orderMasterId;
+                    var isDeleted = sonGelenler.FirstOrDefault(x => x.OrderDetailId == orderDetail.OrderDetailId) == null;
+                    if (isDeleted)
+                    {
+                        m.Delete(orderDetail.OrderDetailId);
+
+                    }
+                }
+                foreach (Entities.Concrete.OrderDetail orderDetail in sonGelenler)
+                {
+                    orderDetail.OrderId = orderMasterId;
+                    if (orderDetail.OrderDetailId != 0)
+                    {
+                        //Update
+                        m.Update(orderDetail);
+                    }
+                    else
+                    {
+                        m.Insert(orderDetail);
+                    }
+                }
+
+
+            }
+        }
+
 
         public ActionResult Segments()
         {
