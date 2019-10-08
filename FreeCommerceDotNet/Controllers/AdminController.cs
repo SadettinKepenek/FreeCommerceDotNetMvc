@@ -19,8 +19,9 @@ using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
 using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
 
 using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager;
+using AttributeManager = FreeCommerceDotNet.BLL.Concrete.AttributeManager;
 using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
-
+using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 
 using SegmentManager = FreeCommerceDotNet.Models.DbManager.SegmentManager;
 
@@ -619,10 +620,10 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult AttributeList()
         {
-            List<AttributeBM> allAttributes;
-            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            List<Attribute> allAttributes;
+            using (AttributeManager manager = new AttributeManager(new AttributeRepository()))
             {
-                allAttributes = manager.Get();
+                allAttributes = manager.SelectAll();
             }
             return View(allAttributes);
         }
@@ -648,12 +649,16 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateAttribute(int id)
         {
-            return View(new AttributeBM(id));
+            using (AttributeManager manager = new AttributeManager(new AttributeRepository()))
+            {
+                return View(manager.SelectById(id)); 
+            }
+           
         }
         [HttpPost]
-        public ActionResult UpdateAttribute(AttributeBM attributeModel)
+        public ActionResult UpdateAttribute(Attribute attributeModel)
         {
-            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            using (AttributeManager manager = new AttributeManager(new AttributeRepository()))
             {
                 manager.Update(attributeModel);
             }
@@ -662,9 +667,9 @@ namespace FreeCommerceDotNet.Controllers
         }
         public ActionResult DeleteAttribute(int id)
         {
-            using (AttributeBusinessManager manager = new AttributeBusinessManager())
+            using (AttributeManager manager = new AttributeManager(new AttributeRepository()))
             {
-                manager.Delete(manager.GetById(id));
+                manager.Delete(id);
             }
 
             return RedirectToAction("AttributeList", "Admin");
@@ -673,14 +678,14 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddAttribute()
         {
-            return View(new AttributeBM(null));
+            return View(new Attribute());
         }
         [HttpPost]
-        public ActionResult AddAttribute(AttributeBM attributeModel)
+        public ActionResult AddAttribute(Attribute attributeModel)
         {
-            using (AttributeBusinessManager manager = new AttributeBusinessManager())
-            {
-                manager.Add(attributeModel);
+            using (AttributeManager manager = new AttributeManager(new AttributeRepository()))
+            { 
+                manager.Insert(attributeModel);  
             }
             TempData["MessageAttribute"] = "Attribute Added!";
             return RedirectToAction("AttributeList", "Admin");
