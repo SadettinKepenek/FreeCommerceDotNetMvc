@@ -1,17 +1,18 @@
-﻿@using FreeCommerceDotNet.Models.BusinessModels
+﻿@using FreeCommerceDotNet.Entities.Concrete
+@using FreeCommerceDotNet.Models.BusinessModels
 
 @{
     ViewBag.Title = "Categories";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-@model List<CategoryBM>
+@model List<FreeCommerceDotNet.Entities.Concrete.Category>
 
-@helper GetProductActionButtons(CategoryBM bm)
+@helper GetProductActionButtons(Category bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateCategory", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeleteCategory", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Update", "UpdateCategory", "Admin", new { id = bm.CategoryId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteCategory", "Admin", new { id = bm.CategoryId }, new { @class = "btn btn-sm btn-warning" })
         @*@Html.ActionLink("Show", "Category", "Admin", new { id = bm.Category.CategoryId }, new { @class = "btn btn-sm btn-success" })*@
     </td>
 }
@@ -62,12 +63,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (CategoryBM bm in Model)
+                        @foreach (Category bm in Model)
                         {
                             <tr>
-                                <th scope="row">@bm.Category.CategoryId</th>
-                                <td>@bm.Category.CategoryName</td>
-                                <td>@bm.Category.Description</td>
+                                <th scope="row">@bm.CategoryId</th>
+                                <td>@bm.CategoryName</td>
+                                <td>@bm.Description</td>
                                 <td>@bm.Products.Count</td>
                                 <td>@bm.SubCategories.Count</td>
                                 @GetProductActionButtons(bm)

@@ -1,18 +1,20 @@
 ﻿using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.BusinessModels;
-using FreeCommerceDotNet.Models.DbManager;
-using FreeCommerceDotNet.Models.DbModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using FreeCommerceDotNet.BLL.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Entities.Concrete;
+using OrderDetail = FreeCommerceDotNet.Models.DbModels.OrderDetail;
 using Product = FreeCommerceDotNet.Entities.Concrete.Product;
 using ProductAttributeManager = FreeCommerceDotNet.BLL.Concrete.ProductAttributeManager;
 using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountManager;
 using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
 using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
 using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
+using SegmentManager = FreeCommerceDotNet.Models.DbManager.SegmentManager;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -26,26 +28,30 @@ namespace FreeCommerceDotNet.Controllers
         }
         public ActionResult Categories(bool subCategories)
         {
-            List<CategoryBM> categories;
+            List<Category> categories;
 
-           
-            using (CategoryBusinessManager bm = new CategoryBusinessManager())
+            using (CategoryManager categorManager=new CategoryManager(new CategoryRepository()))
             {
+                var allCategories = categorManager.SelectAll();
+
                 if (subCategories)
                 {
-                    categories=new List<CategoryBM>();
-                    foreach (CategoryBM categoryBm in bm.Get())
+                    categories = new List<Category>();
+                    foreach (Category categoryBm in allCategories.Where(x=>x.ParentId!=-1))
                     {
-                        if (categoryBm.Category.ParentId!=-1)
-                        {
-                            categories.Add(categoryBm);
-                        }
+                        categories.Add(categoryBm);
                     }
+
                     return View(categories);
                 }
                 else
                 {
-                    categories = bm.Get();
+                    categories = new List<Category>();
+                    foreach (Category categoryBm in allCategories.Where(x => x.ParentId == -1))
+                    {
+                        categories.Add(categoryBm);
+                    }
+
                     return View(categories);
                 }
             }
@@ -58,13 +64,14 @@ namespace FreeCommerceDotNet.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddCategory(CategoryBM bm)
+        public ActionResult AddCategory(Category bm)
         {
-            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
+            using (CategoryManager businessManager = new CategoryManager(new CategoryRepository()))
             {
                 try
                 {
-                    int inserted = businessManager.Add(bm);
+
+                    int inserted = businessManager.Insert(bm).Id;
                     TempData["CategorySuccessMessage"] = "Category " + inserted.ToString() + " Has Been Added!";
                     return RedirectToAction("Categories",new { subCategories =false});
 
@@ -72,7 +79,7 @@ namespace FreeCommerceDotNet.Controllers
                 catch (Exception e)
                 {
                     ModelState.AddModelError("AddCategoryError", e.StackTrace);
-                    return AddCategory(bm);
+                    return View(bm);
 
                 }
 
@@ -81,25 +88,25 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateCategory(int id)
         {
-            return View(new CategoryBM(id));
+            return View(new CategoryManager(new CategoryRepository()).SelectById(id));
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateCategory(CategoryBM bm)
+        public ActionResult UpdateCategory(Category bm)
         {
-            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
+            using (CategoryManager businessManager = new CategoryManager(new CategoryRepository()))
             {
                 try
                 {
-                    businessManager.Update(bm);
-                    TempData["CategorySuccessMessage"] = "Category Has Been Updated!";
+                    int id=businessManager.Update(bm).Id;
+                    TempData["CategorySuccessMessage"] = "Category "+id+" Has Been Updated!";
                     return RedirectToAction("Categories", new { subCategories = false });
 
                 }
                 catch (Exception e)
                 {
                     ModelState.AddModelError("AddCategoryError", e.StackTrace);
-                    return AddCategory(bm);
+                    return View(bm);
 
                 }
 
@@ -108,11 +115,11 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult DeleteCategory(int id)
         {
-            using (CategoryBusinessManager businessManager = new CategoryBusinessManager())
+            using (CategoryManager businessManager = new CategoryManager(new CategoryRepository()))
             {
                 try
                 {
-                    businessManager.Delete(new CategoryBM(id));
+                    businessManager.Delete(id);
                     TempData["CategorySuccessMessage"] = "Category Has Been Deleted!";
                     return RedirectToAction("Categories", new { subCategories = false });
 
@@ -726,42 +733,44 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Users()
         {
-            using (UsersBusinessManager bm = new UsersBusinessManager())
-            {
-                return View(bm.Get());
-            }
+            return View(new UserManager(new UserRepository()).SelectAll());
+            
         }
 
         [HttpGet]
         public ActionResult AddUser()
         {
-            return View(new UsersBM(null));
+            return View(new User());
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddUser(UsersBM bm)
+        public ActionResult AddUser(User bm)
         {
-            using (UsersBusinessManager manager=new UsersBusinessManager())
+           
+            using (UserManager m=new UserManager(new UserRepository()))
             {
-                manager.Add(bm);
-            }
+               var result= m.Insert(bm);
+               TempData["UserSuccessMessage"] = result.Id>0 ?"Success !":"Failed!";
 
-            TempData["UserSuccessMessage"] = "Success !";
+            }
             return RedirectToAction("Users");
         }
 
         [HttpGet]
         public ActionResult UpdateUser(int id)
         {
-            return View(new UsersBM(id));
+            return View(new UserManager(new UserRepository()).SelectById(id));
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateUser(UsersBM bm)
+        public ActionResult UpdateUser(User bm)
         {
-            using (UsersBusinessManager manager = new UsersBusinessManager())
+           
+            using (UserManager m = new UserManager(new UserRepository()))
             {
-                manager.Update(bm);
+                var result = m.Update(bm);
+                TempData["UserSuccessMessage"] = result.Id > 0 ? "Success !" : "Failed!";
+
             }
             TempData["UserSuccessMessage"] = "Success !";
             return RedirectToAction("Users");
@@ -769,11 +778,12 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult DeleteUser(int id)
         {
-            using (UsersBusinessManager manager = new UsersBusinessManager())
+            using (UserManager m = new UserManager(new UserRepository()))
             {
-                manager.Delete(new UsersBM(id));
+                var result = m.Delete(id);
+                TempData["UserSuccessMessage"] = result.Id > 0 ? "Success !" : "Failed!";
+
             }
-            TempData["UserSuccessMessage"] = "Success !";
             return RedirectToAction("Users");
         }
 
