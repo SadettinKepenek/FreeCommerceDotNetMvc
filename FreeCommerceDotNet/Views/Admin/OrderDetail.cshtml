@@ -5,35 +5,40 @@
 }
 
 
+@using FreeCommerceDotNet.DAL.Concrete
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.OrderMasterBM
+@using Customer = FreeCommerceDotNet.Entities.Concrete.Customer
+@using Payment = FreeCommerceDotNet.Entities.Concrete.Payment
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
+@using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping
+@model FreeCommerceDotNet.Entities.Concrete.OrderMaster
 
 @{
     List<Product> products;
     List<Payment> payments;
     List<Shipping> shippings;
     List<Customer> customers;
-    using (ShippingManager m = new ShippingManager())
+    using (FreeCommerceDotNet.BLL.Concrete.ShippingManager m = new FreeCommerceDotNet.BLL.Concrete.ShippingManager(new ShippingRepository()))
     {
-        shippings = m.GetAll();
+        shippings = m.SelectAll();
     }
-    using (PaymentsManager m = new PaymentsManager())
+    using (FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager m = new FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager(new PaymentGatewayRepository()))
     {
-        payments = m.GetAll();
+        payments = m.SelectAll();
     }
-    using (ProductManager m = new ProductManager())
+    using (FreeCommerceDotNet.BLL.Concrete.ProductManager m = new FreeCommerceDotNet.BLL.Concrete.ProductManager(new ProductRepository()))
     {
-        products = m.GetAll();
+        products = m.SelectAll();
     }
-    using (CustomerManager m = new CustomerManager())
+    using (FreeCommerceDotNet.BLL.Concrete.CustomerManager m = new FreeCommerceDotNet.BLL.Concrete.CustomerManager(new CustomerRepositorycs()))
     {
-        customers = m.GetAll();
+        customers = m.SelectAll();
     }
 }
 
 
-<div class="container-fluid">
+    <div class="container-fluid">
     <div class="page-header">
         <div class="row">
             <div class="col-lg-6">
@@ -66,9 +71,9 @@
 
                         </div>
                         <div class="col-md-6">
-                            @Html.ActionLink("Update","UpdateOrder","Admin",new {id=Model.OrderMaster.OrderId},new { @class="btn btn-danger btn-sm pull-right",style= "margin-left: 5px;" })
-                            @Html.ActionLink("Delete","DeleteOrder","Admin",new {id=Model.OrderMaster.OrderId},new { @class="btn btn-warning btn-sm pull-right", style = "margin-left: 5px;" })
-                            @Html.ActionLink("Orders","Orders","Admin",null,new { @class="btn btn-dark btn-sm pull-right"})
+                            @Html.ActionLink("Update", "UpdateOrder", "Admin", new { id = Model.OrderId }, new { @class = "btn btn-danger btn-sm pull-right", style = "margin-left: 5px;" })
+                            @Html.ActionLink("Delete", "DeleteOrder", "Admin", new { id = Model.OrderId }, new { @class = "btn btn-warning btn-sm pull-right", style = "margin-left: 5px;" })
+                            @Html.ActionLink("Orders", "Orders", "Admin", null, new { @class = "btn btn-dark btn-sm pull-right" })
                         </div>
                     </div>
 
@@ -78,20 +83,20 @@
                         @using (Html.BeginForm("UpdateOrder", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                         {
                             @Html.AntiForgeryToken()
-                            @Html.HiddenFor(x => x.OrderMaster.OrderId)
+                            @Html.HiddenFor(x => x.OrderId)
 
 
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Customer</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.CustomerId, new SelectList(customers, "CustomerId", "Firstname"), new { @class = "form-control",disabled="disabled", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.CustomerId, new SelectList(customers, "CustomerId", "Firstname"), new { @class = "form-control", disabled = "disabled", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.PaymentGatewayId, new SelectList(payments, "PaymentId", "PaymentName"), new { @class = "form-control", disabled = "disabled", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.PaymentGatewayId, new SelectList(payments, "PaymentId", "PaymentName"), new { @class = "form-control", disabled = "disabled", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", disabled = "disabled", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", disabled = "disabled", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive">
@@ -100,7 +105,7 @@
                                             <tr>
                                                 <th scope="col">#Product</th>
                                                 <th scope="col">Quantity</th>
-                                              @*  <th scope="col" class="pull-right"><button type="button" class="btn btn-sm btn-primary" onclick="addNewProduct()">Add New Product</button></th>*@
+                                                @*  <th scope="col" class="pull-right"><button type="button" class="btn btn-sm btn-primary" onclick="addNewProduct()">Add New Product</button></th>*@
                                             </tr>
                                         </thead>
                                         <tbody id="tableOrderDetailsProduct">
@@ -126,7 +131,7 @@
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 @*<button type="submit" class="btn btn-primary">Add</button>
-                                @Html.ActionLink("Discard", "Orders", "Admin", null, new { type = "button", @class = "btn btn-light" })*@
+                                    @Html.ActionLink("Discard", "Orders", "Admin", null, new { type = "button", @class = "btn btn-light" })*@
                             </div>
                         }
                     </div>

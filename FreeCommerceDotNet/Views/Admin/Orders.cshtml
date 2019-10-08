@@ -4,15 +4,16 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@using FreeCommerceDotNet.Entities.Concrete
 @using FreeCommerceDotNet.Models.BusinessModels
-@model List<FreeCommerceDotNet.Models.BusinessModels.OrderMasterBM>
+@model List<FreeCommerceDotNet.Entities.Concrete.OrderMaster>
 
-@helper GetProductActionButtons(OrderMasterBM bm)
+@helper GetProductActionButtons(OrderMaster bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateOrder", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeleteOrder", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-warning" })
-        @Html.ActionLink("Detail", "OrderDetail", "Admin", new { id = bm.OrderMaster.OrderId }, new { @class = "btn btn-sm btn-success" })
+        @Html.ActionLink("Update", "UpdateOrder", "Admin", new { id = bm.OrderId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteOrder", "Admin", new { id = bm.OrderId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Detail", "OrderDetail", "Admin", new { id = bm.OrderId }, new { @class = "btn btn-sm btn-success" })
     </td>
 }
 
@@ -61,10 +62,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (OrderMasterBM bm in Model)
+                            @foreach (OrderMaster bm in Model)
                             {
                                 <tr>
-                                    <th scope="row">@bm.OrderMaster.OrderId</th>
+                                    <th scope="row">@bm.OrderId</th>
                                     <td>@bm.CustomerBm.Firstname @bm.CustomerBm.Lastname</td>
                                     <td>@bm.OrderDetails.Count</td>
                                     <td>@bm.PaymentBm.PaymentName</td>
