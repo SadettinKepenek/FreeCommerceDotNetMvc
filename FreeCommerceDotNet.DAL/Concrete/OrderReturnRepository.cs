@@ -117,7 +117,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 ProductName = dr["ProductName"] as string,
                 ProductCode = dr["ProductCode"] as string,
                 Brand = (int) dr["BrandId"],
-                brand = brand
+                BrandEntity = brand
             };
             var orderMaster = new OrderMaster()
             {

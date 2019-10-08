@@ -5,9 +5,17 @@ using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Customer = FreeCommerceDotNet.Entities.Concrete.Customer;
 using CustomerManager = FreeCommerceDotNet.BLL.Concrete.CustomerManager;
+using Product = FreeCommerceDotNet.Entities.Concrete.Product;
+using ProductAttributeManager = FreeCommerceDotNet.BLL.Concrete.ProductAttributeManager;
+using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountManager;
+using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
+using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
+using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
+
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -288,10 +296,10 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Products()
         {
-            List<ProductBM> products;
-            using (ProductBusinessManager manager = new ProductBusinessManager())
+            List<Product> products;
+            using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
-                products = manager.Get();
+                products = manager.SelectAll();
             }
             return View(products);
         }
@@ -299,21 +307,24 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddProduct()
         {
-            var productBm = new ProductBM(null);
+            var productBm = new Product();
             int ATTIBUTEMAXCOUNT = 1;
+            productBm.ProductAttributes=new List<Entities.Concrete.ProductAttribute>();
+            productBm.ProductPrices=new List<Entities.Concrete.ProductPrice>();
+            productBm.ProductDiscounts=new List<Entities.Concrete.ProductDiscount>();
             for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
             {
-                productBm.ProductAttributes.Add(new ProductAttribute());
+                productBm.ProductAttributes.Add(new Entities.Concrete.ProductAttribute());
             }
-            productBm.ProductPrices = new List<ProductPrice>();
+            productBm.ProductPrices = new List<Entities.Concrete.ProductPrice>();
             using (SegmentManager m = new SegmentManager())
             {
                 var segments = m.GetAll();
                 foreach (var segment in segments)
                 {
 
-                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentId });
-                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentId });
+                    productBm.ProductPrices.Add(new Entities.Concrete.ProductPrice() { SegmentId = segment.SegmentId });
+                    productBm.ProductDiscounts.Add(new Entities.Concrete.ProductDiscount() { SegmentId = segment.SegmentId });
 
 
                 }
@@ -322,22 +333,50 @@ namespace FreeCommerceDotNet.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProduct(ProductBM bm)
+        public ActionResult AddProduct(Product bm)
         {
-            using (ProductBusinessManager productManager = new ProductBusinessManager())
+            try
             {
-                try
+                using (ProductManager m = new ProductManager())
                 {
+                    int insertedId = m.Insert(bm).Id;
+                    bm.ProductId = insertedId;
+                    using (ProductAttributeManager attributeManager = new ProductAttributeManager(new ProductAttributeRepository()))
+                    {
+                        foreach (var bmProductAttribute in bm.ProductAttributes)
+                        {
+                            bmProductAttribute.ProductId = bm.ProductId;
+                            attributeManager.Insert(bmProductAttribute);
+                        }
+                    }
+
+                    using (ProductDiscountManager discountManager = new ProductDiscountManager(new ProductDiscountRepository()))
+                    {
+                        foreach (var productDiscount in bm.ProductDiscounts)
+                        {
+                            productDiscount.ProductId = bm.ProductId;
+                            discountManager.Insert(productDiscount);
+                        }
+                    }
+
+                    using (ProductPriceManager productPriceManager = new ProductPriceManager(new ProductPriceRepository()))
+                    {
+                        foreach (var productPrice in bm.ProductPrices)
+                        {
+                            productPrice.ProductId = bm.ProductId;
+                            productPriceManager.Insert(productPrice);
+                        }
+                    }
+
                     TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde eklendi";
-                    productManager.Add(bm);
                     return RedirectToAction("Products");
                 }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
-                    return AddProduct(bm);
+            }
 
-                }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
+                return AddProduct(bm);
             }
         }
 
@@ -346,28 +385,30 @@ namespace FreeCommerceDotNet.Controllers
         {
             int ATTIBUTEMAXCOUNT = 1;
 
-
-            var productBm = new ProductBM(id);
+            ProductManager pm=new ProductManager(new ProductRepository());
+            var productBm = pm.SelectById(id);
+            //productBm.ProductAttributes = new List<Entities.Concrete.ProductAttribute>();
+            if (productBm.ProductPrices==null)
+            {
+                productBm.ProductPrices=new List<ProductPrice>();
+            }
             if (productBm.ProductAttributes.Count == 0)
             {
                 for (int i = 0; i < ATTIBUTEMAXCOUNT; i++)
                 {
-                    productBm.ProductAttributes.Add(new ProductAttribute());
+                    productBm.ProductAttributes.Add(new Entities.Concrete.ProductAttribute());
                 }
             }
 
             TempData["ProductAttributesCompare"] = productBm.ProductAttributes;
-            productBm.ProductAttributes.Capacity = 50;
-            int capacity = productBm.ProductAttributes.Capacity;
-            productBm.ProductPrices = new List<ProductPrice>();
             using (SegmentManager m = new SegmentManager())
             {
                 var segments = m.GetAll();
                 foreach (var segment in segments)
                 {
 
-                    productBm.ProductPrices.Add(new ProductPrice() { Segment = segment.SegmentId });
-                    productBm.ProductDiscounts.Add(new ProductDiscount() { Segment = segment.SegmentId });
+                    productBm.ProductPrices.Add(new Entities.Concrete.ProductPrice() { SegmentId = segment.SegmentId });
+                    productBm.ProductDiscounts.Add(new Entities.Concrete.ProductDiscount() { SegmentId = segment.SegmentId });
 
 
                 }
@@ -376,25 +417,63 @@ namespace FreeCommerceDotNet.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateProduct(ProductBM bm)
+        public ActionResult UpdateProduct(Entities.Concrete.Product bm)
         {
-            using (ProductBusinessManager productManager = new ProductBusinessManager())
+            using (BLL.Concrete.ProductManager productManager = new BLL.Concrete.ProductManager(new ProductRepository()))
             {
                 try
                 {
                     productManager.Update(bm);
-                    List<ProductAttribute> firstAttributes = TempData["ProductAttributesCompare"] as List<ProductAttribute>;
-                    productManager.UpdateProductAttributes(bm.ProductAttributes, firstAttributes,bm.Product.ProductId);
+                    List<Entities.Concrete.ProductAttribute> firstAttributes = TempData["ProductAttributesCompare"] as List<Entities.Concrete.ProductAttribute>;
+                    UpdateProductAttributes(bm.ProductAttributes, firstAttributes,bm.ProductId);
                     TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde güncellendi";
                     return RedirectToAction("Products");
                 }
                 catch (Exception e)
                 {
                     ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
-                    return UpdateProduct(bm);
+                    return View(bm);
 
                 }
             }
+        }
+
+        private bool UpdateProductAttributes(List<Entities.Concrete.ProductAttribute> sonGelenler, List<Entities.Concrete.ProductAttribute> ilkTutulan, int productId)
+        {
+            /// Son Gelen Listenin İçinde İlk Gelenlerden Yoksa Silinmiştir
+            /// Son Gelen Listenin İçinde İlk Gelenlerden Yoksa ve bu ilk gelenlerdede yoksa Eklenmiştir
+            /// Diğer durumda güncellenmiştir
+
+
+            using (ProductAttributeManager m = new ProductAttributeManager(new ProductAttributeRepository()))
+            {
+                foreach (Entities.Concrete.ProductAttribute productAttribute in ilkTutulan)
+                {
+                    productAttribute.ProductId = productId;
+                    var isDeleted = sonGelenler.FirstOrDefault(x => x.RelationId == productAttribute.RelationId) == null;
+                    if (isDeleted)
+                    {
+                        m.Delete(productAttribute.RelationId);
+
+                    }
+                }
+                foreach (Entities.Concrete.ProductAttribute attribute in sonGelenler)
+                {
+                    attribute.ProductId = productId;
+                    if (attribute.RelationId != 0)
+                    {
+                        m.Update(attribute);
+                    }
+                    else
+                    {
+                        m.Insert(attribute);
+                    }
+                }
+
+
+            }
+
+            return true;
         }
 
         public ActionResult DeleteProduct(int id)

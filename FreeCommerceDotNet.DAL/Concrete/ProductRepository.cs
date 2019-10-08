@@ -123,7 +123,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             {
                 SqlCommand command = new SqlCommand(query, conn);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("ProductId", id);
+                command.Parameters.AddWithValue("@id", id);
                 DataTable result = db.DoQuery(command: command);
                 if (result.Rows.Count != 0)
                 {
@@ -239,7 +239,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             product.Weight = Convert.ToDouble(mainrow["Weight"]);
             product.Status = (bool)mainrow["Status"];
             product.Brand = (int)mainrow["Brand"];
-            product.brand = new Brand()
+            product.BrandEntity = new Brand()
             {
                 BrandId = (int)mainrow["Brand"],
                 BrandName = mainrow["BrandName"] as string,

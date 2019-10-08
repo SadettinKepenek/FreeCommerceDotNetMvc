@@ -1,4 +1,4 @@
-﻿@model FreeCommerceDotNet.Models.BusinessModels.ProductBM
+﻿@model FreeCommerceDotNet.Entities.Concrete.Product
 
 @{
     ViewBag.Title = "UpdateProduct";
@@ -236,17 +236,17 @@
                                 @using (Html.BeginForm("UpdateProduct", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                                 {
 
-                                    @Html.HiddenFor(x=>x.Product.ProductId)
+                                    @Html.HiddenFor(x=>x.ProductId)
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom01" class="col-xl-3 col-sm-4 mb-0">Product Name :</label>
-                                        @Html.TextBoxFor(x => x.Product.ProductName, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom01", type = "text", required = "" })
+                                        @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom01", type = "text", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Name.</div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label for="editor1" class="col-xl-3 col-sm-4 mb-0">Product Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            @Html.TextAreaFor(x => x.Product.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm", name = "editor1", type = "text", required = "" })
+                                            @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm", name = "editor1", type = "text", required = "" })
                                         </div>
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Name.</div>
@@ -254,31 +254,31 @@
 
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom02" class="col-xl-3 col-sm-4 mb-0">Category :</label>
-                                        @Html.DropDownListFor(x => x.Product.CategoryId, new SelectList(categories, "CategoryId", "CategoryName"), new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom02", type = "input", required = "" })
+                                        @Html.DropDownListFor(x => x.CategoryId, new SelectList(categories, "CategoryId", "CategoryName"), new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom02", type = "input", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Category Name.</div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom07" class="col-xl-3 col-sm-4 mb-0">Quantity :</label>
-                                        @Html.TextBoxFor(x => x.Product.Quantity, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom07", type = "number", required = "" })
+                                        @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom07", type = "number", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Quantity.</div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom03" class="col-xl-3 col-sm-4 mb-0">Metatag Title :</label>
-                                        @Html.TextBoxFor(x => x.Product.MetatagTitle, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom03", type = "text", required = "" })
+                                        @Html.TextBoxFor(x => x.MetatagTitle, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom03", type = "text", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Title.</div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom04" class="col-xl-3 col-sm-4 mb-0">Metatag Description :</label>
-                                        @Html.TextAreaFor(x => x.Product.MetatagDescription, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom04", type = "text", required = "" })
+                                        @Html.TextAreaFor(x => x.MetatagDescription, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom04", type = "text", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Description.</div>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label for="validationCustom05" class="col-xl-3 col-sm-4 mb-0">Metatag Keywords(Comma-Seperated) :</label>
-                                        @Html.TextBoxFor(x => x.Product.MetatagKeywords, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom05", type = "text", required = "" })
+                                        @Html.TextBoxFor(x => x.MetatagKeywords, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom05", type = "text", required = "" })
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Keywords.</div>
                                     </div>
@@ -315,13 +315,13 @@
                                             <br />
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">Product Tags(Comma-Seperated) :</label>
-                                                @Html.TextBoxFor(x => x.Product.ProductTags, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text", required = "" })
+                                                @Html.TextBoxFor(x => x.ProductTags, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text", required = "" })
                                                 <div class="valid-feedback">Looks good!</div>
                                                 <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Keywords.</div>
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom07" class="col-xl-3 col-sm-4 mb-0">Product Code :</label>
-                                                @Html.TextBoxFor(x => x.Product.ProductCode, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom07", type = "text", required = "" })
+                                                @Html.TextBoxFor(x => x.ProductCode, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom07", type = "text", required = "" })
                                                 <div class="valid-feedback">Looks good!</div>
                                                 <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Code.</div>
                                             </div>
@@ -330,50 +330,50 @@
                                             <br />
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">SKU :</label>
-                                                @Html.TextBoxFor(x => x.Product.SKU, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
+                                                @Html.TextBoxFor(x => x.SKU, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">UPC :</label>
-                                                @Html.TextBoxFor(x => x.Product.UPC, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
+                                                @Html.TextBoxFor(x => x.UPC, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">EAN :</label>
-                                                @Html.TextBoxFor(x => x.Product.EAN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
+                                                @Html.TextBoxFor(x => x.EAN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">JAN :</label>
-                                                @Html.TextBoxFor(x => x.Product.JAN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
+                                                @Html.TextBoxFor(x => x.JAN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom06" class="col-xl-3 col-sm-4 mb-0">MPN :</label>
-                                                @Html.TextBoxFor(x => x.Product.MPN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
+                                                @Html.TextBoxFor(x => x.MPN, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom06", type = "text" })
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="product-specific-tab" role="tabpanel" aria-labelledby="home-tab">
                                             <br />
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Out of stock text :</label>
-                                                @Html.TextBoxFor(x => x.Product.OutofStockStatus, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08", type = "text", required = "" })
+                                                @Html.TextBoxFor(x => x.OutofStockStatus, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08", type = "text", required = "" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Brand :</label>
-                                                @Html.TextBoxFor(x => x.Product.Brand, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08", type = "text", required = "" })
+                                                @Html.TextBoxFor(x => x.Brand, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08", type = "text", required = "" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Available Date :</label>
-                                                @Html.TextBoxFor(x => x.Product.AvailableDate, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "date", required = "" })
+                                                @Html.TextBoxFor(x => x.AvailableDate, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "date", required = "" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Length :</label>
-                                                @Html.TextBoxFor(x => x.Product.Length, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
+                                                @Html.TextBoxFor(x => x.Length, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Width :</label>
-                                                @Html.TextBoxFor(x => x.Product.Width, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
+                                                @Html.TextBoxFor(x => x.Width, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Height :</label>
-                                                @Html.TextBoxFor(x => x.Product.Height, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
+                                                @Html.TextBoxFor(x => x.Height, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom09", type = "number" })
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="product-options-tab" role="tabpanel" aria-labelledby="home-tab">
@@ -436,7 +436,7 @@
                                                             @for (int i = 0; i < Model.ProductPrices.Count; i++)
                                                             {
                                                                 <tr>
-                                                                    <th scope="row">@Model.ProductPrices[i].Segment</th>
+                                                                    <th scope="row">@Model.ProductPrices[i].SegmentId</th>
                                                                     <th scope="row">@Html.TextBoxFor(x => x.ProductPrices[i].Price, new { type = "number", style = "min-width:60%;" })</th>
                                                                 </tr>
                                                             }
@@ -497,7 +497,7 @@
                                                     <div class="row text-center">
                                                         <div class="form-group">
                                                             <label class="form-control">Segment</label>
-                                                            <label class="form-control text-center"> @Model.ProductDiscounts[i].Segment</label>
+                                                            <label class="form-control text-center"> @Model.ProductDiscounts[i].SegmentId</label>
 
                                                             @*@Html.LabelFor(x => x.ProductDiscounts[i].Segment, new { @class = "form-control text-center" })*@
                                                         </div>
