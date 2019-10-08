@@ -4,16 +4,18 @@
     ViewBag.Title = "AddAttributeGroup";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using FreeCommerceDotNet.Models.DbManager
-@using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.AttributeBM
+@using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute
+@using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup
+@using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager
+@using AttributeGroupRepository = FreeCommerceDotNet.DAL.Concrete.AttributeGroupRepository
+@model  Attribute
 
 @{
     List<AttributeGroup> groups;
 
     using (AttributeGroupManager manager = new AttributeGroupManager())
     {
-        groups = manager.GetAll();
+        groups = manager.SelectAll();
     }
 }
 <div class="container-fluid">
@@ -27,15 +29,15 @@
                     <div class="digital-add needs-validation">
                         @using (Html.BeginForm("UpdateAttribute", "Admin", FormMethod.Post))
                         {
-                            @Html.HiddenFor(x => x.Attribute.AttributeId)
+                            @Html.HiddenFor(x => x.AttributeId)
 
                             <div class="form-group">
                                 <label for="validationCustom08" class="col-form-label pt-0"><span>*</span>Attribute Name:</label>
-                                @Html.TextBoxFor(x => x.Attribute.AttributeName, new { @class = "form-control", id = "validationCustom08", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.AttributeName, new { @class = "form-control", id = "validationCustom08", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom010" class="col-form-label pt-0"><span>*</span>Attribute Group Name:</label>
-                                @Html.DropDownListFor(x => x.Attribute.AttributeGroup, new SelectList(groups, "AttributeGroupId", "AttributeGroupName"), new { @class = "form-control", id = "validationCustom010", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.AttributeGroupId, new SelectList(groups, "AttributeGroupId", "AttributeGroupName"), new { @class = "form-control", id = "validationCustom010", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Update</button>
