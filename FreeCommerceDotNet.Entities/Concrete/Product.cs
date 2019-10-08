@@ -4,221 +4,225 @@ using System.ComponentModel.DataAnnotations;
 using FreeCommerceDotNet.Entities.Abstract;
 using FreeCommerceDotNet.Entities.Concrete;
 
-public class Product:IEntity
+namespace FreeCommerceDotNet.Entities.Concrete
 {
-    private int _productId;
-
-    public int ProductId
+    public class Product : IEntity
     {
-        get { return _productId; }
-        set { _productId = value; }
+        private int _productId;
+
+        public int ProductId
+        {
+            get { return _productId; }
+            set { _productId = value; }
+        }
+
+        private int _categoryId;
+
+        [Required(ErrorMessage = "CategoryId Alanı Zorunludur")]
+        public int CategoryId
+        {
+            get { return _categoryId; }
+            set { _categoryId = value; }
+        }
+
+        private string _productName;
+        [Required(ErrorMessage = "Product İsmi Alanı Zorunludur")]
+        public string ProductName
+        {
+            get { return _productName; }
+            set { _productName = value; }
+        }
+
+        private string _productDescription;
+        [Required(ErrorMessage = "Product Açıklaması Alanı Zorunludur")]
+        public string ProductDescription
+        {
+            get { return _productDescription; }
+            set { _productDescription = value; }
+        }
+
+        private string _metatagTitle;
+
+        public string MetatagTitle
+        {
+            get { return _metatagTitle; }
+            set { _metatagTitle = value; }
+        }
+
+        private string _metatagDescription;
+
+        public string MetatagDescription
+        {
+            get { return _metatagDescription; }
+            set { _metatagDescription = value; }
+        }
+
+        private string _metatagKeywords;
+
+        public string MetatagKeywords
+        {
+            get { return _metatagKeywords; }
+            set { _metatagKeywords = value; }
+        }
+
+
+
+        private string _productTags;
+
+        public string ProductTags
+        {
+            get { return _productTags; }
+            set { _productTags = value; }
+        }
+
+        private string _productCode;
+        [Required(ErrorMessage = "Product Code Alanı Zorunludur")]
+        public string ProductCode
+        {
+            get { return _productCode; }
+            set { _productCode = value; }
+        }
+
+        private string _sku;
+
+        public string SKU
+        {
+            get { return _sku; }
+            set { _sku = value; }
+        }
+
+        private string _upc;
+
+        public string UPC
+        {
+            get { return _upc; }
+            set { _upc = value; }
+        }
+
+        private string _ean;
+
+        public string EAN
+        {
+            get { return _ean; }
+            set { _ean = value; }
+        }
+
+        private string _jan;
+
+        public string JAN
+        {
+            get { return _jan; }
+            set { _jan = value; }
+        }
+
+        private string _isbn;
+
+        public string ISBN
+        {
+            get { return _isbn; }
+            set { _isbn = value; }
+        }
+
+        private string _mpn;
+
+        public string MPN
+        {
+            get { return _mpn; }
+            set { _mpn = value; }
+        }
+
+        private int _quantity;
+        [Required(ErrorMessage = "Product Quantity Alanı Zorunludur")]
+        public int Quantity
+        {
+            get { return _quantity; }
+            set { _quantity = value; }
+        }
+
+        private string _outofStockStatus;
+        [Required(ErrorMessage = "Product OutofStockStatus Alanı Zorunludur")]
+        public string OutofStockStatus
+        {
+            get { return _outofStockStatus; }
+            set { _outofStockStatus = value; }
+        }
+
+        private string _availableDate;
+
+        public string AvailableDate
+        {
+            get { return _availableDate; }
+            set { _availableDate = value; }
+        }
+
+        private double _length;
+
+        public double Length
+        {
+            get { return _length; }
+            set { _length = value; }
+        }
+
+        private double _width;
+
+        public double Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
+
+        private double _height;
+
+        public double Height
+        {
+            get { return _height; }
+            set { _height = value; }
+        }
+
+        private double _weight;
+
+        public double Weight
+        {
+            get { return _weight; }
+            set { _weight = value; }
+        }
+
+        private bool _status;
+
+        public bool Status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
+
+        private int _brand;
+
+        public int Brand
+        {
+            get { return _brand; }
+            set { _brand = value; }
+        }
+        private string _imageUrl;
+
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set { _imageUrl = value; }
+        }
+
+        public string Image1Url { get; set; }
+        public string Image2Url { get; set; }
+        public string Image3Url { get; set; }
+        public string Image4Url { get; set; }
+        public string Image5Url { get; set; }
+
+        public List<ProductAttribute> ProductAttributes { get; set; }
+        public List<ProductDiscount> ProductDiscounts { get; set; }
+        public List<ProductOption> ProductOptions { get; set; }
+        public List<ProductPrice> ProductPrices { get; set; }
+        public List<Reviews> Reviews { get; set; }
+        public Brand BrandEntity { get; set; }
+        public Category Category { get; set; }
     }
 
-    private int _categoryId;
-
-    [Required(ErrorMessage = "CategoryId Alanı Zorunludur")]
-    public int CategoryId
-    {
-        get { return _categoryId; }
-        set { _categoryId = value; }
-    }
-
-    private string _productName;
-    [Required(ErrorMessage = "Product İsmi Alanı Zorunludur")]
-    public string ProductName
-    {
-        get { return _productName; }
-        set { _productName = value; }
-    }
-
-    private string _productDescription;
-    [Required(ErrorMessage = "Product Açıklaması Alanı Zorunludur")]
-    public string ProductDescription
-    {
-        get { return _productDescription; }
-        set { _productDescription = value; }
-    }
-
-    private string _metatagTitle;
-
-    public string MetatagTitle
-    {
-        get { return _metatagTitle; }
-        set { _metatagTitle = value; }
-    }
-
-    private string _metatagDescription;
-
-    public string MetatagDescription
-    {
-        get { return _metatagDescription; }
-        set { _metatagDescription = value; }
-    }
-
-    private string _metatagKeywords;
-
-    public string MetatagKeywords
-    {
-        get { return _metatagKeywords; }
-        set { _metatagKeywords = value; }
-    }
-
-
-
-    private string _productTags;
-
-    public string ProductTags
-    {
-        get { return _productTags; }
-        set { _productTags = value; }
-    }
-
-    private string _productCode;
-    [Required(ErrorMessage = "Product Code Alanı Zorunludur")]
-    public string ProductCode
-    {
-        get { return _productCode; }
-        set { _productCode = value; }
-    }
-
-    private string _sku;
-
-    public string SKU
-    {
-        get { return _sku; }
-        set { _sku = value; }
-    }
-
-    private string _upc;
-
-    public string UPC
-    {
-        get { return _upc; }
-        set { _upc = value; }
-    }
-
-    private string _ean;
-
-    public string EAN
-    {
-        get { return _ean; }
-        set { _ean = value; }
-    }
-
-    private string _jan;
-
-    public string JAN
-    {
-        get { return _jan; }
-        set { _jan = value; }
-    }
-
-    private string _isbn;
-
-    public string ISBN
-    {
-        get { return _isbn; }
-        set { _isbn = value; }
-    }
-
-    private string _mpn;
-
-    public string MPN
-    {
-        get { return _mpn; }
-        set { _mpn = value; }
-    }
-
-    private int _quantity;
-    [Required(ErrorMessage = "Product Quantity Alanı Zorunludur")]
-    public int Quantity
-    {
-        get { return _quantity; }
-        set { _quantity = value; }
-    }
-
-    private string _outofStockStatus;
-    [Required(ErrorMessage = "Product OutofStockStatus Alanı Zorunludur")]
-    public string OutofStockStatus
-    {
-        get { return _outofStockStatus; }
-        set { _outofStockStatus = value; }
-    }
-
-    private string _availableDate;
-
-    public string AvailableDate
-    {
-        get { return _availableDate; }
-        set { _availableDate = value; }
-    }
-
-    private double _length;
-
-    public double Length
-    {
-        get { return _length; }
-        set { _length = value; }
-    }
-
-    private double _width;
-
-    public double Width
-    {
-        get { return _width; }
-        set { _width = value; }
-    }
-
-    private double _height;
-
-    public double Height
-    {
-        get { return _height; }
-        set { _height = value; }
-    }
-
-    private double _weight;
-
-    public double Weight
-    {
-        get { return _weight; }
-        set { _weight = value; }
-    }
-
-    private bool _status;
-
-    public bool Status
-    {
-        get { return _status; }
-        set { _status = value; }
-    }
-
-    private int _brand;
-
-    public int Brand
-    {
-        get { return _brand; }
-        set { _brand = value; }
-    }
-    private string _imageUrl;
-
-    public string ImageUrl
-    {
-        get { return _imageUrl; }
-        set { _imageUrl = value; }
-    }
-
-    public string Image1Url { get; set; }
-    public string Image2Url { get; set; }
-    public string Image3Url { get; set; }
-    public string Image4Url { get; set; }
-    public string Image5Url { get; set; }
-
-    public List<ProductAttribute> ProductAttributes { get; set; }
-    public List<ProductDiscount> ProductDiscounts { get; set; }
-    public List<ProductOption> ProductOptions { get; set; }
-    public List<ProductPrice> ProductPrices { get; set; }
-    public List<Reviews> Reviews { get; set; }
-    public Brand brand { get; set; }
-    public Category Category { get; set; }
 }

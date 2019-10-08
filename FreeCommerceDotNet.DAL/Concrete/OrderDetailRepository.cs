@@ -95,7 +95,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 ProductName = dr["ProductName"] as string,
                 ProductCode = dr["ProductCode"] as string,
                 Brand = (int)dr["ProductBrandId"],
-                brand = new Brand()
+                BrandEntity = new Brand()
                 {
                     BrandName = dr["ProductBrandName"] as string,
                     BrandId = (int)dr["ProductBrandId"],
