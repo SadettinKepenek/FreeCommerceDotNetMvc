@@ -98,6 +98,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@id", id);
                 DataTable datatable = database.DoQuery(command: command);
                 var rows = datatable.Rows;
                 if (rows.Count != 0)
@@ -105,6 +106,9 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     Customer customer = new Customer();
                     customer.CustomerId = id;
                     customer.Firstname = rows[0]["CustomerFirstName"] as string;
+                    customer.Address1 = rows[0]["CustomerAddress1"] as string;
+                    customer.Address2 = rows[0]["CustomerAddress2"] as string;
+                    customer.TaxAddress = rows[0]["CustomerTaxAddress"] as string;
                     customer.Lastname = rows[0]["CustomerLastName"] as string;
                     customer.Email = rows[0]["CustomerEmail"] as string;
                     customer.Telephone = rows[0]["CustomerTelephone"] as string;
@@ -117,6 +121,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     user.Username = rows[0]["CustomerUserName"] as string;
                     user.Password = rows[0]["CustomerKullaniciPassword"] as string;
                     user.EMail = rows[0]["CustomerUserEmail"] as string;
+                    customer.UserId = user.UserId;
+                    customer.Password = user.Password;
                     customer.User = user;
                     return customer;
                 }
@@ -166,6 +172,10 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     customer.CustomerId = (int)row["CustomerId"];
                     customer.Firstname = row["CustomerFirstName"] as string;
                     customer.Lastname = row["CustomerLastName"] as string;
+                    customer.Address1 = rows[0]["CustomerAddress1"] as string;
+                    customer.Address2 = rows[0]["CustomerAddress2"] as string;
+                    customer.TaxAddress = rows[0]["CustomerTaxAddress"] as string;
+
                     customer.Email = row["CustomerEmail"] as string;
                     customer.Telephone = row["CustomerTelephone"] as string;
                     Segment segment = new Segment();
@@ -178,6 +188,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     user.Password = row["CustomerKullaniciPassword"] as string;
                     user.EMail = row["CustomerUserEmail"] as string;
                     customer.User = user;
+                    customer.UserId = user.UserId;
+                    customer.Password = user.Password;
                     customers.Add(customer);
                 }
                 return customers;
