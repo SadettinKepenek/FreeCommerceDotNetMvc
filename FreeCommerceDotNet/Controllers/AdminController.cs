@@ -1,10 +1,13 @@
-﻿using FreeCommerceDotNet.Models.BusinessManager;
+﻿using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.BusinessModels;
 using FreeCommerceDotNet.Models.DbManager;
 using FreeCommerceDotNet.Models.DbModels;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Customer = FreeCommerceDotNet.Entities.Concrete.Customer;
+using CustomerManager = FreeCommerceDotNet.BLL.Concrete.CustomerManager;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -401,10 +404,10 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Customers()
         {
-            List<CustomerBM> customers;
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            List<Customer> customers;
+            using (CustomerManager manager = new CustomerManager(new CustomerRepositorycs()))
             {
-                customers = manager.Get();
+                customers = manager.SelectAll();
             }
             return View(customers);
         }
@@ -415,12 +418,23 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddCustomer(CustomerBM customerModel)
+        public ActionResult AddCustomer(Customer customerModel)
         {
-
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            using (BLL.Concrete.UserManager m=new BLL.Concrete.UserManager(new DAL.Concrete.UserRepository()))
             {
-                manager.Add(customerModel);
+                int userId=m.Insert(new Entities.Concrete.User() {
+                    EMail=customerModel.Email,
+                    Password=customerModel.Password,
+                    Username=customerModel.Email,
+                    Role="Client",
+                    
+                }).Id;
+                customerModel.UserId = userId;
+            }
+            using (CustomerManager manager = new CustomerManager(new CustomerRepositorycs()))
+            {
+
+                manager.Insert(customerModel);
             }
 
             TempData["Message"] = "Customer Added!";
@@ -430,9 +444,9 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult DeleteCustomer(int id)
         {
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            using (CustomerManager manager = new CustomerManager(new CustomerRepositorycs()))
             {
-                manager.Delete(manager.GetById(id));
+                manager.Delete(id);
             }
 
             return RedirectToAction("Customers", "Admin");
@@ -442,15 +456,31 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateCustomer(int id)
         {
-            return View(new CustomerBM(id));
+            using (CustomerManager manager = new CustomerManager(new CustomerRepositorycs()))
+            {
+                return View(manager.SelectById(id));
+            }
+            
         }
         [HttpPost]
-        public ActionResult UpdateCustomer(CustomerBM customerModel)
+        public ActionResult UpdateCustomer(Customer customerModel)
         {
-
-            using (CustomerBusinessManager manager = new CustomerBusinessManager())
+            using (BLL.Concrete.UserManager m = new BLL.Concrete.UserManager(new DAL.Concrete.UserRepository()))
             {
-                manager.Update(customerModel);
+                int userId = m.Update(new Entities.Concrete.User()
+                {
+                    EMail = customerModel.Email,
+                    Password = customerModel.Password,
+                    UserId = customerModel.UserId,
+                    Username = customerModel.Email, //kanka user id döndürmüyor ki update?
+                    Role = "Client",
+                    
+
+                }).Id;
+            }
+            using (CustomerManager manager = new CustomerManager(new CustomerRepositorycs()))
+            {
+               manager.Update(customerModel);
             }
             TempData["Message"] = "Customer Updated!";
             return RedirectToAction("Customers", "Admin");
