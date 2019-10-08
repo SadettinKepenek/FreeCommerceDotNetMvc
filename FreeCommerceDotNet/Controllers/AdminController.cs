@@ -17,7 +17,13 @@ using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountMa
 using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
 using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
 using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
+
+using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager;
+using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
+
+
 using SegmentManager = FreeCommerceDotNet.Models.DbManager.SegmentManager;
+
 
 
 namespace FreeCommerceDotNet.Controllers
@@ -577,14 +583,15 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddAttributeGroup()
         {
-            return View(new AttributeGroupBM(null));
+            
+            return View(new AttributeGroup());
         }
         [HttpPost]
-        public ActionResult AddAttributeGroup(AttributeGroupBM attributeGroupModel)
+        public ActionResult AddAttributeGroup(AttributeGroup attributeGroupModel)
         {
-            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
             {
-                manager.Add(attributeGroupModel);
+                manager.Insert(attributeGroupModel);
             }
             TempData["MessageAttributeGroup"] = "Attribute Group Added!";
             return RedirectToAction("AttributeGroupList", "Admin");
@@ -592,19 +599,19 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult AttributeGroupList()
         {
-            List<AttributeGroupBM> attributeGroupList;
-            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            List<AttributeGroup> attributeGroupList;
+            using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
             {
-                attributeGroupList = manager.Get();
+                attributeGroupList = manager.SelectAll();
             }
             return View(attributeGroupList);
         }
 
         public ActionResult DeleteAttributeGroup(int id)
         {
-            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
             {
-                manager.Delete(manager.GetById(id));
+                manager.Delete(id);
             }
             return RedirectToAction("AttributeGroupList", "Admin");
         }
@@ -622,12 +629,15 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateAttributeGroup(int id)
         {
-            return View(new AttributeGroupBM(id));
+            using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
+            {
+                return View(manager.SelectById(id));
+            }
         }
         [HttpPost]
-        public ActionResult UpdateAttributeGroup(AttributeGroupBM attributeGroupModel)
+        public ActionResult UpdateAttributeGroup(AttributeGroup attributeGroupModel)
         {
-            using (AttributeGroupBusinessManager manager = new AttributeGroupBusinessManager())
+            using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
             {
                 manager.Update(attributeGroupModel);
             }

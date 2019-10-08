@@ -95,6 +95,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
                 foreach (DataRow row in groupOfId)
                 {
+                    if (row["AttributeId"] == DBNull.Value)
+                        continue;
                     Attribute attribute = new Attribute();
                     attribute.AttributeGroupId = attributeGroupId;
                     attribute.AttributeName = row["AttributeName"] as string;

@@ -3,10 +3,8 @@
     ViewBag.Title = "AddAttributeGroup";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using FreeCommerceDotNet.Models.DbManager
-@using FreeCommerceDotNet.Models.DbModels
 
-@model FreeCommerceDotNet.Models.BusinessModels.AttributeGroupBM
+@model FreeCommerceDotNet.Entities.Concrete.AttributeGroup
 
 <div class="container-fluid">
     <div class="row product-adding">
@@ -19,13 +17,13 @@
                     <div class="digital-add needs-validation">
                         @using (Html.BeginForm("UpdateAttributeGroup", "Admin", FormMethod.Post))
                         {
-                            @Html.HiddenFor(x => x.AttributeGroup.AttributeGroupId)
+                            @Html.HiddenFor(x => x.AttributeGroupId)
 
                             <div class="form-group">
                                 <label for="validationCustom09" class="col-form-label pt-0"><span>*</span>Attribute Group Name:</label>
-                                @Html.TextBoxFor(x => x.AttributeGroup.AttributeGroupName, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.AttributeGroupName, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
                             </div>
-                           
+
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Update</button>
                                 @Html.ActionLink("Discard", "AttributeGroupList", "Admin", null, new { type = "button", @class = "btn btn-light" })
