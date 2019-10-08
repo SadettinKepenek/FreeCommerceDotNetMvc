@@ -4,30 +4,35 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@using FreeCommerceDotNet.DAL.Concrete
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.OrderMasterBM
+@using Customer = FreeCommerceDotNet.Entities.Concrete.Customer
+@using Payment = FreeCommerceDotNet.Entities.Concrete.Payment
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
+@using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping
+@model FreeCommerceDotNet.Entities.Concrete.OrderMaster
 
 @{
     List<Product> products;
     List<Payment> payments;
     List<Shipping> shippings;
     List<Customer> customers;
-    using (ShippingManager m = new ShippingManager())
+    using (FreeCommerceDotNet.BLL.Concrete.ShippingManager m = new FreeCommerceDotNet.BLL.Concrete.ShippingManager(new ShippingRepository()))
     {
-        shippings = m.GetAll();
+        shippings = m.SelectAll();
     }
-    using (PaymentsManager m = new PaymentsManager())
+    using (FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager m = new FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager(new PaymentGatewayRepository()))
     {
-        payments = m.GetAll();
+        payments = m.SelectAll();
     }
-    using (ProductManager m = new ProductManager())
+    using (FreeCommerceDotNet.BLL.Concrete.ProductManager m = new FreeCommerceDotNet.BLL.Concrete.ProductManager(new ProductRepository()))
     {
-        products = m.GetAll();
+        products = m.SelectAll();
     }
-    using (CustomerManager m = new CustomerManager())
+    using (FreeCommerceDotNet.BLL.Concrete.CustomerManager m = new FreeCommerceDotNet.BLL.Concrete.CustomerManager(new CustomerRepositorycs()))
     {
-        customers = m.GetAll();
+        customers = m.SelectAll();
     }
 }
 <script type="text/javascript">
@@ -121,47 +126,47 @@
                         @using (Html.BeginForm("UpdateOrder", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                         {
                             @Html.AntiForgeryToken()
-                            @Html.HiddenFor(x => x.OrderMaster.OrderId)
+                            @Html.HiddenFor(x => x.OrderId)
 
 
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Customer</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.CustomerId, new SelectList(customers, "CustomerId", "Firstname"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.CustomerId, new SelectList(customers, "CustomerId", "Firstname"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.PaymentGatewayId, new SelectList(payments, "PaymentId", "PaymentName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.PaymentGatewayId, new SelectList(payments, "PaymentId", "PaymentName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Gateway:</label>
-                                @Html.DropDownListFor(x => x.OrderMaster.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Track Number:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.TrackNumber, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.TrackNumber, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Oder Date:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Date:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.OrderDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
 
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery date:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.DeliveryDate, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
 
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Comment:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryComment, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.DeliveryComment, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
 
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Delivery Status:</label>
-                                @Html.TextBoxFor(x => x.OrderMaster.DeliveryStatus, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.DeliveryStatus, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <div class="table-responsive">

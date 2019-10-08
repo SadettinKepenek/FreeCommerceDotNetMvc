@@ -6,7 +6,7 @@
 
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.UsersBM
+@model FreeCommerceDotNet.Entities.Concrete.User
 
 
 
@@ -51,20 +51,20 @@
                            
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Email:</label>
-                                @Html.TextBoxFor(x => x.Users.EMail, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.EMail, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Username:</label>
-                                @Html.TextBoxFor(x => x.Users.Username, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.Username, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                         
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Role(;) :</label>
-                                @Html.TextBoxFor(x => x.Users.Role, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.Role, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Password :</label>
-                                @Html.PasswordFor(x => x.Users.Password, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.PasswordFor(x => x.Password, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add Return</button>

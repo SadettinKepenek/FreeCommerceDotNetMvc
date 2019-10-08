@@ -3,17 +3,18 @@
     ViewBag.Title = "UpdateCategory";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@using FreeCommerceDotNet.DAL.Concrete
 @using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.CategoryBM
-
+@model FreeCommerceDotNet.Entities.Concrete.Category
+@using Category=FreeCommerceDotNet.Entities.Concrete.Category
 @{
     List<Category> categories;
-    using (CategoryManager bm = new CategoryManager())
+    using (FreeCommerceDotNet.BLL.Concrete.CategoryManager bm = new FreeCommerceDotNet.BLL.Concrete.CategoryManager(new CategoryRepository()))
     {
-        categories = bm.GetAll();
+        categories = bm.SelectAll();
         categories.Insert(0, new Category() { CategoryId = -1, CategoryName = "Parent Category Yok", ParentId = -1 });
-        var element = categories.FirstOrDefault(x => x.CategoryId == Model.Category.CategoryId);
+        var element = categories.FirstOrDefault(x => x.CategoryId == Model.CategoryId);
         categories.Remove(element);
     }
 }
@@ -45,42 +46,42 @@
         <div class="col-xl-8">
             <div class="card">
                 <div class="card-header">
-                    <h5> Update Category @Model.Category.CategoryName</h5>
+                    <h5> Update Category @Model.CategoryName</h5>
                 </div>
                 <div class="card-body">
                     <div class="digital-add needs-validation">
                         @using (Html.BeginForm("UpdateCategory", "Admin", FormMethod.Post, new { novalidate = "", @class = "needs-validation add-product-form" }))
                         {
                             @Html.AntiForgeryToken()
-                            @Html.HiddenFor(x => x.Category.CategoryId)
+                            @Html.HiddenFor(x => x.CategoryId)
 
                             <div class="form-group">
                                 <label for="validationCustom01" class="col-form-label pt-0"><span>*</span>Category Name:</label>
-                                @Html.TextBoxFor(x => x.Category.CategoryName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "required" })
+                                @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "required" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Parent Category(if not,empty):</label>
-                                @Html.DropDownListFor(x => x.Category.ParentId, new SelectList(categories, "CategoryId", "CategoryName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.DropDownListFor(x => x.ParentId, new SelectList(categories, "CategoryId", "CategoryName"), new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Category Description:</label>
-                                @Html.TextBoxFor(x => x.Category.Description, new { @class = "form-control", id = "validationCustom03", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.Description, new { @class = "form-control", id = "validationCustom03", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Metatag Title:</label>
-                                @Html.TextBoxFor(x => x.Category.MetatagTitle, new { @class = "form-control", id = "validationCustom04", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.MetatagTitle, new { @class = "form-control", id = "validationCustom04", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Metatag Description:</label>
-                                @Html.TextBoxFor(x => x.Category.MetatagDescription, new { @class = "form-control", id = "validationCustom05", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.MetatagDescription, new { @class = "form-control", id = "validationCustom05", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Metatag Keywords:</label>
-                                @Html.TextBoxFor(x => x.Category.Metatagkeywords, new { @class = "form-control", id = "validationCustom06", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.Metatagkeywords, new { @class = "form-control", id = "validationCustom06", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Show Navbar?</label>
-                                @Html.CheckBoxFor(x => x.Category.ShowNavbar, new { @class = "form-control", style = "width:20px;", id = "validationCustom07" })
+                                @Html.CheckBoxFor(x => x.ShowNavbar, new { @class = "form-control", style = "width:20px;", id = "validationCustom07" })
                                 <hr />
 
                             </div>
