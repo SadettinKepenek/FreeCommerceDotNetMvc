@@ -28,7 +28,8 @@ using OrderReturnManager = FreeCommerceDotNet.BLL.Concrete.OrderReturnManager;
 using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
 using Payment = FreeCommerceDotNet.Entities.Concrete.Payment;
 using PaymentGatewayManager = FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager;
-
+using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping;
+using ShippingManager = FreeCommerceDotNet.BLL.Concrete.ShippingManager;
 
 
 
@@ -154,9 +155,9 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult ShippingGateways()
         {
 
-            using (ShippingBusinessManager bm = new ShippingBusinessManager())
+            using (ShippingManager bm = new ShippingManager(new ShippingRepository()))
             {
-                return View(bm.Get());
+                return View(bm.SelectAll());
 
             }
         }
@@ -164,18 +165,19 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddShippingGateway()
         {
-            return View(new ShippingBM(null));
+            return View(new Shipping());
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddShippingGateway(ShippingBM bm)
+        public ActionResult AddShippingGateway(Shipping shippingModel)
         {
             try
             {
-                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
+                using (ShippingManager bm = new ShippingManager(new ShippingRepository()))
                 {
-                    businessManager.Add(bm);
-                }
+                    bm.Insert(shippingModel);
+
+                }              
                 TempData["ShippingGatewayMessage"] = "Gateway Has Been Added.";
 
             }
@@ -189,17 +191,21 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateShippingGateway(int id)
         {
-            return View(new ShippingBM(id));
+            using (ShippingManager bm = new ShippingManager(new ShippingRepository()))
+            {
+                return View(bm.SelectById(id));
+
+            }
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateShippingGateway(ShippingBM bm)
+        public ActionResult UpdateShippingGateway(Shipping bm)
         {
             try
             {
-                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
+                using (ShippingManager manager = new ShippingManager(new ShippingRepository()))
                 {
-                    businessManager.Update(bm);
+                    manager.Update(bm);
                 }
                 TempData["ShippingGatewayMessage"] = "Gateway Has Been Updated.";
 
@@ -215,9 +221,9 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (ShippingBusinessManager businessManager = new ShippingBusinessManager())
+                using (ShippingManager manager = new ShippingManager(new ShippingRepository()))
                 {
-                    businessManager.Delete(new ShippingBM(id));
+                    manager.Delete(id);
                 }
                 TempData["ShippingGatewayMessage"] = "Gateway Has Been Deleted.";
 

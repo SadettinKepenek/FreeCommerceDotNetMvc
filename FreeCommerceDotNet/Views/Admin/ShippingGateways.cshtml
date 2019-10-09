@@ -4,14 +4,15 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-@using FreeCommerceDotNet.Models.BusinessModels
-@model List<FreeCommerceDotNet.Models.BusinessModels.ShippingBM>
+@using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping
 
-@helper GetProductActionButtons(ShippingBM bm)
+@model List<Shipping>
+
+@helper GetProductActionButtons(Shipping bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateShippingGateway", "Admin", new { id = bm.Shipping.ShippingId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeleteShippingGateway", "Admin", new { id = bm.Shipping.ShippingId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Update", "UpdateShippingGateway", "Admin", new { id = bm.ShippingId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteShippingGateway", "Admin", new { id = bm.ShippingId }, new { @class = "btn btn-sm btn-warning" })
     </td>
 }
 
@@ -54,24 +55,20 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Gateway Name</th>
                                 <th scope="col">Gateway Description</th>
-                                <th scope="col">Product Count</th>
                                 <th scope="col" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (ShippingBM bm in Model)
+                            @foreach (Shipping bm in Model)
                             {
                                 <tr>
-                                    <th scope="row">@bm.Shipping.ShippingId</th>
-                                    <td>@bm.Shipping.ShippingName</td>
-                                    <td>@bm.Shipping.ShippingDescription</td>
-                                    <td>@bm.OrderMasterBms.Count</td>
+                                    <th scope="row">@bm.ShippingId</th>
+                                    <td>@bm.ShippingName</td>
+                                    <td>@bm.ShippingDescription</td>
                                     @GetProductActionButtons(bm)
 
 
                                 </tr>
-
-
                             }
 
 
