@@ -4,14 +4,14 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-@using FreeCommerceDotNet.Models.BusinessModels
-@model List<FreeCommerceDotNet.Models.BusinessModels.OrderReturnBM>
+@using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
+@model List<OrderReturn>
 
-@helper GetProductActionButtons(OrderReturnBM bm)
+@helper GetProductActionButtons(OrderReturn bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdateReturn", "Admin", new { id = bm.OrderReturn.ReturnId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeleteReturn", "Admin", new { id = bm.OrderReturn.ReturnId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Update", "UpdateReturn", "Admin", new { id = bm.ReturnId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeleteReturn", "Admin", new { id = bm.ReturnId }, new { @class = "btn btn-sm btn-warning" })
     </td>
 }
 
@@ -62,15 +62,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (OrderReturnBM bm in Model)
+                            @foreach (OrderReturn bm in Model)
                             {
                                 <tr>
-                                    <th scope="row">@bm.OrderReturn.ReturnId</th>
-                                    <td>@bm.OrderReturn.OrderId</td>
+                                    <th scope="row">@bm.ReturnId</th>
+                                    <td>@bm.OrderId</td>
                                     <td>@bm.CustomerBm.Firstname @bm.CustomerBm.Lastname</td>
-                                    <td>@bm.OrderReturn.BoxOpened</td>
-                                    <td>@bm.OrderReturn.ReturnReason</td>
-                                    <td>@bm.OrderReturn.ReturnStatus</td>
+                                    <td>@bm.BoxOpened</td>
+                                    <td>@bm.ReturnReason</td>
+                                    <td>@bm.ReturnStatus</td>
                                     @GetProductActionButtons(bm)
 
 

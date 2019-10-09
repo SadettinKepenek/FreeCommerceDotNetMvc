@@ -24,6 +24,8 @@ using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
 using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 using Segment = FreeCommerceDotNet.Entities.Concrete.Segment;
 using SegmentManager = FreeCommerceDotNet.BLL.Concrete.SegmentManager;
+using OrderReturnManager = FreeCommerceDotNet.BLL.Concrete.OrderReturnManager;
+using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
 
 
 
@@ -726,39 +728,43 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Returns()
         {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
-            {
-                return View(bm.Get());
+            using (OrderReturnManager bm = new OrderReturnManager(new OrderReturnRepository()))
+            {               
+                return View(bm.SelectAll());
             }
         }
 
         [HttpGet]
         public ActionResult AddReturn()
         {
-            return View(new OrderReturnBM(null));
+            return View(new OrderReturn());
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddReturn(OrderReturnBM returnBm)
+        public ActionResult AddReturn(OrderReturn returnBm)
         {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            using (OrderReturnManager bm = new OrderReturnManager(new OrderReturnRepository()))
             {
-                bm.Add(returnBm);
+                bm.Insert(returnBm);
                 TempData["OrderReturnSuccessMessage"] = "Has Been Added";
                 return RedirectToAction("Returns");
-            }
+            } 
         }
 
         [HttpGet]
         public ActionResult UpdateReturn(int id)
         {
-            return View(new OrderReturnBM(id));
+            using (OrderReturnManager bm = new OrderReturnManager(new OrderReturnRepository()))
+            {
+                return View(bm.SelectById(id));
+            }
+            
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdateReturn(OrderReturnBM returnBm)
+        public ActionResult UpdateReturn(OrderReturn returnBm)
         {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            using (OrderReturnManager bm = new OrderReturnManager(new OrderReturnRepository()))
             {
                 bm.Update(returnBm);
                 TempData["OrderReturnSuccessMessage"] = "Has Been Updated";
@@ -766,15 +772,14 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
-        [HttpPost]
         public ActionResult DeleteReturn(int id)
         {
-            using (OrderReturnBusinessManager bm = new OrderReturnBusinessManager())
+            using (OrderReturnManager bm = new OrderReturnManager(new OrderReturnRepository()))
             {
-                bm.Delete(new OrderReturnBM(id));
+                bm.Delete(id);
                 TempData["OrderReturnSuccessMessage"] = "Has Been Deleted";
                 return RedirectToAction("Returns");
-            }
+            }       
         }
 
 
