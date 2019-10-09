@@ -2,9 +2,9 @@
     ViewBag.Title = "AddAttributeGroup";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@using FreeCommerceDotNet.Models.DbManager
-@using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.BusinessModels.SegmentBM
+@using Segment = FreeCommerceDotNet.Entities.Concrete.Segment
+
+@model Segment
 
 <div class="container-fluid">
     <div class="row product-adding">
@@ -17,15 +17,15 @@
                     <div class="digital-add needs-validation">
                         @using (Html.BeginForm("AddSegment", "Admin", FormMethod.Post))
                         {
-                            @Html.HiddenFor(x => x.Segment.SegmentId)
+                            @Html.HiddenFor(x => x.SegmentId)
 
                             <div class="form-group">
                                 <label for="validationCustom09" class="col-form-label pt-0"><span>*</span>Segment Name:</label>
-                                @Html.TextBoxFor(x => x.Segment.SegmentName, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.SegmentName, new { @class = "form-control", id = "validationCustom09", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom010" class="col-form-label pt-0"><span>*</span>Priorty:</label>
-                                @Html.TextBoxFor(x => x.Segment.Priorty, new { @class = "form-control", id = "validationCustom010", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.Priorty, new { @class = "form-control", id = "validationCustom010", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>
