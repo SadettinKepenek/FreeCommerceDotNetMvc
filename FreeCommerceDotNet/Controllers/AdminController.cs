@@ -22,8 +22,9 @@ using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupMana
 using AttributeManager = FreeCommerceDotNet.BLL.Concrete.AttributeManager;
 using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
 using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
+using Segment = FreeCommerceDotNet.Entities.Concrete.Segment;
+using SegmentManager = FreeCommerceDotNet.BLL.Concrete.SegmentManager;
 
-using SegmentManager = FreeCommerceDotNet.Models.DbManager.SegmentManager;
 
 
 
@@ -334,7 +335,7 @@ namespace FreeCommerceDotNet.Controllers
             productBm.ProductPrices = new List<Entities.Concrete.ProductPrice>();
             using (SegmentManager m = new SegmentManager())
             {
-                var segments = m.GetAll();
+                var segments = m.SelectAll();
                 foreach (var segment in segments)
                 {
 
@@ -418,7 +419,7 @@ namespace FreeCommerceDotNet.Controllers
             TempData["ProductAttributesCompare"] = productBm.ProductAttributes;
             using (SegmentManager m = new SegmentManager())
             {
-                var segments = m.GetAll();
+                var segments = m.SelectAll();
                 foreach (var segment in segments)
                 {
 
@@ -959,33 +960,38 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult Segments()
         {
-            using (SegmentBusinessManager manager = new SegmentBusinessManager())
-            {
-                var result = manager.Get();
-                return View(result);
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
+            {       
+                return View(manager.SelectAll());
             }
             
         }
 
         public ActionResult DeleteSegments(int id)
         {
-            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
             {
-                manager.Delete(new SegmentBM(id));
+                manager.Delete(id);
             }
+            TempData["MessageSegment"] = "Segment Deleted!";
             return RedirectToAction("Segments", "Admin");
         }
         [HttpGet]
         public ActionResult UpdateSegment(int id)
         {
-            return View(new SegmentBM(id));
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
+            {
+                return View(manager.SelectById(id));
+            }
+            
+
         }
         [HttpPost]
-        public ActionResult UpdateSegment(SegmentBM segmentBm)
+        public ActionResult UpdateSegment(Segment segmentModel)
         {
-            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
             {
-                manager.Update(segmentBm);
+                manager.Update(segmentModel);
             }
             TempData["MessageSegment"] = "Segment Updated!";
             return RedirectToAction("Segments", "Admin");
@@ -993,14 +999,17 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddSegment()
         {
-            return View(new SegmentBM(null));
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
+            {
+                return View(new Segment());
+            }
         }
         [HttpPost]
-        public ActionResult AddSegment(SegmentBM segmentBm)
+        public ActionResult AddSegment(Segment segmentModel)
         {
-            using (SegmentBusinessManager manager = new SegmentBusinessManager())
+            using (SegmentManager manager = new SegmentManager(new SegmentRepository()))
             {
-                manager.Add(segmentBm);
+                manager.Insert(segmentModel);
             }
             TempData["MessageSegment"] = "Segment Added!";
             return RedirectToAction("Segments","Admin");
