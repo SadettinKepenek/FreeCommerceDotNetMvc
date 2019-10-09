@@ -81,6 +81,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@ShippingId",id);
                 DataTable datatable = database.DoQuery(command: command);
                 var rows = datatable.Rows;
                 

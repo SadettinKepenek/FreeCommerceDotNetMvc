@@ -4,8 +4,9 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping
 
-@model FreeCommerceDotNet.Models.BusinessModels.ShippingBM
+@model Shipping
 
 <div class="container-fluid">
     <div class="page-header">
@@ -44,11 +45,11 @@
                             @Html.AntiForgeryToken()
                             <div class="form-group">
                                 <label for="validationCustom01" class="col-form-label pt-0"><span>*</span>Payment Gateway Name:</label>
-                                @Html.TextBoxFor(x => x.Shipping.ShippingName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.ShippingName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Description:</label>
-                                @Html.TextBoxFor(x => x.Shipping.ShippingDescription, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.ShippingDescription, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Add</button>
