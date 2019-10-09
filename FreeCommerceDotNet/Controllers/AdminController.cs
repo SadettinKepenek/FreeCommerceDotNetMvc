@@ -26,6 +26,8 @@ using Segment = FreeCommerceDotNet.Entities.Concrete.Segment;
 using SegmentManager = FreeCommerceDotNet.BLL.Concrete.SegmentManager;
 using OrderReturnManager = FreeCommerceDotNet.BLL.Concrete.OrderReturnManager;
 using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
+using Payment = FreeCommerceDotNet.Entities.Concrete.Payment;
+using PaymentGatewayManager = FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager;
 
 
 
@@ -234,9 +236,9 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult PaymentGateways()
         {
-            using (PaymentBusinessManager bm = new PaymentBusinessManager())
+            using (PaymentGatewayManager bm = new PaymentGatewayManager(new PaymentGatewayRepository()))
             {
-                return View(bm.Get());
+                return View(bm.SelectAll());
 
             }
         }
@@ -244,17 +246,17 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddPaymentGateway()
         {
-            return View(new PaymentBM(null));
+            return View(new Payment());
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddPaymentGateway(PaymentBM bm)
+        public ActionResult AddPaymentGateway(Payment bm)
         {
             try
             {
-                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                using (PaymentGatewayManager manager = new PaymentGatewayManager(new PaymentGatewayRepository()))
                 {
-                    businessManager.Add(bm);
+                    manager.Insert(bm);
                 }
                 TempData["PaymentGatewayMessage"] = "Gateway Has Been Added.";
 
@@ -270,18 +272,21 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdatePaymentGateway(int id)
         {
-            return View(new PaymentBM(id));
+            using (PaymentGatewayManager manager = new PaymentGatewayManager(new PaymentGatewayRepository()))
+            {
+                return View(manager.SelectById(id));
+            }
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult UpdatePaymentGateway(PaymentBM bm)
+        public ActionResult UpdatePaymentGateway(Payment bm)
         {
             try
             {
-                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                using (PaymentGatewayManager manager = new PaymentGatewayManager(new PaymentGatewayRepository()))
                 {
-                    businessManager.Update(bm);
-                }
+                    manager.Update(bm);
+                }            
                 TempData["PaymentGatewayMessage"] = "Gateway Has Been Updated.";
 
             }
@@ -297,9 +302,9 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (PaymentBusinessManager businessManager = new PaymentBusinessManager())
+                using (PaymentGatewayManager manager = new PaymentGatewayManager(new PaymentGatewayRepository()))
                 {
-                    businessManager.Delete(new PaymentBM(id));
+                    manager.Delete(id);
                 }
                 TempData["PaymentGatewayMessage"] = "Gateway Has Been Deleted.";
 

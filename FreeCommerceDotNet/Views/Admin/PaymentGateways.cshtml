@@ -4,18 +4,18 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-@using FreeCommerceDotNet.Models.BusinessModels
+@using Payment = FreeCommerceDotNet.Entities.Concrete.Payment
 
-@helper GetProductActionButtons(PaymentBM bm)
+@helper GetProductActionButtons(Payment bm)
 {
     <td class="text-center">
-        @Html.ActionLink("Update", "UpdatePaymentGateway", "Admin", new { id = bm.Payment.PaymentId }, new { @class = "btn btn-sm btn-danger" })
-        @Html.ActionLink("Delete", "DeletePaymentGateway", "Admin", new { id = bm.Payment.PaymentId }, new { @class = "btn btn-sm btn-warning" })
+        @Html.ActionLink("Update", "UpdatePaymentGateway", "Admin", new { id = bm.PaymentId }, new { @class = "btn btn-sm btn-danger" })
+        @Html.ActionLink("Delete", "DeletePaymentGateway", "Admin", new { id = bm.PaymentId }, new { @class = "btn btn-sm btn-warning" })
     </td>
 }
 
 
-@model List<FreeCommerceDotNet.Models.BusinessModels.PaymentBM>
+@model List<Payment>
 
 <div class="container-fluid">
     <div class="page-header">
@@ -54,18 +54,18 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Gateway Name</th>
                                 <th scope="col">Gateway Description</th>
-                                <th scope="col">Product Count</th>
+
                                 <th scope="col" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (PaymentBM bm in Model)
+                            @foreach (Payment bm in Model)
                             {
                                 <tr>
-                                    <th scope="row">@bm.Payment.PaymentId</th>
-                                    <td>@bm.Payment.PaymentName</td>
-                                    <td>@bm.Payment.PaymentDescription</td>
-                                    <td>@bm.OrderMasterBms.Count</td>
+                                    <th scope="row">@bm.PaymentId</th>
+                                    <td>@bm.PaymentName</td>
+                                    <td>@bm.PaymentDescription</td>
+
 
                                     @GetProductActionButtons(bm)
 
