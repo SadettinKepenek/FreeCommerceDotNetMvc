@@ -94,6 +94,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@PaymentId",id);
                 DataTable datatable = database.DoQuery(command: command);
                 var rows = datatable.Rows;
                 Payment payment = new Payment();

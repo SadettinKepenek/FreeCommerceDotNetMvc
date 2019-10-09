@@ -3,8 +3,9 @@
     ViewBag.Title = "UpdatePaymentGateway";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-@model FreeCommerceDotNet.Models.BusinessModels.PaymentBM
+@using Payment = FreeCommerceDotNet.Entities.Concrete.Payment
 
+@model Payment
 <div class="container-fluid">
     <div class="page-header">
         <div class="row">
@@ -38,15 +39,15 @@
                     <div class="digital-add needs-validation">
                         @using (Html.BeginForm("UpdatePaymentGateway", "Admin", FormMethod.Post))
                         {
-                            @Html.HiddenFor(x => x.Payment.PaymentId)
+                            @Html.HiddenFor(x => x.PaymentId)
                             @Html.AntiForgeryToken()
                             <div class="form-group">
                                 <label for="validationCustom01" class="col-form-label pt-0"><span>*</span>Payment Gateway Name:</label>
-                                @Html.TextBoxFor(x => x.Payment.PaymentName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.PaymentName, new { @class = "form-control", id = "validationCustom01", type = "text", required = "" })
                             </div>
                             <div class="form-group">
                                 <label for="validationCustom02" class="col-form-label pt-0"><span>*</span>Payment Description:</label>
-                                @Html.TextBoxFor(x => x.Payment.PaymentDescription, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
+                                @Html.TextBoxFor(x => x.PaymentDescription, new { @class = "form-control", id = "validationCustom02", type = "text", required = "" })
                             </div>
                             <div class="offset-xl-3 offset-sm-4">
                                 <button type="submit" class="btn btn-primary">Update</button>
