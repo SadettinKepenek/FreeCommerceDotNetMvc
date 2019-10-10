@@ -1,15 +1,34 @@
 ﻿@using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
+@using Brand = FreeCommerceDotNet.Entities.Concrete.Brand
+@using Category = FreeCommerceDotNet.Entities.Concrete.Category
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
 
-@model FreeCommerceDotNet.Models.ControllerModels.Client.Category
+@model FreeCommerceDotNet.Entities.Concrete.Category
+
+
+@{
+    List<FreeCommerceDotNet.Entities.Concrete.Brand> brands = new List<FreeCommerceDotNet.Entities.Concrete.Brand>();
+
+    foreach (Product modelProduct in Model.Products)
+    {
+        var brandEntity = modelProduct.BrandEntity;
+        if (brands.FirstOrDefault(x=>x.BrandId==brandEntity.BrandId)==null)
+        {
+            brands.Add(brandEntity);
+        }
+    }
+}
 
 @helper GetNewProductsSideBar(int start, int count)
 {
-    foreach (ProductBM bm in Model.ProductBms.GetRange(start, count))
+
+    var newProducts = Model.Products.Skip(start).Take(count - start);
+    foreach (Product bm in newProducts)
     {
         <div class="media">
             <a href="">
-                <img class="img-fluid blur-up lazyload" src="@bm.Product.ImageUrl" alt="">
+                <img class="img-fluid blur-up lazyload" src="@bm.ImageUrl" alt="">
             </a>
             <div class="media-body align-self-center">
                 <div class="rating">
@@ -19,9 +38,9 @@
                     <h6>Slim Fit Cotton Shirt</h6>
                 </a>
 
-                @if (bm.ProductPrices.FirstOrDefault() != null)
+                @if (bm.ProductPrices?.FirstOrDefault() != null)
                 {
-                    <h4>$@bm.ProductPrices.FirstOrDefault().Price</h4>
+                    <h4>$@(bm.ProductPrices?.FirstOrDefault().Price)</h4>
                 }
                 else
                 {
@@ -38,14 +57,14 @@
 
 @helper GetSubCategoriesSideBar()
 {
-    if (Model.CategoryBm.SubCategories != null && Model.CategoryBm.SubCategories.Count != 0)
+    if (Model.SubCategories != null && Model.SubCategories.Count != 0)
     {
         <div class="collection-collapse-block open">
             <h3 class="collapse-block-title">Alt Kategoriler</h3>
             <div class="collection-collapse-block-content">
                 <div class="collection-brand-filter">
 
-                    @foreach (Category subCategory in Model.CategoryBm.SubCategories)
+                    @foreach (Category subCategory in Model.SubCategories)
                     {
                         <div class="custom-control custom-checkbox collection-filter-checkbox">
                             <input type="checkbox" class="custom-control-input" onchange="changeSubCategoryId(this.id);" id="subcategory_@subCategory.CategoryId">
@@ -60,14 +79,14 @@
     }
 }
 
-@helper GetBrandsSidebar()
+@helper GetBrandsSidebar(List<Brand> brands)
 {
     <div class="collection-collapse-block open">
         <h3 class="collapse-block-title">brand</h3>
         <div class="collection-collapse-block-content">
             <div class="collection-brand-filter">
 
-                @foreach (Brand brand in Model.BrandBms)
+                @foreach (Brand brand in brands)
                 {
                     <div class="custom-control custom-checkbox collection-filter-checkbox">
                         <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
@@ -103,12 +122,12 @@
         console.log(Id);
     }
     function applyFilters() {
-        var categoryId =@Model.CategoryBm.Category.CategoryId;
+        var categoryId =@Model.CategoryId;
         var data = {
             BrandId: window.brandId,
             AltKategoriId: window.subCategoryId
     };
-        $.ajax({
+        @*$.ajax({
             type: "GET",
             url: '@Url.Action("Category", "Home")',
             contentType: "application/json; charset=utf-8",
@@ -117,7 +136,7 @@
             dataType: "json",
             success: function() { alert('Success'); },
             error: function (result) { alert(result); }
-        });
+        });*@
     }
 </script>
 
@@ -126,15 +145,15 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="page-title">
-                    <h2>@Model.CategoryBm.Category.CategoryName</h2>
+                    <h2>@Model.CategoryName</h2>
                 </div>
             </div>
             <div class="col-sm-6">
                 <nav aria-label="breadcrumb" class="theme-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="~/Home">Anasayfa</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@Model.CategoryBm.Category.CategoryName</li>
-                      
+                        <li class="breadcrumb-item active" aria-current="page">@Model.CategoryName</li>
+
                     </ol>
                 </nav>
             </div>
@@ -152,7 +171,7 @@
                     <div class="collection-filter-block">
                         <!-- brand filter start -->
                         <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
-                        @GetBrandsSidebar()
+                        @GetBrandsSidebar(brands)
                         <!-- sub categories filter here-->
                         @GetSubCategoriesSideBar()
 
@@ -239,11 +258,11 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="top-banner-wrapper">
-                                    <a href="#"><img src="@Model.CategoryBm.Category.ImageUrl" class="img-fluid blur-up lazyload" alt=""></a>
+                                    <a href="#"><img src="@Model.ImageUrl" class="img-fluid blur-up lazyload" alt=""></a>
                                     <div class="top-banner-content small-section">
-                                        <h4>@Model.CategoryBm.Category.CategoryName</h4>
+                                        <h4>@Model.CategoryName</h4>
                                         @*<h5>@Model.CategoryBm.</h5>*@
-                                        <p>@Model.CategoryBm.Category.Description</p>
+                                        <p>@Model.Description</p>
                                     </div>
                                 </div>
                                 <div class="collection-product-wrapper">
@@ -257,7 +276,7 @@
                                             <div class="col-12">
                                                 <div class="product-filter-content">
                                                     <div class="search-count">
-                                                        <h5>Showing Products 1-12 @Model.ProductBms.Count Result</h5>
+                                                        <h5>Showing Products 1-12 @Model.Products.Count Result</h5>
                                                     </div>
                                                     <div class="collection-view">
                                                         <ul>
@@ -293,17 +312,17 @@
                                     </div>
                                     <div class="product-wrapper-grid">
                                         <div class="row">
-                                            @foreach (var product in Model.ProductBms)
+                                            @foreach (var product in Model.Products)
                                             {
 
                                                 <div class="col-xl-3 col-md-6 col-grid-box">
                                                     <div class="product-box">
                                                         <div class="img-wrapper">
                                                             <div class="front">
-                                                                <a href="#"><img src="@product.Product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                                                                <a href="#"><img src="@product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                                                             </div>
                                                             <div class="back">
-                                                                <a href="#"><img src="@product.Product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                                                                <a href="#"><img src="@product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                                                             </div>
                                                             <div class="cart-info cart-wrap">
                                                                 <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -311,11 +330,11 @@
                                                         </div>
                                                         <div class="product-detail">
                                                             <div>
-                                                                <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div><a href="product-page(no-sidebar).html"><h6>@product.Product.ProductName</h6></a>
-                                                                <p>@product.Product.ProductDescription</p>
-                                                                @if (product.ProductPrices.FirstOrDefault() != null)
+                                                                <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div><a href="product-page(no-sidebar).html"><h6>@product.ProductName</h6></a>
+                                                                <p>@product.ProductDescription</p>
+                                                                @if (product.ProductPrices?.FirstOrDefault() != null)
                                                                 {
-                                                                    <h4>$@product.ProductPrices.FirstOrDefault().Price</h4>
+                                                                    <h4>$@(product.ProductPrices?.FirstOrDefault().Price)</h4>
                                                                 }
                                                                 else
                                                                 {
@@ -344,25 +363,27 @@
                                                 <div class="col-xl-6 col-md-6 col-sm-12">
                                                     <nav aria-label="Page navigation">
                                                         <ul class="pagination">
-                                                            @if (Model.Page != 1)
+                                                            @if (ViewBag.Page != 1)
                                                             {
-                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@(Model.Page-1)" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> <span class="sr-only">Previous</span></a></li>
-                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@(Model.Page-1)">@(Model.Page - 1)</a></li>
+                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@(ViewBag.Page-1)" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> <span class="sr-only">Previous</span></a></li>
+                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@(ViewBag.Page-1)">@(ViewBag.Page - 1)</a></li>
 
                                                             }
                                                             @{
-                                                                int pageNum = Model.Page;
+                                                                int pageNum = ViewBag.Page;
                                                                 for (int i = 0; i < 3; i++)
                                                                 {
-                                                                    if (pageNum <= Model.MaxPage)
+                                                                    if (pageNum <= ViewBag.MaxPage)
                                                                     {
-                                                                        if (pageNum == Model.Page)
+                                                                        if (pageNum == ViewBag.Page)
                                                                         {
-                                                                            <li class="page-item active"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@pageNum">@pageNum</a></li>
+                                                                            <li class="page-item active"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@pageNum">@pageNum</a></li>
+
+                                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
+
 
                                                                         }
                                                                     }
@@ -377,7 +398,7 @@
                                                 </div>
                                                 <div class="col-xl-6 col-md-6 col-sm-12">
                                                     <div class="product-search-count-bottom">
-                                                        <h5>Showing Products 1-12 @Model.ProductBms.Count Result</h5>
+                                                        <h5>Showing Products 1-12 @Model.Products.Count Result</h5>
                                                     </div>
                                                 </div>
                                             </div>
