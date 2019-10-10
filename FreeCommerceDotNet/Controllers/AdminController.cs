@@ -748,7 +748,11 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddReturn()
         {
-            return View(new OrderReturn());
+            var model = new OrderReturn();
+            model.CustomerBm=new Customer();
+            model.ProductBm=new Product();
+            model.OrderBM=new OrderMaster();
+            return View(model);
         }
         [ValidateAntiForgeryToken]
         [HttpPost]

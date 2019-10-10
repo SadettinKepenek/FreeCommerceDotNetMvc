@@ -1,4 +1,5 @@
-﻿@using FreeCommerceDotNet.Models.DbManager
+﻿@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Models.DbManager
 @using FreeCommerceDotNet.Models.DbModels
 
 @{
@@ -17,12 +18,12 @@
     List<Product> products;
     List<OrderMaster> masters;
 
-    using (ProductManager m = new ProductManager())
+    using (ProductManager m = new ProductManager(new ProductRepository()))
     {
         products = m.SelectAll();
     }
 
-    using (OrderMasterManager m = new OrderMasterManager())
+    using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
     {
         masters = m.SelectAll();
     }
