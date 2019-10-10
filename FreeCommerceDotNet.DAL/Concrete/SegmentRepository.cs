@@ -96,6 +96,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@SegmentId", id);
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
