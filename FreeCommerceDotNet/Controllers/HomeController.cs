@@ -1,10 +1,12 @@
-﻿using FreeCommerceDotNet.BLL.Concrete;
+﻿using System;
+using FreeCommerceDotNet.BLL.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 using FreeCommerceDotNet.Models.BusinessManager;
 using FreeCommerceDotNet.Models.ControllerModels.Client.ClientFilters;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FreeCommerceDotNet.Controllers
@@ -29,8 +31,16 @@ namespace FreeCommerceDotNet.Controllers
 
         }
 
-        public ActionResult Category(int id, int page = 0, CategoryFilters filters = null)
+        public ActionResult Category(int id, int page = 0)
         {
+            HttpCookie categoryFilterCookie = HttpContext.Request.Cookies.Get("CategoryFilterId");
+            HttpCookie brandFilterCookie = HttpContext.Request.Cookies.Get("BrandFilterId");
+            HttpCookie minPriceCookie = HttpContext.Request.Cookies.Get("MinPrice");
+            HttpCookie maxPriceCookie = HttpContext.Request.Cookies.Get("MaxPrice");
+
+            ViewBag.CategoryId = id;
+
+
             int PRODUCTCOUNT = 12;
             page = page != 0 ? page : 1;
 
@@ -49,20 +59,38 @@ namespace FreeCommerceDotNet.Controllers
             #endregion
 
             #region ApplyFilters 
-            if (filters != null)
+
+            if (categoryFilterCookie != null && !String.IsNullOrEmpty(categoryFilterCookie.Value))
             {
-                if (filters.AltKategoriId != 0)
-                {
-                    productsList = productsList.Where(x => x.CategoryId == filters.AltKategoriId);
-                }
-
-                if (filters.BrandId != 0)
-                {
-                    productsList = productsList.Where(x => x.Brand == filters.BrandId);
-                }
-
+                int categoryId = Convert.ToInt32(Server.HtmlEncode(categoryFilterCookie.Value));
+                productsList = productsList.Where(x => x.CategoryId == categoryId);
+                categoryFilterCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(categoryFilterCookie);
             }
 
+            if (brandFilterCookie != null && !String.IsNullOrEmpty(brandFilterCookie.Value))
+            {
+                int brandId = Convert.ToInt32(Server.HtmlEncode(brandFilterCookie.Value));
+                productsList = productsList.Where(x => x.Brand == brandId);
+                brandFilterCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(brandFilterCookie);
+            }
+
+            if (minPriceCookie!=null && maxPriceCookie!=null && !String.IsNullOrEmpty(minPriceCookie.Value) && !String.IsNullOrEmpty(maxPriceCookie.Value))
+            {
+
+                double minPrice = Convert.ToDouble(Server.HtmlEncode(minPriceCookie.Value));
+                double maxPrice = Convert.ToDouble(Server.HtmlEncode(maxPriceCookie.Value));
+                productsList = from product in productsList
+                    where product.ProductPrices.Any(x => x.Price >= minPrice && x.Price <= maxPrice)
+                    select product;
+
+                minPriceCookie.Expires = DateTime.Now.AddDays(-1);
+                maxPriceCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(minPriceCookie);
+                Response.Cookies.Add(maxPriceCookie);
+
+            }
             #endregion
 
             #region ToList

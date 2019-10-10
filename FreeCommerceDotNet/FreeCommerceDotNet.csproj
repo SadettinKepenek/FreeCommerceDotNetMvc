@@ -532,6 +532,8 @@
     <Content Include="assets\css\flag-icon.css" />
     <Content Include="assets\css\fontawesome.css" />
     <Content Include="assets\css\icofont.css" />
+    <Content Include="assets\css\ion.rangeSlider.css" />
+    <Content Include="assets\css\ion.rangeSlider.min.css" />
     <Content Include="assets\css\jquery.lazyloadxt.spinner.css" />
     <Content Include="assets\css\jsgrid.css" />
     <Content Include="assets\css\landing_page.css" />
@@ -2739,6 +2741,7 @@
     <Content Include="assets\js\chart\sparkline\sparkline.js" />
     <Content Include="assets\js\chat-menu.js" />
     <Content Include="assets\js\clipboard\clipboard.min.js" />
+    <Content Include="assets\js\CookieOperations.js" />
     <Content Include="assets\js\counter\counter-custom.js" />
     <Content Include="assets\js\counter\jquery.counterup.min.js" />
     <Content Include="assets\js\counter\jquery.waypoints.min.js" />
@@ -3438,6 +3441,8 @@
     <Content Include="assets\js\icons\feather-icon\feather-icon.js" />
     <Content Include="assets\js\icons\feather-icon\feather.min.js" />
     <Content Include="assets\js\imagesloaded.pkgd.min.js" />
+    <Content Include="assets\js\ion.rangeSlider.js" />
+    <Content Include="assets\js\ion.rangeSlider.min.js" />
     <Content Include="assets\js\isotope.min.js" />
     <Content Include="assets\js\jquery-3.3.1.min.js" />
     <Content Include="assets\js\jquery-ui.min.js" />

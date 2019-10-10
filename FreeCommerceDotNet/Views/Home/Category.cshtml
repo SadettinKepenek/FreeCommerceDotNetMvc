@@ -1,4 +1,6 @@
-﻿@using FreeCommerceDotNet.Models.BusinessModels
+﻿@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
 @using Brand = FreeCommerceDotNet.Entities.Concrete.Brand
 @using Category = FreeCommerceDotNet.Entities.Concrete.Category
@@ -8,22 +10,27 @@
 
 
 @{
-    List<FreeCommerceDotNet.Entities.Concrete.Brand> brands = new List<FreeCommerceDotNet.Entities.Concrete.Brand>();
+    List<Brand> brands = new List<FreeCommerceDotNet.Entities.Concrete.Brand>();
 
     foreach (Product modelProduct in Model.Products)
     {
         var brandEntity = modelProduct.BrandEntity;
-        if (brands.FirstOrDefault(x=>x.BrandId==brandEntity.BrandId)==null)
+        if (brands.FirstOrDefault(x => x.BrandId == brandEntity.BrandId) == null)
         {
             brands.Add(brandEntity);
         }
     }
 }
-
-@helper GetNewProductsSideBar(int start, int count)
+@{
+    int categoryId = ViewBag.CategoryId;
+    CategoryManager manager = new CategoryManager(new CategoryRepository());
+    var categoryPermanent = manager.SelectById(categoryId);
+}
+@helper GetNewProductsSideBar(int start, int count,Category category)
 {
 
-    var newProducts = Model.Products.Skip(start).Take(count - start);
+
+    var newProducts = category.Products.Skip(start).Take(count - start);
     foreach (Product bm in newProducts)
     {
         <div class="media">
@@ -103,8 +110,12 @@
 @{
     ViewBag.Title = "Category Page";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
-}
 
+}
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
+<script src="~/assets/js/ion.rangeSlider.min.js"></script>
+<link href="~/assets/css/ion.rangeSlider.min.css" rel="stylesheet" />
+<script src="~/assets/js/CookieOperations.js"></script>
 
 <script type="text/javascript">
     window.subCategoryId = 0;
@@ -113,30 +124,25 @@
         var Id = id.replace("brand_", "");
         window.brandId = Id;
         console.log(Id);
-
+        setCookie("BrandFilterId", Id);
 
     }
     function changeSubCategoryId(id) {
         var Id = id.replace("subcategory_","");
         window.subCategoryId = Id;
         console.log(Id);
+        setCookie("CategoryFilterId", Id);
+
     }
+
+
+
+
+
     function applyFilters() {
-        var categoryId =@Model.CategoryId;
-        var data = {
-            BrandId: window.brandId,
-            AltKategoriId: window.subCategoryId
-    };
-        @*$.ajax({
-            type: "GET",
-            url: '@Url.Action("Category", "Home")',
-            contentType: "application/json; charset=utf-8",
-            data: {
-                id: categoryId, page: @Model.Page, filters: JSON.stringify(data) },
-            dataType: "json",
-            success: function() { alert('Success'); },
-            error: function (result) { alert(result); }
-        });*@
+        alert("Category Filter " + getCookie("CategoryFilterId"));
+        alert("Price Filter " + getCookie("MinPrice") + " " + getCookie("MaxPrice"));
+        alert("Brand Filter " + getCookie("BrandFilterId"));
     }
 </script>
 
@@ -197,27 +203,35 @@
                             <h3 class="collapse-block-title">price</h3>
                             <div class="collection-collapse-block-content">
                                 <div class="collection-brand-filter">
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="hundred">
-                                        <label class="custom-control-label" for="hundred">$10 - $100</label>
+                                    <hr/>
+                                    <input type="text" class="js-range-slider" name="my_range" value="" />
+                                    <script type="text/javascript">
+
+
+                                        var maxPrice =@(Model.Products?.Max(x=>x.ProductPrices?.Max(y=>y.Price)));
+                                        var minPrice=@(Model.Products?.Min(x=>x.ProductPrices?.Min(y=>y.Price)));
+                                        $(".js-range-slider").ionRangeSlider({
+                                        type: "double",
+                                            min:minPrice,
+                                            max: maxPrice,
+                                            grid: true,
+                                            skin:"modern",
+                                            prefix: "₺",
+                                            onChange: function(data) {
+
+                                                setCookie("MinPrice",data.from);
+                                                setCookie("MaxPrice",data.to);
+
+                                            }
+                                        });
+                                    </script>
+
+
+
                                     </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="twohundred">
-                                        <label class="custom-control-label" for="twohundred">$100 - $200</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="threehundred">
-                                        <label class="custom-control-label" for="threehundred">$200 - $300</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="fourhundred">
-                                        <label class="custom-control-label" for="fourhundred">$300 - $400</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="fourhundredabove">
-                                        <label class="custom-control-label" for="fourhundredabove">$400 above</label>
-                                    </div>
-                                </div>
+                            
+
+
                             </div>
                         </div>
                         <div class="collection-collapse-block border-0 open">
@@ -226,7 +240,7 @@
                             Bu veri filters çağırır.
                             Cookie de aynı işlem yapılabilir.
                             -->
-                            <button type="button" class="btn btn-info" onclick="applyFilters();">Apply Filters</button>
+                            @Html.ActionLink("Apply Filters","Category",new {id=ViewBag.CategoryId},new {type="button",@class="btn btn-info"})
                             <button type="button" class="btn btn-danger">Clear Filters</button>
                         </div>
                     </div>
@@ -237,10 +251,10 @@
                         <div class="offer-slider slide-1">
 
                             <div>
-                                @GetNewProductsSideBar(0, 3)
+                                @GetNewProductsSideBar(0, 3, categoryPermanent)
                             </div>
                             <div>
-                                @GetNewProductsSideBar(3, 3)
+                                @GetNewProductsSideBar(3, 6, categoryPermanent)
                             </div>
                         </div>
                     </div>
@@ -382,7 +396,7 @@
                                                                         else
                                                                         {
 
-                                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
+                                                                            <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
 
 
                                                                         }
