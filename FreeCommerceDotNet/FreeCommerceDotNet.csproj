@@ -375,10 +375,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\apiControllers\AttributeGroupController.cs" />
-    <Compile Include="Controllers\apiControllers\OrderController.cs" />
-    <Compile Include="Controllers\apiControllers\ProductController.cs" />
-    <Compile Include="Controllers\apiControllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
@@ -3889,6 +3885,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\apiControllers\" />
     <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
