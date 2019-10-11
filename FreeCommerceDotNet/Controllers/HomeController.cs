@@ -8,6 +8,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using FreeCommerceDotNet.Models.ControllerModels.Client;
+using FreeCommerceDotNet.BLL.Concrete;
+using FreeCommerceDotNet.DAL.Concrete;
+using System.Collections.Generic;
+using FreeCommerceDotNet.Models.ControllerModels.Client.ClientFilters;
+using Product = FreeCommerceDotNet.Entities.Concrete.Product;
+using ProductAttributeManager = FreeCommerceDotNet.BLL.Concrete.ProductAttributeManager;
+using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountManager;
+using ProductDiscount = FreeCommerceDotNet.Entities.Concrete.ProductDiscount;
+using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
+using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
+using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
+using FreeCommerceDotNet.DAL.Concrete;
+using System.Web.Services;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -22,10 +36,18 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Product(int id)
         {
 
-            using (ProductBusinessManager manager = new ProductBusinessManager())
+            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
             {
-                var products = manager.GetById(id);
-                return View(products);
+                var reviews = manager.SelectAll();
+                reviews = reviews.Where(x => x.ProductId == id).ToList();
+                ViewBag.reviews = reviews;
+            }
+            using (ProductManager manager = new ProductManager(new ProductRepository()))
+            {
+                var product = manager.SelectById(id);
+                // ProductDiscount productDiscount = new ProductDiscount();
+                ViewBag.ProductId = id;
+                return View(product);
             }
 
 
@@ -117,5 +139,22 @@ namespace FreeCommerceDotNet.Controllers
         }
 
 
+
+      
+        public JsonResult AddReview(Reviews review)
+        {
+            using (ReviewManager manager=new ReviewManager(new ReviewRepository()))
+            {
+                try
+                {
+                    var result=manager.Insert(review);
+                    return Json(result.Message);
+                }
+                catch (Exception e)
+                {
+                    return Json("Failed");
+                }
+            }
+        }
     }
 }
