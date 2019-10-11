@@ -8,7 +8,7 @@ using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Abstract;
 using FreeCommerceDotNet.Entities.Concrete;
 
-namespace FreeCommerceDotNet.DAL.Abstract
+namespace FreeCommerceDotNet.DAL.Concrete
 {
     public class ReviewRepository:IReviewDal
     {
@@ -75,8 +75,7 @@ namespace FreeCommerceDotNet.DAL.Abstract
                 DataTable datatable = database.DoQuery(command: command);
                 if (datatable.Rows.Count != 0)
                 {
-                   
-                   
+                                     
                     List<Reviews> list = new List<Reviews>();                   
                     foreach (DataRow dr in datatable.Rows)
                     {
@@ -95,6 +94,7 @@ namespace FreeCommerceDotNet.DAL.Abstract
                         string customerLastname = dr["CustomerLastname"].ToString();
                         string customerEmail = dr["CustomerEmail"].ToString();
                         review.CustomerId = customerId;
+                        review.ProductId = (int)dr["ProductId"];
                         review.customer.Firstname = customerFirstname;
                         review.customer.Lastname = customerLastname;
                         review.customer.Email = customerEmail;
@@ -131,6 +131,7 @@ namespace FreeCommerceDotNet.DAL.Abstract
                     reviews.Title = datatable.Rows[0]["ReviewTitle"].ToString();
                     reviews.Text = datatable.Rows[0]["ReviewComment"].ToString();
                     reviews.Rating = (int)datatable.Rows[0]["ReviewRating"];
+                    reviews.ProductId = (int)datatable.Rows[0]["ProductId"];
                     reviews.Date = datatable.Rows[0]["ReviewPublishDate"].ToString();
                     reviews.Status = (bool)datatable.Rows[0]["ReviewStatus"];
                     reviews.LikeCount = (int)datatable.Rows[0]["ReviewLike"];
