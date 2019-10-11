@@ -64,16 +64,14 @@ namespace FreeCommerceDotNet.Controllers
             {
                 int categoryId = Convert.ToInt32(Server.HtmlEncode(categoryFilterCookie.Value));
                 productsList = productsList.Where(x => x.CategoryId == categoryId);
-                categoryFilterCookie.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(categoryFilterCookie);
+ 
             }
 
             if (brandFilterCookie != null && !String.IsNullOrEmpty(brandFilterCookie.Value))
             {
                 int brandId = Convert.ToInt32(Server.HtmlEncode(brandFilterCookie.Value));
                 productsList = productsList.Where(x => x.Brand == brandId);
-                brandFilterCookie.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(brandFilterCookie);
+              
             }
 
             if (minPriceCookie!=null && maxPriceCookie!=null && !String.IsNullOrEmpty(minPriceCookie.Value) && !String.IsNullOrEmpty(maxPriceCookie.Value))
@@ -85,10 +83,7 @@ namespace FreeCommerceDotNet.Controllers
                     where product.ProductPrices.Any(x => x.Price >= minPrice && x.Price <= maxPrice)
                     select product;
 
-                minPriceCookie.Expires = DateTime.Now.AddDays(-1);
-                maxPriceCookie.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(minPriceCookie);
-                Response.Cookies.Add(maxPriceCookie);
+            
 
             }
             #endregion
