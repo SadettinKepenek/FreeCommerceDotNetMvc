@@ -1,32 +1,28 @@
-﻿using FreeCommerceDotNet.DAL.Concrete;
-using FreeCommerceDotNet.Models.BusinessManager;
-using FreeCommerceDotNet.Models.BusinessModels;
+﻿using FreeCommerceDotNet.BLL.Concrete;
+using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
+using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
+using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager;
+using AttributeManager = FreeCommerceDotNet.BLL.Concrete.AttributeManager;
 using Customer = FreeCommerceDotNet.Entities.Concrete.Customer;
 using CustomerManager = FreeCommerceDotNet.BLL.Concrete.CustomerManager;
-using FreeCommerceDotNet.BLL.Concrete;
-using FreeCommerceDotNet.Entities.Concrete;
-using OrderDetail = FreeCommerceDotNet.Models.DbModels.OrderDetail;
+using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
+using OrderReturnManager = FreeCommerceDotNet.BLL.Concrete.OrderReturnManager;
+using Payment = FreeCommerceDotNet.Entities.Concrete.Payment;
+using PaymentGatewayManager = FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager;
 using Product = FreeCommerceDotNet.Entities.Concrete.Product;
 using ProductAttributeManager = FreeCommerceDotNet.BLL.Concrete.ProductAttributeManager;
 using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountManager;
 using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
 using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
 using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
-
-using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager;
-using AttributeManager = FreeCommerceDotNet.BLL.Concrete.AttributeManager;
-using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup;
-using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute;
 using Segment = FreeCommerceDotNet.Entities.Concrete.Segment;
 using SegmentManager = FreeCommerceDotNet.BLL.Concrete.SegmentManager;
-using OrderReturnManager = FreeCommerceDotNet.BLL.Concrete.OrderReturnManager;
-using OrderReturn = FreeCommerceDotNet.Entities.Concrete.OrderReturn;
-using Payment = FreeCommerceDotNet.Entities.Concrete.Payment;
-using PaymentGatewayManager = FreeCommerceDotNet.BLL.Concrete.PaymentGatewayManager;
 using Shipping = FreeCommerceDotNet.Entities.Concrete.Shipping;
 using ShippingManager = FreeCommerceDotNet.BLL.Concrete.ShippingManager;
 
@@ -76,7 +72,7 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult AddCategory()
         {
-            return View(new CategoryBM(null));
+            return View(new Category());
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -706,10 +702,10 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult Reviews()
         {
-            List<ReviewBM> reviews;
-            using (ReviewBusinessManager manager = new ReviewBusinessManager())
+            List<Reviews> reviews;
+            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
             {
-                reviews = manager.Get();
+                reviews = manager.SelectAll();
             }
             return View(reviews);
         }
@@ -724,9 +720,9 @@ namespace FreeCommerceDotNet.Controllers
         }
         public ActionResult DeleteReview(int id)
         {
-            using (ReviewBusinessManager manager = new ReviewBusinessManager())
+            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
             {
-                manager.Delete(manager.GetById(id));
+                manager.Delete(id);
             }
             return RedirectToAction("Reviews", "Admin");
         }
@@ -734,10 +730,10 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult ChangeReviewVisibility(int id)
         {
 
-            using (ReviewBusinessManager manager = new ReviewBusinessManager())
+            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
             {
-                var result = manager.GetById(id);
-                result.Reviews.Status = !result.Reviews.Status;
+                var result = manager.SelectById(id);
+                result.Status = !result.Status;
                 manager.Update(result);
             }
 
@@ -944,9 +940,9 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult DeleteOrder(int id)
         {
-            using (OrderMasterBusinessManager manager = new OrderMasterBusinessManager())
+            using (OrderMasterManager manager = new OrderMasterManager(new OrderMasterRepository()))
             {
-                manager.Delete(new OrderMasterBM(id));
+                manager.Delete(id);
                 TempData["OrderMasterMessage"] = "Order Has Been Deleted";
             }
             return RedirectToAction("Orders");

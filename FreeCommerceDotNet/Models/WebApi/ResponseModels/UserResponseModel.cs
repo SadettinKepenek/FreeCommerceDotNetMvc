@@ -1,10 +1,9 @@
-﻿using System.Net;
+﻿using FreeCommerceDotNet.Entities.Concrete;
 using FreeCommerceDotNet.Models.Abstracts;
-using FreeCommerceDotNet.Models.DbModels;
 
 namespace FreeCommerceDotNet.Models.WebApi.ResponseModels
 {
-    public class UserResponseModel:HttpResponseModel<Users>
+    public class UserResponseModel:HttpResponseModel<User>
     {
         
     }
