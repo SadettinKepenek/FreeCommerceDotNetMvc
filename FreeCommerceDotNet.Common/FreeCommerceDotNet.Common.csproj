@@ -49,6 +49,21 @@
     <Compile Include="Concrete\MsSQLDatabase.cs" />
     <Compile Include="Concrete\ServiceHelper.cs" />
     <Compile Include="Concrete\SqlReturnMessage.cs" />
+    <Compile Include="Concrete\StringMatching\ApproximatelyEquals.cs" />
+    <Compile Include="Concrete\StringMatching\FuzzyStringComparisonOptions.cs" />
+    <Compile Include="Concrete\StringMatching\FuzzyStringComparisonTolerance.cs" />
+    <Compile Include="Concrete\StringMatching\HammingDistance.cs" />
+    <Compile Include="Concrete\StringMatching\JaccardDistance.cs" />
+    <Compile Include="Concrete\StringMatching\JaroDistance.cs" />
+    <Compile Include="Concrete\StringMatching\JaroWinklerDistance.cs" />
+    <Compile Include="Concrete\StringMatching\LevenshteinDistance.cs" />
+    <Compile Include="Concrete\StringMatching\LongestCommonSubsequence.cs" />
+    <Compile Include="Concrete\StringMatching\LongestCommonSubstring.cs" />
+    <Compile Include="Concrete\StringMatching\Operations.cs" />
+    <Compile Include="Concrete\StringMatching\OverlapCoefficient.cs" />
+    <Compile Include="Concrete\StringMatching\RatcliffObershelpSimilarity.cs" />
+    <Compile Include="Concrete\StringMatching\SorensenDiceDistance.cs" />
+    <Compile Include="Concrete\StringMatching\TanimotoCoefficient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +71,9 @@
       <Project>{CE187959-6E41-45FA-9218-BDAC376B5AA8}</Project>
       <Name>FreeCommerceDotNet.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Concrete\StringMatching\readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
