@@ -1,14 +1,43 @@
-﻿@using FreeCommerceDotNet.Models.BusinessModels
+﻿@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Models.BusinessModels
 @using FreeCommerceDotNet.Models.DbModels
-@model FreeCommerceDotNet.Models.ControllerModels.Client.Category
+@using Brand = FreeCommerceDotNet.Entities.Concrete.Brand
+@using Category = FreeCommerceDotNet.Entities.Concrete.Category
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
 
-@helper GetNewProductsSideBar(int start, int count)
+@model FreeCommerceDotNet.Entities.Concrete.Category
+
+
+@{
+    List<Brand> brands = new List<FreeCommerceDotNet.Entities.Concrete.Brand>();
+
+    foreach (Product modelProduct in Model.Products)
+    {
+        var brandEntity = modelProduct.BrandEntity;
+        if (brands.FirstOrDefault(x => x.BrandId == brandEntity.BrandId) == null)
+        {
+            brands.Add(brandEntity);
+        }
+    }
+}
+@{
+    int categoryId = ViewBag.CategoryId;
+    CategoryManager manager = new CategoryManager(new CategoryRepository());
+    var categoryPermanent = manager.SelectById(categoryId);
+
+
+}
+@helper GetNewProductsSideBar(int start, int count, Category category)
 {
-    foreach (ProductBM bm in Model.ProductBms.GetRange(start, count))
+
+
+    var newProducts = category.Products.Skip(start).Take(count - start);
+    foreach (Product bm in newProducts)
     {
         <div class="media">
             <a href="">
-                <img class="img-fluid blur-up lazyload" src="@bm.Product.ImageUrl" alt="">
+                <img class="img-fluid blur-up lazyload" src="@bm.ImageUrl" alt="">
             </a>
             <div class="media-body align-self-center">
                 <div class="rating">
@@ -18,9 +47,9 @@
                     <h6>Slim Fit Cotton Shirt</h6>
                 </a>
 
-                @if (bm.ProductPrices.FirstOrDefault() != null)
+                @if (bm.ProductPrices?.FirstOrDefault() != null)
                 {
-                    <h4>$@bm.ProductPrices.FirstOrDefault().Price</h4>
+                    <h4>$@(bm.ProductPrices?.FirstOrDefault().Price)</h4>
                 }
                 else
                 {
@@ -37,19 +66,24 @@
 
 @helper GetSubCategoriesSideBar()
 {
-    if (Model.CategoryBm.SubCategories != null && Model.CategoryBm.SubCategories.Count != 0)
+    if (Model.SubCategories != null && Model.SubCategories.Count != 0)
     {
         <div class="collection-collapse-block open">
             <h3 class="collapse-block-title">Alt Kategoriler</h3>
             <div class="collection-collapse-block-content">
                 <div class="collection-brand-filter">
 
-                    @foreach (Category subCategory in Model.CategoryBm.SubCategories)
+                    @foreach (Category subCategory in Model.SubCategories)
                     {
-                        <div class="custom-control custom-checkbox collection-filter-checkbox">
-                            <input type="checkbox" class="custom-control-input" onchange="changeSubCategoryId(this.id);" id="subcategory_@subCategory.CategoryId">
-                            <label class="custom-control-label" for="subcategory_@subCategory.CategoryId">@subCategory.CategoryName</label>
-                        </div>
+
+                        if (Model.Products.Where(x => x.CategoryId == subCategory.CategoryId) != null)
+                        {
+                            <div class="custom-control custom-checkbox collection-filter-checkbox">
+                                <input type="checkbox" class="custom-control-input" onchange="changeSubCategoryId(this.id);" id="subcategory_@subCategory.CategoryId">
+                                <label class="custom-control-label" for="subcategory_@subCategory.CategoryId">@subCategory.CategoryName</label>
+                            </div>
+                        }
+
                     }
 
 
@@ -59,19 +93,26 @@
     }
 }
 
-@helper GetBrandsSidebar()
+@helper GetBrandsSidebar(List<Brand> brands)
 {
     <div class="collection-collapse-block open">
         <h3 class="collapse-block-title">brand</h3>
         <div class="collection-collapse-block-content">
             <div class="collection-brand-filter">
-
-                @foreach (Brand brand in Model.BrandBms)
+                @if (brands != null && brands.Count != 0)
                 {
-                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                        <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
-                        <label class="custom-control-label" for="brand_@brand.BrandId">@brand.BrandName</label>
-                    </div>
+
+                    foreach (Brand brand in brands)
+                    {
+                        <div class="custom-control custom-checkbox collection-filter-checkbox">
+                            <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
+                            <label class="custom-control-label" for="brand_@brand.BrandId">@brand.BrandName</label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5 style="margin: 20px;" class="text-center">Brand Bulunamadı</h5>
                 }
 
 
@@ -83,8 +124,12 @@
 @{
     ViewBag.Title = "Category Page";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
-}
 
+}
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
+<script src="~/assets/js/ion.rangeSlider.min.js"></script>
+<link href="~/assets/css/ion.rangeSlider.min.css" rel="stylesheet" />
+<script src="~/assets/js/CookieOperations.js"></script>
 
 <script type="text/javascript">
     window.subCategoryId = 0;
@@ -93,47 +138,48 @@
         var Id = id.replace("brand_", "");
         window.brandId = Id;
         console.log(Id);
-
+        setCookie("BrandFilterId", Id);
 
     }
     function changeSubCategoryId(id) {
-        var Id = id.replace("subcategory_","");
+        var Id = id.replace("subcategory_", "");
         window.subCategoryId = Id;
         console.log(Id);
+        setCookie("CategoryFilterId", Id);
+
     }
+
+
     function applyFilters() {
-        var categoryId =@Model.CategoryBm.Category.CategoryId;
-        var data = {
-            BrandId: window.brandId,
-            AltKategoriId: window.subCategoryId
-    };
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("Category", "Home")',
-            contentType: "application/json; charset=utf-8",
-            data: {
-                id: categoryId, page: @Model.Page, filters: JSON.stringify(data) },
-            dataType: "json",
-            success: function() { alert('Success'); },
-            error: function (result) { alert(result); }
-        });
+        alert("Category Filter " + getCookie("CategoryFilterId"));
+        alert("Price Filter " + getCookie("MinPrice") + " " + getCookie("MaxPrice"));
+        alert("Brand Filter " + getCookie("BrandFilterId"));
     }
+    function clearFilters() {
+        eraseCookie("CategoryFilterId");
+        eraseCookie("BrandFilterId");
+        eraseCookie("MinPrice");
+        eraseCookie("MaxPrice");
+        location.reload();
+    }
+
 </script>
+
 
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
                 <div class="page-title">
-                    <h2>@Model.CategoryBm.Category.CategoryName</h2>
+                    <h2>@Model.CategoryName</h2>
                 </div>
             </div>
             <div class="col-sm-6">
                 <nav aria-label="breadcrumb" class="theme-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="~/Home">Anasayfa</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@Model.CategoryBm.Category.CategoryName</li>
-                      
+                        <li class="breadcrumb-item active" aria-current="page">@Model.CategoryName</li>
+
                     </ol>
                 </nav>
             </div>
@@ -151,7 +197,7 @@
                     <div class="collection-filter-block">
                         <!-- brand filter start -->
                         <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
-                        @GetBrandsSidebar()
+                        @GetBrandsSidebar(brands)
                         <!-- sub categories filter here-->
                         @GetSubCategoriesSideBar()
 
@@ -177,27 +223,16 @@
                             <h3 class="collapse-block-title">price</h3>
                             <div class="collection-collapse-block-content">
                                 <div class="collection-brand-filter">
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="hundred">
-                                        <label class="custom-control-label" for="hundred">$10 - $100</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="twohundred">
-                                        <label class="custom-control-label" for="twohundred">$100 - $200</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="threehundred">
-                                        <label class="custom-control-label" for="threehundred">$200 - $300</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="fourhundred">
-                                        <label class="custom-control-label" for="fourhundred">$300 - $400</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="fourhundredabove">
-                                        <label class="custom-control-label" for="fourhundredabove">$400 above</label>
-                                    </div>
+                                    <hr />
+                                    <input type="text" class="js-range-slider" id="priceSlider" name="my_range" value="" />
+
+
+
+
                                 </div>
+
+
+
                             </div>
                         </div>
                         <div class="collection-collapse-block border-0 open">
@@ -206,8 +241,9 @@
                             Bu veri filters çağırır.
                             Cookie de aynı işlem yapılabilir.
                             -->
-                            <button type="button" class="btn btn-info" onclick="applyFilters();">Apply Filters</button>
-                            <button type="button" class="btn btn-danger">Clear Filters</button>
+                            @Html.ActionLink("Apply Filters", "Category", new { id = ViewBag.CategoryId }, new { type = "button", @class = "btn btn-info" })
+
+                            <button type="button" class="btn btn-danger" id="btnClearFilters" onclick="clearFilters();">Clear Filters</button>
                         </div>
                     </div>
                     <!-- silde-bar colleps block end here -->
@@ -217,10 +253,10 @@
                         <div class="offer-slider slide-1">
 
                             <div>
-                                @GetNewProductsSideBar(0, 3)
+                                @GetNewProductsSideBar(0, 3, categoryPermanent)
                             </div>
                             <div>
-                                @GetNewProductsSideBar(3, 3)
+                                @GetNewProductsSideBar(3, 6, categoryPermanent)
                             </div>
                         </div>
                     </div>
@@ -238,14 +274,16 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="top-banner-wrapper">
-                                    <a href="#"><img src="@Model.CategoryBm.Category.ImageUrl" class="img-fluid blur-up lazyload" alt=""></a>
+                                    <a href="#"><img src="@Model.ImageUrl" class="img-fluid blur-up lazyload" alt=""></a>
                                     <div class="top-banner-content small-section">
-                                        <h4>@Model.CategoryBm.Category.CategoryName</h4>
+                                        <h4>@Model.CategoryName</h4>
                                         @*<h5>@Model.CategoryBm.</h5>*@
-                                        <p>@Model.CategoryBm.Category.Description</p>
+                                        <p>@Model.Description</p>
                                     </div>
                                 </div>
                                 <div class="collection-product-wrapper">
+
+
                                     <div class="product-top-filter">
                                         <div class="row">
                                             <div class="col-xl-12">
@@ -256,7 +294,7 @@
                                             <div class="col-12">
                                                 <div class="product-filter-content">
                                                     <div class="search-count">
-                                                        <h5>Showing Products 1-12 @Model.ProductBms.Count Result</h5>
+                                                        <h5>Showing Products 1-12 @Model.Products.Count Result</h5>
                                                     </div>
                                                     <div class="collection-view">
                                                         <ul>
@@ -290,50 +328,61 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-wrapper-grid">
-                                        <div class="row">
-                                            @foreach (var product in Model.ProductBms)
-                                            {
+                                    @if (Model.Products != null && Model.Products.Count == 0)
+                                    {
+                                        <h3 style="margin: 20px;" class="text-center">Herhangi bir ürün bulunamadı.</h3>
+                                    }
+                                    else
+                                    {
+                                        <div class="product-wrapper-grid">
+                                            <div class="row">
+                                                @foreach (var product in Model.Products)
+                                                {
 
-                                                <div class="col-xl-3 col-md-6 col-grid-box">
-                                                    <div class="product-box">
-                                                        <div class="img-wrapper">
-                                                            <div class="front">
-                                                                <a href="#"><img src="@product.Product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                                                    <div class="col-xl-3 col-md-6 col-grid-box">
+                                                        <div class="product-box">
+                                                            <div class="img-wrapper">
+                                                                <div class="front">
+                                                                    <a href="~/Home/Product/@product.ProductId"><img src="@product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                                                                </div>
+                                                                <div class="back">
+                                                                    <a href="~/Home/Product/@product.ProductId"><img src="@product.Image2Url" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                                                                </div>
+                                                                <div class="cart-info cart-wrap">
+                                                                    <button data-toggle="modal" data-target="#addtocart" title="Sepete Ekle"><i class="ti-shopping-cart"></i></button>
+                                                                    <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+                                                                    <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                                                                    <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                                                                </div>
                                                             </div>
-                                                            <div class="back">
-                                                                <a href="#"><img src="@product.Product.ImageUrl" class="img-fluid blur-up lazyload bg-img" alt=""></a>
-                                                            </div>
-                                                            <div class="cart-info cart-wrap">
-                                                                <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="product-detail">
-                                                            <div>
-                                                                <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div><a href="product-page(no-sidebar).html"><h6>@product.Product.ProductName</h6></a>
-                                                                <p>@product.Product.ProductDescription</p>
-                                                                @if (product.ProductPrices.FirstOrDefault() != null)
-                                                                {
-                                                                    <h4>$@product.ProductPrices.FirstOrDefault().Price</h4>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <h4>$0.00</h4>
-                                                                }
-                                                                <ul class="color-variant">
-                                                                    <li class="bg-light0"></li>
-                                                                    <li class="bg-light1"></li>
-                                                                    <li class="bg-light2"></li>
-                                                                </ul>
+                                                            <div class="product-detail">
+                                                                <div>
+                                                                    <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div><a href="~/Home/Product/@product.ProductId"><h6>@product.ProductName</h6></a>
+                                                                    <p>@product.ProductDescription</p>
+                                                                    @if (product.ProductPrices?.FirstOrDefault() != null)
+                                                                    {
+                                                                        <h4>$@(product.ProductPrices?.FirstOrDefault().Price)</h4>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <h4>$0.00</h4>
+                                                                    }
+                                                                    <ul class="color-variant">
+                                                                        <li class="bg-light0"></li>
+                                                                        <li class="bg-light1"></li>
+                                                                        <li class="bg-light2"></li>
+                                                                    </ul>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                            }
+                                                }
 
+                                            </div>
                                         </div>
-                                    </div>
+
+                                    }
 
 
 
@@ -343,25 +392,27 @@
                                                 <div class="col-xl-6 col-md-6 col-sm-12">
                                                     <nav aria-label="Page navigation">
                                                         <ul class="pagination">
-                                                            @if (Model.Page != 1)
+                                                            @if (ViewBag.Page != 1)
                                                             {
-                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@(Model.Page-1)" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> <span class="sr-only">Previous</span></a></li>
-                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@(Model.Page-1)">@(Model.Page - 1)</a></li>
+                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@(ViewBag.Page - 1)" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> <span class="sr-only">Previous</span></a></li>
+                                                                <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@(ViewBag.Page - 1)">@(ViewBag.Page - 1)</a></li>
 
                                                             }
                                                             @{
-                                                                int pageNum = Model.Page;
+                                                                int pageNum = ViewBag.Page;
                                                                 for (int i = 0; i < 3; i++)
                                                                 {
-                                                                    if (pageNum <= Model.MaxPage)
+                                                                    if (pageNum <= ViewBag.MaxPage)
                                                                     {
-                                                                        if (pageNum == Model.Page)
+                                                                        if (pageNum == ViewBag.Page)
                                                                         {
-                                                                            <li class="page-item active"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@pageNum">@pageNum</a></li>
+                                                                            <li class="page-item active"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryBm.Category.CategoryId?page=@pageNum">@pageNum</a></li>
+
+                                                                            <li class="page-item"><a class="page-link" href="~/Home/Category/@Model.CategoryId?page=@pageNum">@pageNum</a></li>
+
 
                                                                         }
                                                                     }
@@ -376,7 +427,7 @@
                                                 </div>
                                                 <div class="col-xl-6 col-md-6 col-sm-12">
                                                     <div class="product-search-count-bottom">
-                                                        <h5>Showing Products 1-12 @Model.ProductBms.Count Result</h5>
+                                                        <h5>Showing Products 1-12 @Model.Products.Count Result</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,4 +442,68 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+
+    var maxPrice = 0;
+    var minPrice = 0;
+    @{
+        if (Model.Products?.Max(x=>x.ProductPrices?.Max(y=>y.Price))!=null)
+        {
+            @:maxPrice = @(Model.Products?.Max(x => x.ProductPrices?.Max(y => y.Price)));
+
+        }
+         if (Model.Products?.Min(x=>x.ProductPrices?.Min(y=>y.Price))!=null)
+        {
+            @:minPrice = @(Model.Products?.Min(x => x.ProductPrices?.Min(y => y.Price)));
+
+        }
+    }
+    //maxPrice =@(Model.Products?.Max(x=>x.ProductPrices?.Max(y=>y.Price)));
+     @*minPrice=@(Model.Products?.Min(x=>x.ProductPrices?.Min(y=>y.Price)));*@
+    $("#priceSlider").ionRangeSlider({
+        type: "double",
+        min:minPrice,
+        max: maxPrice,
+        grid: true,
+        skin:"modern",
+        prefix: "₺",
+        onChange: function(data) {
+            setCookie("MinPrice",data.from);
+            setCookie("MaxPrice",data.to);
+
+        }
+    });
+    var filtreVarmi = false;
+
+    if (getCookie("MinPrice") != null && getCookie("MaxPrice") != null) {
+        let priceSlider = $(".js-range-slider").data("ionRangeSlider");
+        priceSlider.update({
+            from: getCookie("MinPrice"),
+            to: getCookie("MaxPrice")
+        });
+        filtreVarmi = true;
+    }
+    try {
+
+
+        if (getCookie("BrandFilterId") != null) {
+            document.getElementById("brand_" + getCookie("BrandFilterId")).checked = true;
+            filtreVarmi = true;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+    if (getCookie("CategoryFilterId") != null) {
+        document.getElementById("subcategory_" + getCookie("CategoryFilterId")).checked = true;
+        filtreVarmi = true;
+    }
+
+    if (filtreVarmi==false) {
+        $('#btnClearFilters').attr('disabled', 'disabled');
+        document.getElementById("btnClearFilters").innerText= "No Filter";
+
+    }
+
+</script>
+
 <!-- section End -->
