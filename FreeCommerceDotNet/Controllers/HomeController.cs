@@ -39,7 +39,7 @@ namespace FreeCommerceDotNet.Controllers
             HttpCookie maxPriceCookie = HttpContext.Request.Cookies.Get("MaxPrice");
 
             ViewBag.CategoryId = id;
-
+            
 
             int PRODUCTCOUNT = 12;
             page = page != 0 ? page : 1;
@@ -110,6 +110,11 @@ namespace FreeCommerceDotNet.Controllers
             return View(category);
         }
 
+        public ViewResult NotFound()
+        {
+            Response.StatusCode = 404;
+            return View("ErrorRedirect");
+        }
 
 
     }

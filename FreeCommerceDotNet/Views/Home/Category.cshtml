@@ -25,6 +25,8 @@
     int categoryId = ViewBag.CategoryId;
     CategoryManager manager = new CategoryManager(new CategoryRepository());
     var categoryPermanent = manager.SelectById(categoryId);
+
+
 }
 @helper GetNewProductsSideBar(int start, int count, Category category)
 {
@@ -97,13 +99,20 @@
         <h3 class="collapse-block-title">brand</h3>
         <div class="collection-collapse-block-content">
             <div class="collection-brand-filter">
-
-                @foreach (Brand brand in brands)
+                @if (brands != null && brands.Count != 0)
                 {
-                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                        <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
-                        <label class="custom-control-label" for="brand_@brand.BrandId">@brand.BrandName</label>
-                    </div>
+
+                    foreach (Brand brand in brands)
+                    {
+                        <div class="custom-control custom-checkbox collection-filter-checkbox">
+                            <input type="checkbox" class="custom-control-input" onchange="changeBrandId(this.id);" id="brand_@brand.BrandId">
+                            <label class="custom-control-label" for="brand_@brand.BrandId">@brand.BrandName</label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5 style="margin: 20px;" class="text-center">Brand Bulunamadı</h5>
                 }
 
 
@@ -465,6 +474,7 @@
         }
     });
     var filtreVarmi = false;
+
     if (getCookie("MinPrice") != null && getCookie("MaxPrice") != null) {
         let priceSlider = $(".js-range-slider").data("ionRangeSlider");
         priceSlider.update({
@@ -473,9 +483,15 @@
         });
         filtreVarmi = true;
     }
-    if (getCookie("BrandFilterId")!=null) {
-        document.getElementById("brand_" + getCookie("BrandFilterId")).checked = true;
-        filtreVarmi = true;
+    try {
+
+
+        if (getCookie("BrandFilterId") != null) {
+            document.getElementById("brand_" + getCookie("BrandFilterId")).checked = true;
+            filtreVarmi = true;
+        }
+    } catch (err) {
+        console.log(err);
     }
     if (getCookie("CategoryFilterId") != null) {
         document.getElementById("subcategory_" + getCookie("CategoryFilterId")).checked = true;
