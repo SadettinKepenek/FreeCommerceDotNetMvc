@@ -5,6 +5,7 @@ using FreeCommerceDotNet.Entities.Concrete;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Services;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -40,11 +41,35 @@ namespace FreeCommerceDotNet.Controllers
             return customer;
         }
 
-        public ActionResult Addresses()
+        public ActionResult ChangePassword()
         {
-            Customer customer = GetCustomerByContextName();
 
-            return View();
+            return View(GetCustomerByContextName());
+        }
+
+        [WebMethod]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ChangePassword(int customerId,string newPassword)
+        {
+            using (UserManager m=new UserManager(new UserRepository()))
+            {
+                var user = m.SelectByFilter(new List<DBFilter>()
+                {
+                    new DBFilter()
+                    {
+                        ParamName = "@customerid",
+                        ParamValue = customerId
+                    }
+                }).FirstOrDefault();
+                if (user!=null)
+                {
+                    user.Password = newPassword;
+                    var result=m.Update(user);
+                    return Json(result.Message);
+                }
+            }
+            return Json("Failed");
         }
     }
 }

@@ -3793,6 +3793,7 @@
     <Content Include="Views\Home\Category.cshtml" />
     <Content Include="Views\Home\ErrorRedirect.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
