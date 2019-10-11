@@ -1,29 +1,90 @@
-﻿@model ProductBM
-@using FreeCommerceDotNet.Models.BusinessModels
-@using FreeCommerceDotNet.Models.BusinessManager
-@using FreeCommerceDotNet.Models.DbManager
+﻿@using AttributeGroup = FreeCommerceDotNet.Entities.Concrete.AttributeGroup
+@using AttributeGroupManager = FreeCommerceDotNet.BLL.Concrete.AttributeGroupManager
+@using AttributeGroupRepository = FreeCommerceDotNet.DAL.Concrete.AttributeGroupRepository
+@using Product = FreeCommerceDotNet.Entities.Concrete.Product
+@using CustomerManager = FreeCommerceDotNet.BLL.Concrete.CustomerManager
+@using OrderManager = FreeCommerceDotNet.BLL.Concrete.OrderMasterManager
+@using CustomerRepository = FreeCommerceDotNet.DAL.Concrete.CustomerRepositorycs
+@using OrderRepository = FreeCommerceDotNet.DAL.Concrete.OrderMasterRepository
+@model Product
 
 @{
     ViewBag.Title = "Category Page";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
 }
+@{
+    bool isAuth = HttpContext.Current.User.Identity.IsAuthenticated;
+    bool perm = false;
+    int customerId = 0;
+    if (isAuth)
+    {
+        var userName = HttpContext.Current.User.Identity.Name;
+        var user = new CustomerManager(new CustomerRepository()).SelectByFilter(
+            new List<FreeCommerceDotNet.Common.Concrete.DBFilter>() {
+                                    new FreeCommerceDotNet.Common.Concrete.DBFilter()
+                                {
+                                    ParamName="@username",
+                                    ParamValue=userName
+                                }}
+            ).FirstOrDefault();
+        customerId = user.CustomerId;
+        List<FreeCommerceDotNet.Common.Concrete.DBFilter> filters = new List<FreeCommerceDotNet.Common.Concrete.DBFilter>();
+        filters.Add(new FreeCommerceDotNet.Common.Concrete.DBFilter() { ParamName = "@CustomerId", ParamValue = user.CustomerId });
+        var userOrders = new OrderManager(new OrderRepository()).SelectByFilter(filters);
+        if (userOrders != null)
+        {
+            perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == ViewBag.ProductId));
+
+        }
 
 
-@helper getProductAttributes()
-{
+    }
+}
 
-using (AttributeManager bm = new AttributeManager())
+<style type="text/css">
+    #rating {
+        font-size: 0;
+    }
+
+        #rating span {
+            font-size: 25px;
+        }
+
+            #rating span::before {
+                content: "☆";
+            }
+
+            #rating span.active::before {
+                content: "★";
+                color: #FFA200;
+            }
+
+            #rating span:hover {
+                cursor: pointer;
+            }
+</style>
+
+
+@helper getAttributes()
 {
     foreach (var item in Model.ProductAttributes)
     {
-
-        var attribute = bm.Get(item.AttributeId);
-            <td>@attribute.AttributeName</td>
-            <td>@item.AttributeDescription</td>
-        }
+        <tr>
+            <td>@item.AttributeBm.AttributeGroup.AttributeGroupName</td>
+            <td>@item.AttributeBm.AttributeName</td>
+        </tr>
     }
 
 }
+@*{
+        List<AttributeGroup> groups = new List<AttributeGroup>();
+        using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
+        {
+            groups = manager.SelectAll();
+            groups = groups.FirstOrDefault(x => x.AttributeGroupId = Model.ProductAttributes.FirstOrDefault().AttributeBm.AttributeGroupId);
+            Model.ProductAttributes.FirstOrDefault().
+        }
+    }*@
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
@@ -55,9 +116,11 @@ using (AttributeManager bm = new AttributeManager())
                     <div class="product-slick">
                         @{
                             string src = "";
-                            if (Model.Product.ImageUrl != null)
+
+                            if (Model.ImageUrl != null)
                             {
-                                src = Model.Product.ImageUrl;
+                                src = Model.ImageUrl;
+
                             }
                             else
                             {
@@ -84,7 +147,7 @@ using (AttributeManager bm = new AttributeManager())
 
                 <div class="col-lg-6 rtl-text">
                     <div class="product-right">
-                        <h2>@Model.Product.ProductName</h2>
+                        <h2>@Model.ProductName</h2>
                         @{
                             if (Model.ProductDiscounts.FirstOrDefault() != null)
                             {
@@ -187,7 +250,7 @@ using (AttributeManager bm = new AttributeManager())
             <div class="col-sm-12 col-lg-12">
                 <ul class="nav nav-tabs nav-material" id="top-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-selected="true">Description</a>
+                        <a class="nav-link active" id="top-home-tab" data-toggle="tab" href="#top-profile-description" role="tab" aria-selected="true">Description</a>
                         <div class="material-border"></div>
                     </li>
                     <li class="nav-item">
@@ -195,13 +258,60 @@ using (AttributeManager bm = new AttributeManager())
                         <div class="material-border"></div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="review-top-tab" data-toggle="tab" href="#top-review" role="tab" aria-selected="false">Write Review</a>
+                        <a class="nav-link" id="profile-top-reviews" data-toggle="tab" href="#top-reviewlist" role="tab" aria-selected="false">Reviews</a>
                         <div class="material-border"></div>
                     </li>
+                    @if (perm)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" id="review-top-tab" data-toggle="tab" href="#top-review" role="tab" aria-selected="false">Write Review</a>
+                            <div class="material-border"></div>
+                        </li>
+                    }
+
                 </ul>
                 <div class="tab-content nav-material" id="top-tabContent">
-                    <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                        <p>@Model.Product.ProductDescription</p>
+                    <div class="tab-pane fade show active" id="top-profile-description" role="tabpanel" aria-labelledby="top-home-tab">
+                        <p>@Model.ProductDescription</p>
+                    </div>
+                    <div class="tab-pane fade" id="top-reviewlist" role="tabpanel" aria-labelledby="profile-top-reviews">
+
+                        <section class="section-b-space blog-detail-page review-page">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <ul class="comment-section">
+
+
+                                            @foreach (var review in ViewBag.reviews)
+                                            {
+                                                <li>
+                                                    <div class="media">
+                                                      
+                                                        <img src="~/assets/images/2.jpg" alt="Generic placeholder image">
+                                                        <div class="media-body">
+                                                            <h6>@review.customer.Firstname @review.customer.Lastname <span>(@review.Date )</span></h6>
+                                                            <p>@review.Text</p>
+                                                            <ul class="comnt-sec">
+                                                                <li><a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>(14)</span></a></li>
+                                                                <li><a href="#"><div class="unlike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>(2)</div></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                   
+                                                </li>
+
+
+
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
                     </div>
                     <div class="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
                         <div class="single-product-tables">
@@ -209,63 +319,121 @@ using (AttributeManager bm = new AttributeManager())
                                 <tbody>
                                     <tr>
                                         <td>Length</td>
-                                        <td>@Model.Product.Length</td>
+                                        <td>@Model.Length</td>
                                     </tr>
                                     <tr>
                                         <td>Width</td>
-                                        <td>@Model.Product.Width</td>
+                                        <td>@Model.Width</td>
                                     </tr>
                                     <tr>
                                         <td>Height</td>
-                                        <td>@Model.Product.Height</td>
+                                        <td>@Model.Height</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Weight</td>
+                                        <td>@Model.Weight</td>
                                     </tr>
                                 </tbody>
                             </table>
                             <table>
                                 <tbody>
-                                    <tr>
-                                        <td>Weight</td>
-                                        <td>@Model.Product.Weight</td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
+                                    @getAttributes()
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
-                        <form class="theme-form">
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                    <div class="media">
-                                        <label>Rating</label>
-                                        <div class="media-body ml-3">
-                                            <div class="rating three-star"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div>
+
+                    @if (perm)
+                    {
+                        <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+
+                            <form id="myForm">
+
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="media">
+                                            <label>Rating</label>
+                                            <div class="media-body ml-3">
+                                                <div id="rating">
+                                                    <span id="star1"></span>
+                                                    <span id="star2"></span>
+                                                    <span id="star3"></span>
+                                                    <span id="star4"></span>
+                                                    <span id="star5"></span>
+                                                </div>
+                                            </div>
+
+                                            <script type="text/javascript">
+                                                document.querySelector('#rating').addEventListener('click', function (e) {
+                                                    let action = 'add';
+
+                                                    for (const span of this.children) {
+                                                        span.classList[action]('active');
+                                                        if (span === e.target) {
+                                                            action = 'remove';
+                                                            window.rate = e.target.id.replace("star", "");
+                                                            console.log('rate ' + window.rate);
+                                                        };
+                                                    }
+                                                });
+                                            </script>
+
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <label for="review">Review Title</label>
+                                        <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects" required>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="review">Review</label>
+                                        <textarea class="form-control" placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1" rows="6"></textarea>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button class="btn btn-solid" onclick="AddReviewAjax()" type="button">Submit Your Review</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Enter Your name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" placeholder="Email" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="review">Review Title</label>
-                                    <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="review">Review Title</label>
-                                    <textarea class="form-control" placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1" rows="6"></textarea>
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn btn-solid" type="submit">Submit YOur Review</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+
+                            <script type="text/javascript">
+                                function AddReviewAjax() {
+                                    var values = {
+                                        CustomerId:@customerId,
+                                        ProductId:@ViewBag.ProductId,
+                                        Title: document.getElementById("review").value,
+                                        Text: document.getElementById("exampleFormControlTextarea1").value,
+                                        Rating: window.rate
+
+                                    };
+
+                                    var url = location.protocol + '//' + location.host + "/Home/AddReview";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    // The key needs to match your method's input parameter (case-sensitive).
+                                    data: JSON.stringify({ review: values }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (data === "Success") {
+                                            location.reload();
+                                        }
+                                        else {
+                                            alert(data);
+                                        }
+                                    },
+                                    failure: function (errMsg) {
+
+                                        alert(errMsg);
+                                    }
+                                });
+                                }
+
+
+                            </script>
+                        </div>
+
+                    }
+
                 </div>
             </div>
         </div>
@@ -285,10 +453,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/01.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/01.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -309,10 +477,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/5.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/5.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/05.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/05.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -333,10 +501,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/6.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/6.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/06.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/06.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -357,10 +525,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/7.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/7.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/07.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/07.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -381,10 +549,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/2.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/1.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -405,10 +573,10 @@ using (AttributeManager bm = new AttributeManager())
                 <div class="product-box">
                     <div class="img-wrapper">
                         <div class="front">
-                            <a href="#"><img src="../assets/images/fashion/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/11.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="back">
-                            <a href="#"><img src="../assets/images/fashion/pro/011.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                            <a href="#"><img src="~/assets/images/fashion/pro/011.jpg" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
                             <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a> <a href="compare.html" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
@@ -456,3 +624,10 @@ using (AttributeManager bm = new AttributeManager())
         </div>
     </div>
 </footer>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+
+<!--jQuery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!--Plugin JavaScript file-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSl

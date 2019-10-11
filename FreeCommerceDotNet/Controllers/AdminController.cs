@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using Customer = FreeCommerceDotNet.Entities.Concrete.Customer;
 using CustomerManager = FreeCommerceDotNet.BLL.Concrete.CustomerManager;
 using FreeCommerceDotNet.BLL.Concrete;
-using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 using OrderDetail = FreeCommerceDotNet.Models.DbModels.OrderDetail;
 using Product = FreeCommerceDotNet.Entities.Concrete.Product;
@@ -714,7 +713,15 @@ namespace FreeCommerceDotNet.Controllers
             }
             return View(reviews);
         }
-
+        [HttpPost]
+        public ActionResult AddReview(Reviews reviewModel)
+        {
+            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
+            {
+                manager.Insert(reviewModel);
+                return RedirectToAction("Products","Admin");
+            }
+        }
         public ActionResult DeleteReview(int id)
         {
             using (ReviewBusinessManager manager = new ReviewBusinessManager())
