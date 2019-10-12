@@ -162,6 +162,10 @@ var updateCartTotalPrice = function() {
         var productPrice = item.productPrice;
         genelToplam += productPrice * productCount;
     }
+
+    if (genelToplam == undefined) {
+        genelToplam = 0;
+    }
     $('#totalPriceH2').html(genelToplam + ' ₺');
 
 };
@@ -173,6 +177,10 @@ var fillProductsInCart = function() {
     window.gelenUrunler = itemsInCart;
 
     var genelToplam = 0;
+
+    if (itemsInCart.length == 0) {
+        tbody.append('<tr><td colspan="6">Sepet Boş</td></tr>');
+    }
 
     for (var i = 0; i < itemsInCart.length; i++) {
         var item = itemsInCart[i];
@@ -216,6 +224,9 @@ var fillProductsInCart = function() {
             '<td><h2 class="td-color" id="totalProductPriceById_' + productId +'">' + totalPrice+' ₺</h2></td>' +
             '<td><a href="#" class="icon cartPageRemoveProduct" id="productremovebyid_'+productId+'"><i class="ti-close"></i></a></td>' +
             '</tr>');
+    }
+    if (totalPrice == undefined) {
+        totalPrice = 0;
     }
     $('#totalPriceH2').html(totalPrice+' ₺');
 
