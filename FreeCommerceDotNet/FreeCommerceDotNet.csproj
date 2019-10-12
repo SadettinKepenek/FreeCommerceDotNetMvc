@@ -3798,6 +3798,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
+    <Content Include="Views\Account\MyCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

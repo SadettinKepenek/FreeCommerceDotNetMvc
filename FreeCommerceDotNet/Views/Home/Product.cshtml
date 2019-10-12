@@ -168,13 +168,20 @@ ParamValue=userName
                                 var price = Model.ProductPrices.FirstOrDefault().Price;
 
                                 var rate = ((price - discount) / price) * 100;
-                                <h4><del>@price</del><span>%@rate off</span></h4>
-                                <h3>@discount tl</h3>
+                                <h4><del>@price ₺</del><span>%@rate off</span></h4>
+                                <h3>@discount ₺</h3>
+                                <script type="text/javascript">
+                                    window.productPrice=@(discount);
+                                </script>
 
                             }
                             else
                             {
-                                <h3>@Model.ProductPrices.FirstOrDefault().Price</h3>
+                                var price = Model.ProductPrices.FirstOrDefault().Price;
+                                <h3>@price</h3>
+                                <script type="text/javascript">
+                                    window.productPrice=@(price);
+                                </script>
                             }
 
                         }
