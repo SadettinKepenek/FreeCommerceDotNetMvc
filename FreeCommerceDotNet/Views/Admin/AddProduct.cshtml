@@ -1,13 +1,13 @@
 ﻿@using System.ComponentModel
 @using System.Diagnostics
-@using FreeCommerceDotNet.Models.BusinessManager
-@using FreeCommerceDotNet.Models.BusinessModels
-@using FreeCommerceDotNet.Models.DbManager
-@using FreeCommerceDotNet.Models.DbModels
-@using Attribute = FreeCommerceDotNet.Models.DbModels.Attribute
+
 @using System.Collections.Generic
 @using System.Web
 @using System.Web.Mvc
+@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Entities.Concrete
+@using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute
 
 @model FreeCommerceDotNet.Entities.Concrete.Product
 
@@ -30,21 +30,21 @@
 
 @{
     List<Category> categories;
-    List<Attribute> attributes;
+    List<FreeCommerceDotNet.Entities.Concrete.Attribute> attributes;
     List<Segment> segments;
-    using (CategoryManager bm = new CategoryManager())
+    using (CategoryManager bm = new CategoryManager(new CategoryRepository()))
     {
-        categories = bm.GetAll();
+        categories = bm.SelectAll();
 
     }
-    using (AttributeManager bm = new AttributeManager())
+    using (AttributeManager bm = new AttributeManager(new AttributeRepository()))
     {
-        attributes = bm.GetAll();
+        attributes = bm.SelectAll();
 
     }
-    using (SegmentManager bm = new SegmentManager())
+    using (SegmentManager bm = new SegmentManager(new SegmentRepository()))
     {
-        segments = bm.GetAll();
+        segments = bm.SelectAll();
     }
     int count = 0;
 

@@ -1,27 +1,12 @@
-﻿using System;
-using FreeCommerceDotNet.BLL.Concrete;
+﻿using FreeCommerceDotNet.BLL.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
-using FreeCommerceDotNet.Entities.Concrete;
-using FreeCommerceDotNet.Models.BusinessManager;
-using FreeCommerceDotNet.Models.ControllerModels.Client.ClientFilters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using FreeCommerceDotNet.Models.ControllerModels.Client;
-using FreeCommerceDotNet.BLL.Concrete;
-using FreeCommerceDotNet.DAL.Concrete;
-using System.Collections.Generic;
-using FreeCommerceDotNet.Models.ControllerModels.Client.ClientFilters;
 using Product = FreeCommerceDotNet.Entities.Concrete.Product;
-using ProductAttributeManager = FreeCommerceDotNet.BLL.Concrete.ProductAttributeManager;
-using ProductDiscountManager = FreeCommerceDotNet.BLL.Concrete.ProductDiscountManager;
-using ProductDiscount = FreeCommerceDotNet.Entities.Concrete.ProductDiscount;
-using ProductPrice = FreeCommerceDotNet.Entities.Concrete.ProductPrice;
 using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
-using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
-using FreeCommerceDotNet.DAL.Concrete;
-using System.Web.Services;
 
 namespace FreeCommerceDotNet.Controllers
 {

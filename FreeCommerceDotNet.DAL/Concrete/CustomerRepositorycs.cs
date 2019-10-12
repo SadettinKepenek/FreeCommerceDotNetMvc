@@ -180,6 +180,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     customer.Telephone = row["CustomerTelephone"] as string;
                     Segment segment = new Segment();
                     segment.SegmentId = (int)row["CustomerSegmentId"];
+                    customer.SegmentId = (int)row["CustomerSegmentId"];
+                    
                     segment.SegmentName = row["CustomerSegmentName"] as string;
                     customer.Segment = segment;
                     User user = new User();
