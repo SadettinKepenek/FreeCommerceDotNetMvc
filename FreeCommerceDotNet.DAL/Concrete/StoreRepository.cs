@@ -152,7 +152,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     store.AllowReviews = (bool)rows[0]["AllowReviews"];
                     store.LoginDisplayPrices = (bool)rows[0]["LoginDisplayPrices"];
                     store.DisplayPricesWithTax = (bool)rows[0]["DisplayPricesWithTax"];
-                    store.MaxLoginAttempts = (bool)rows[0]["MaxLoginAttempts"];
+                    //store.MaxLoginAttempts = (bool)rows[0]["MaxLoginAttempts"];
                     store.ShowOutOfStockWarning = (bool)rows[0]["ShowOutOfStockWarning"];
                     return store;
                 }
@@ -203,7 +203,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                         store.AllowReviews = (bool)row["AllowReviews"];
                         store.LoginDisplayPrices = (bool)row["LoginDisplayPrices"];
                         store.DisplayPricesWithTax = (bool)row["DisplayPricesWithTax"];
-                        store.MaxLoginAttempts = (bool)row["MaxLoginAttempts"];
+                        //store.MaxLoginAttempts = (bool)row["MaxLoginAttempts"];
                         store.ShowOutOfStockWarning = (bool)row["ShowOutOfStockWarning"];
                         stores.Add(store);
                     }

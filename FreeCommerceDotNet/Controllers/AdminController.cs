@@ -341,7 +341,7 @@ namespace FreeCommerceDotNet.Controllers
                 productBm.ProductAttributes.Add(new Entities.Concrete.ProductAttribute());
             }
             productBm.ProductPrices = new List<Entities.Concrete.ProductPrice>();
-            using (SegmentManager m = new SegmentManager())
+            using (SegmentManager m = new SegmentManager(new SegmentRepository()))
             {
                 var segments = m.SelectAll();
                 foreach (var segment in segments)
