@@ -8,6 +8,12 @@ using System.Web.Mvc;
 using Product = FreeCommerceDotNet.Entities.Concrete.Product;
 using ProductManager = FreeCommerceDotNet.BLL.Concrete.ProductManager;
 
+using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
+using FreeCommerceDotNet.DAL.Concrete;
+using System.Web.Services;
+using System.Diagnostics;
+
+
 namespace FreeCommerceDotNet.Controllers
 {
     public class HomeController : Controller
@@ -123,8 +129,6 @@ namespace FreeCommerceDotNet.Controllers
             return View("ErrorRedirect");
         }
 
-
-
       
         public JsonResult AddReview(Reviews review)
         {
@@ -141,5 +145,25 @@ namespace FreeCommerceDotNet.Controllers
                 }
             }
         }
+
+        public JsonResult GetSearchResults(string query)
+        {
+            using (ProductManager manager = new ProductManager(new ProductRepository()))
+            {
+                try
+                {
+                    query = query.Replace(" ", String.Empty).ToLower();
+                    Debug.WriteLine(query);
+                    var result = manager.SelectAll().Where(x => x.ProductName.Replace(" ",String.Empty).ToLower() == query).ToList();
+                    return Json(result,JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception e)
+                {
+                    return Json("Failed");
+                }
+            }
+        }
+
+
     }
 }
