@@ -115,16 +115,28 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult MyWishList()
         {
             var customer = GetCustomerByContextName();
-
+            List<Wish> wishLists;
             using (WishlistManager wishlist=new WishlistManager(new WishlistRepository()))
             {
-                //var list = wishlist.SelectByFilter(new List<DBFilter>() {new DBFilter()
-                //{
-                //    ParamName = "@CustomerId",
-                //    ParamValue = customer.CustomerId
-                //}});
+                wishLists = wishlist.SelectByFilter(new List<DBFilter>() {new DBFilter()
+                {
+                    ParamName = "@CustomerId",
+                    ParamValue = customer.CustomerId
+                }}); 
             }
-            return View();
+            if(wishLists == null)
+            {
+                return View(new List<Wish>());
+            }
+            return View(wishLists);
+        }
+        public ActionResult DeleteWish(int wishId)
+        {
+            using (WishlistManager wishlist = new WishlistManager(new WishlistRepository()))
+            {
+                wishlist.Delete(wishId);
+            }
+            return RedirectToAction("MyWishList","Account");
         }
     }
 }
