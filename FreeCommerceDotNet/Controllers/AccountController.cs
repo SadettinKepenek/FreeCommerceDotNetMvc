@@ -148,5 +148,13 @@ namespace FreeCommerceDotNet.Controllers
                 return View(orders);
             }
         }
+
+        public ActionResult OrderDetail(int id)
+        {
+            using (OrderMasterManager m=new OrderMasterManager(new OrderMasterRepository()))
+            {
+                return View(m.SelectById(id));
+            }
+        }
     }
 }

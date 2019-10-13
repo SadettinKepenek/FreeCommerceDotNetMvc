@@ -3801,6 +3801,7 @@
     <Content Include="Views\Account\MyCart.cshtml" />
     <Content Include="Views\Account\MyWishList.cshtml" />
     <Content Include="Views\Account\MyOrders.cshtml" />
+    <Content Include="Views\Account\OrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

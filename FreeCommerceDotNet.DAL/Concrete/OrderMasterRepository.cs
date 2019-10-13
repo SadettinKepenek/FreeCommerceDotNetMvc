@@ -222,6 +222,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                         product.ProductId = (int)row["ProductId"];
                         product.ProductCode = row["ProductCode"] as string;
                         product.Brand = (int)row["ProductBrandId"];
+                        product.ImageUrl = row["ProductImageUrl"] as string;
                         Brand brand = new Brand();
                         brand.BrandId = (int)row["ProductBrandId"];
                         brand.BrandName = row["ProductBrandName"] as string;
