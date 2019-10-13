@@ -1,0 +1,117 @@
+﻿@model FreeCommerceDotNet.Entities.Concrete.Customer
+
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>profile</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+<!-- personal deatail section start -->
+@using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { @class = "needs-validation theme-form" }))
+{
+    <section class="contact-page register-page">
+        <div class="container">
+       
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>PERSONAL DETAIL</h3>
+                    <h5 class="alert-success">@TempData["Message"]</h5>
+
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            @Html.HiddenFor(x => x.CustomerId)
+                            @Html.HiddenFor(x => x.UserId)
+                            @Html.HiddenFor(x => x.User.UserId)
+                            @Html.HiddenFor(x => x.User.Password)
+                            @Html.HiddenFor(x => x.User.Username)
+                            @Html.HiddenFor(x => x.TaxAddress)
+                            @Html.HiddenFor(x => x.Password)
+                            @Html.HiddenFor(x => x.Status)
+                            @Html.HiddenFor(x => x.SegmentId)
+                            <label for="name">First Name</label>
+                            @Html.TextBoxFor(x => x.Firstname, new {@class = "form-control", id = "name", placeholder = "Enter Your Name", required = "required"})
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastname">Last Name</label>
+                            @Html.TextBoxFor(x => x.Lastname, new {@class = "form-control", id = "lastname", placeholder = "Enter Your Lastname", required = "required"})
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phoneNumber">Phone number</label>
+                            @Html.TextBoxFor(x => x.Telephone, new {@class = "form-control", id = "phoneNumber", placeholder = "Enter Your Phone Number", required = "required"})
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email">Email</label>
+                            @Html.TextBoxFor(x => x.Email, new {@class = "form-control", id = "phoneNumber", placeholder = "Enter Your Email", required = "required"})
+                        </div>
+                        @*<div class="col-md-12">
+                                    <label for="review">Write Your Message</label>
+                                    <textarea class="form-control mb-0" placeholder="Write Your Message" id="exampleFormControlTextarea1" rows="6"></textarea>
+                                </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section ends -->
+    <!-- address section start -->
+    <section class="contact-page register-page section-b-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>SHIPPING ADDRESS</h3>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="billingAddress">Billing Address</label>
+                                @Html.TextBoxFor(x => x.Address1, new { @class = "form-control", id = "billingAddress", placeholder = "Enter Your Billing Addresss", required = "required" })
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="shippingAddress">Shipping Address</label>
+                                @Html.TextBoxFor(x => x.Address2, new { @class = "form-control", id = "shippingAddress", placeholder = "Enter Your Shipping Addresss", required = "required" })
+                            </div>
+                            <div class="col-md-6">
+                                <label for="segmentName">Your Segment</label>
+                                @Html.TextBoxFor(x => x.Segment.SegmentName, new { @class = "form-control", id = "segmentName", disabled = "disabled", required = "required" })
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="userName">Your Username</label>
+                                @Html.TextBoxFor(x => x.User.Username, new { @class = "form-control", id = "userName", disabled = "disabled", required = "required" })
+
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                                <button class="btn btn-sm btn-primary" type="submit">Save setting</button>
+                                <a class="btn btn-sm btn-success" href="~/Account/">Go Back</a>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section ends -->
+
+}
