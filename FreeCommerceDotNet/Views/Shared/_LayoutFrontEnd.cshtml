@@ -81,7 +81,7 @@
 }
 @{
     var manager = new CategoryManager(new CategoryRepository());
-    
+
 
     var categories = manager.GetLayoutCategories();
 
@@ -93,7 +93,7 @@
     {
         <li>
             <a href="#">@categoryBm.CategoryName</a>
-            @if (categoryBm.SubCategories.Count!=0)
+            @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul class="mega-menu clothing-menu">
                     <li>
@@ -103,10 +103,10 @@
                             {
                                 <div class="col-xl-4">
                                     <div class="link-section">
-                                        <h5 ><a href="#">@category.CategoryName</a></h5>
-                                        @if (category.SubCategories.Count!=0)
+                                        <h5><a href="#">@category.CategoryName</a></h5>
+                                        @if (category.SubCategories.Count != 0)
                                         {
-                                            
+
                                             <ul>
                                                 @foreach (var sub in category.SubCategories)
                                                 {
@@ -114,7 +114,7 @@
                                                 }
                                             </ul>
                                         }
-                                   
+
                                     </div>
                                 </div>//hatırlamy9om bakalım burdan
                             }
@@ -142,18 +142,18 @@
 
                     @foreach (var category in categoryBm.SubCategories)
                     {
-                        <li>    
+                        <li>
                             <a href="#">@category.CategoryName</a>
-                            @if (category.SubCategories.Count!=0)
+                            @if (category.SubCategories.Count != 0)
                             {
                                 <ul>
                                     @foreach (Category categorySubCategory in category.SubCategories)
                                     {
-                                    <li> <a href="#">@categorySubCategory.CategoryName</a></li>
+                                        <li> <a href="#">@categorySubCategory.CategoryName</a></li>
                                     }
                                 </ul>
                             }
-                            
+
 
 
 
@@ -258,10 +258,47 @@
                                                                     <div class="col-xl-12">
                                                                         <form>
                                                                             <div class="form-group">
-                                                                                <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
+                                                                                <input type="text" class="form-control" id="exampleInputPassword1" oninput="searchProduct(this)" placeholder="Search a Product" maxlength="50">
+                                                                                <div class="list-group" id="searchResults">
+                                                                                </div>
                                                                             </div>
+                                                                            
                                                                             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                                                         </form>
+                                                                        
+
+                                                                        <script type="text/javascript">
+                                                                            var searchQuery;
+                                                                            function searchProduct(inputField) {
+                                                                                window.searchQuery = inputField.value;
+                                                                                console.log(window.searchQuery)
+                                                                                getSearhResults();
+
+
+                                                                            }
+                                                                            function getSearhResults() {
+                                                                                $("#searchResults").empty();
+                                                                                var url = location.protocol + '//' + location.host + "/Home/GetSearchResults";
+                                                                                $.ajax({
+                                                                                    type: 'GET',
+                                                                                    url: url,
+                                                                                    cache: false,
+                                                                                    data: { query: window.searchQuery },
+                                                                                    dataType: 'json',
+                                                                                    success: function (data) {
+                                                                                        console.log(data);
+                                                                                        var urlProduct;
+                                                                                        for (var i = 0; i < data.length; i++) {
+                                                                                            urlProduct = location.protocol + '//' + location.host + "/Home/Product/"+data[i].ProductId;
+                                                                                            $("#searchResults").append('<a href = "' + urlProduct + '" class="list-group-item"><div class="row" >'
+                                                                                                + '<div class="col-md-4">' + data[i].ProductName + '</div>' +
+                                                                                                + '<div class="col-md-4">' + data[i].Description + '</div>' +
+                                                                                                '</div></a><hr/>');
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        </script>
                                                                     </div>
                                                                 </div>
                                                             </div>
