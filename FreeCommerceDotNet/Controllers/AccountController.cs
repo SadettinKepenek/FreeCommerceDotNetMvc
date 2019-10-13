@@ -4,10 +4,13 @@ using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services;
+using FreeCommerceDotNet.Models;
+using Newtonsoft.Json;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -155,6 +158,56 @@ namespace FreeCommerceDotNet.Controllers
             {
                 return View(m.SelectById(id));
             }
+        }
+
+        [HttpGet]
+        public ActionResult Checkout()
+        {
+            HttpCookie cartListCookie = Request.Cookies.Get("cartListCookie");
+            CheckoutModel model = new CheckoutModel();
+
+            if (cartListCookie!=null)
+            {
+                var cartList = JsonConvert.DeserializeObject<List<CartModel>>(cartListCookie.Value);
+                using (ShippingManager m=new ShippingManager(new ShippingRepository()))
+                {
+                    ViewBag.ShippingMethods = m.SelectAll();
+                }
+
+                using (PaymentGatewayManager m=new PaymentGatewayManager(new PaymentGatewayRepository()))
+                {
+                    ViewBag.PaymentMethods = m.SelectAll();
+                }
+
+                model.Customer = GetCustomerByContextName();
+                model.CartList = cartList;
+                return View(model);
+            }
+            else
+            {
+                var cartList = new List<CartModel>();
+                using (ShippingManager m = new ShippingManager(new ShippingRepository()))
+                {
+                    ViewBag.ShippingMethods = m.SelectAll();
+                }
+
+                using (PaymentGatewayManager m = new PaymentGatewayManager(new PaymentGatewayRepository()))
+                {
+                    ViewBag.PaymentMethods = m.SelectAll();
+                }
+
+                model.Customer = GetCustomerByContextName();
+                model.CartList = cartList;
+                return View(model);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult Checkout(CheckoutModel model)
+        {
+            // Todo Checkout Logic
+            return RedirectToAction("Index", "Home");
         }
     }
 }

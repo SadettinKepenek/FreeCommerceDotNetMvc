@@ -382,6 +382,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartModel.cs" />
+    <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\Interfaces\ILogger.cs" />
     <Compile Include="Models\ControllerModels\Security.cs" />
     <Compile Include="Models\Util\DbForeignKeyModel.cs" />
@@ -3802,6 +3804,7 @@
     <Content Include="Views\Account\MyWishList.cshtml" />
     <Content Include="Views\Account\MyOrders.cshtml" />
     <Content Include="Views\Account\OrderDetail.cshtml" />
+    <Content Include="Views\Account\Checkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
