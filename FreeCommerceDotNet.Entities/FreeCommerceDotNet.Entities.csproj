@@ -66,6 +66,7 @@
     <Compile Include="Concrete\Shipping.cs" />
     <Compile Include="Concrete\Store.cs" />
     <Compile Include="Concrete\User.cs" />
+    <Compile Include="Concrete\Wish.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
