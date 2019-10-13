@@ -21,11 +21,11 @@
         var userName = HttpContext.Current.User.Identity.Name;
         var user = new CustomerManager(new CustomerRepository()).SelectByFilter(
             new List<FreeCommerceDotNet.Common.Concrete.DBFilter>() {
-                                    new FreeCommerceDotNet.Common.Concrete.DBFilter()
-                                {
-                                    ParamName="@username",
-                                    ParamValue=userName
-                                }}
+new FreeCommerceDotNet.Common.Concrete.DBFilter()
+{
+ParamName="@username",
+ParamValue=userName
+}}
             ).FirstOrDefault();
         customerId = user.CustomerId;
         List<FreeCommerceDotNet.Common.Concrete.DBFilter> filters = new List<FreeCommerceDotNet.Common.Concrete.DBFilter>();
@@ -40,7 +40,11 @@
 
     }
 }
-
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
+<script src="~/assets/js/js.cookie-2.2.1.min.js"></script>
+<script src="~/assets/fcdnJs/CookieOperations.js"></script>
+<link href="~/assets/fcdnCss/addCardButtons.css" rel="stylesheet" />
+<script src="~/assets/fcdnJs/productPageShoppingCart.js"></script>
 <style type="text/css">
     #rating {
         font-size: 0;
@@ -85,6 +89,14 @@
             Model.ProductAttributes.FirstOrDefault().
         }
     }*@
+
+<script type="text/javascript">
+    window.productImageUrl ='@Model.ImageUrl';
+    window.productName = '@Model.ProductName';
+    window.productId = @Model.ProductId;
+
+</script>
+
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
@@ -156,13 +168,20 @@
                                 var price = Model.ProductPrices.FirstOrDefault().Price;
 
                                 var rate = ((price - discount) / price) * 100;
-                                <h4><del>@price</del><span>%@rate off</span></h4>
-                                <h3>@discount tl</h3>
+                                <h4><del>@price ₺</del><span>%@rate off</span></h4>
+                                <h3>@discount ₺</h3>
+                                <script type="text/javascript">
+                                    window.productPrice=@(discount);
+                                </script>
 
                             }
                             else
                             {
-                                <h3>@Model.ProductPrices.FirstOrDefault().Price</h3>
+                                var price = Model.ProductPrices.FirstOrDefault().Price;
+                                <h3>@price ₺</h3>
+                                <script type="text/javascript">
+                                    window.productPrice=@(price);
+                                </script>
                             }
 
                         }
@@ -176,11 +195,12 @@
                             <div class="qty-box">
                                 <div class="input-group">
                                     <span class="input-group-prepend"><button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
-                                    <input type="text" name="quantity" class="form-control input-number" value="1"> <span class="input-group-prepend"><button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                                    <input type="text" name="quantity" class="form-control input-number" readonly="readonly" value="1">
+                                    <span class="input-group-prepend"><button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="product-buttons"><a href="#" data-toggle="modal" data-target="#addtocart" class="btn btn-solid">add to cart</a> <a href="#" class="btn btn-solid">buy now</a></div>
+                        <div class="product-buttons"><a href="#" data-toggle="modal" data-target="#addtocart" class="btn btn-solid productPageAddToCard">add to cart</a> <a href="#" class="btn btn-solid">buy now</a></div>
                         <div class="border-product">
                             <h6 class="product-title">share it</h6>
                             <div class="product-icon">
@@ -288,7 +308,7 @@
                                             {
                                                 <li>
                                                     <div class="media">
-                                                      
+
                                                         <img src="~/assets/images/2.jpg" alt="Generic placeholder image">
                                                         <div class="media-body">
                                                             <h6>@review.customer.Firstname @review.customer.Lastname <span>(@review.Date )</span></h6>
@@ -300,7 +320,7 @@
                                                         </div>
                                                     </div>
 
-                                                   
+
                                                 </li>
 
 
@@ -406,26 +426,26 @@
                                     };
 
                                     var url = location.protocol + '//' + location.host + "/Home/AddReview";
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    // The key needs to match your method's input parameter (case-sensitive).
-                                    data: JSON.stringify({ review: values }),
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json",
-                                    success: function (data) {
-                                        if (data === "Success") {
-                                            location.reload();
-                                        }
-                                        else {
-                                            alert(data);
-                                        }
-                                    },
-                                    failure: function (errMsg) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        // The key needs to match your method's input parameter (case-sensitive).
+                                        data: JSON.stringify({ review: values }),
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (data) {
+                                            if (data === "Success") {
+                                                location.reload();
+                                            }
+                                            else {
+                                                alert(data);
+                                            }
+                                        },
+                                        failure: function (errMsg) {
 
-                                        alert(errMsg);
-                                    }
-                                });
+                                            alert(errMsg);
+                                        }
+                                    });
                                 }
 
 
@@ -624,10 +644,54 @@
         </div>
     </div>
 </footer>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+<div class="modal fade bd-example-modal-lg theme-modal cart-modal" id="addtocart" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body modal1">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="modal-bg addtocart">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div class="media">
+                                    <div id="productAddToCardModalImageSection">
+                                        <a href="#">
 
-<!--jQuery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                                        </a>
+                                    </div>
 
-<!--Plugin JavaScript file-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/js/ion.rangeSl
+                                    <div class="media-body align-self-center text-center">
+                                        <div id="productAddToCardModalBodySection">
+
+                                        </div>
+
+                                        <div class="buttons">
+                                            <a href="#" class="view-cart btn btn-solid">Your cart</a>
+                                            <a href="#" class="checkout btn btn-solid">Check out</a>
+                                            <a href="#" class="continue btn btn-solid">Continue shopping</a>
+                                        </div>
+
+                                        <div class="upsell_payment">
+                                            <img src="~/assets/images/payment_cart.png" class="img-fluid blur-up lazyload" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add to cart modal popup end-->
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
+
+    <!--jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+

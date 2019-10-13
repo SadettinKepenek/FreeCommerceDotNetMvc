@@ -105,5 +105,11 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("Settings", "Account");
         }
+
+        public ActionResult MyCart()
+        {
+
+            return View();
+        }
     }
 }

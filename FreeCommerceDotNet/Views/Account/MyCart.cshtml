@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "MyCart";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
+<script src="~/assets/js/js.cookie-2.2.1.min.js"></script>
+<script src="~/assets/fcdnJs/CookieOperations.js"></script>
+<link href="~/assets/fcdnCss/addCardButtons.css" rel="stylesheet" />
+<script src="~/assets/fcdnJs/productPageShoppingCart.js"></script>
+
+
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>cart</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active">cart</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!--section start-->
+<section class="cart-section section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table cart-table table-responsive-xs">
+                    <thead>
+                    <tr class="table-head">
+                        <th scope="col">image</th>
+                        <th scope="col">product name</th>
+                        <th scope="col">price</th>
+                        <th scope="col">quantity</th>
+                        <th scope="col">total</th>
+                        <th scope="col">action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cartItemsTbody">
+                    
+                    </tbody>
+               
+                </table>
+                <table class="table cart-table table-responsive-md">
+                    <tfoot>
+                    <tr>
+                        <td>total price :</td>
+                        <td>
+                            <h2 id="totalPriceH2">0.00</h2>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row cart-buttons">
+            <div class="col-6"><a href="#" class="btn btn-solid">continue shopping</a></div>
+            <div class="col-6"><a href="#" class="btn btn-solid">check out</a></div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    fillProductsInCart();
+</script>
+<!--section end-->

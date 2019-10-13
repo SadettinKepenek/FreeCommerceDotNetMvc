@@ -450,6 +450,8 @@
     <Content Include="assets\css\slick.css" />
     <Content Include="assets\css\themify-icons.css" />
     <Content Include="assets\css\themify.css" />
+    <Content Include="assets\fcdnCss\addCardButtons.css" />
+    <Content Include="assets\fcdnJs\productPageShoppingCart.js" />
     <Content Include="assets\fonts\feather\activity.svg" />
     <Content Include="assets\fonts\feather\airplay.svg" />
     <Content Include="assets\fonts\feather\alert-circle.svg" />
@@ -2646,7 +2648,7 @@
     <Content Include="assets\js\chart\sparkline\sparkline.js" />
     <Content Include="assets\js\chat-menu.js" />
     <Content Include="assets\js\clipboard\clipboard.min.js" />
-    <Content Include="assets\js\CookieOperations.js" />
+    <Content Include="assets\fcdnJs\CookieOperations.js" />
     <Content Include="assets\js\counter\counter-custom.js" />
     <Content Include="assets\js\counter\jquery.counterup.min.js" />
     <Content Include="assets\js\counter\jquery.waypoints.min.js" />
@@ -3356,6 +3358,7 @@
     <Content Include="assets\js\jquery.lazyloadxt.js" />
     <Content Include="assets\js\jquery.magnific-popup.js" />
     <Content Include="assets\js\jquery.vide.min.js" />
+    <Content Include="assets\js\js.cookie-2.2.1.min.js" />
     <Content Include="assets\js\jsFreeCommerceDotNet\AddProductUtils.js" />
     <Content Include="assets\js\jsgrid\griddata-digital-sub.js" />
     <Content Include="assets\js\jsgrid\griddata-digital.js" />
@@ -3795,6 +3798,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
+    <Content Include="Views\Account\MyCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
