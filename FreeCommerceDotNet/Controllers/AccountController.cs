@@ -111,5 +111,20 @@ namespace FreeCommerceDotNet.Controllers
 
             return View();
         }
+
+        public ActionResult MyWishList()
+        {
+            var customer = GetCustomerByContextName();
+
+            using (WishlistManager wishlist=new WishlistManager(new WishlistRepository()))
+            {
+                //var list = wishlist.SelectByFilter(new List<DBFilter>() {new DBFilter()
+                //{
+                //    ParamName = "@CustomerId",
+                //    ParamValue = customer.CustomerId
+                //}});
+            }
+            return View();
+        }
     }
 }

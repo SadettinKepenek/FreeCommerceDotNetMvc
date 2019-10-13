@@ -59,6 +59,7 @@
     <Compile Include="Abstract\IService.cs" />
     <Compile Include="Abstract\IShippingService.cs" />
     <Compile Include="Abstract\IStoreService.cs" />
+    <Compile Include="Abstract\IWishlistService.cs" />
     <Compile Include="Concrete\AttributeGroupManager.cs" />
     <Compile Include="Concrete\AttributeManager.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Concrete\ShippingManager.cs" />
     <Compile Include="Concrete\ProductManager.cs" />
     <Compile Include="Concrete\UserManager.cs" />
+    <Compile Include="Concrete\WishlistManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
