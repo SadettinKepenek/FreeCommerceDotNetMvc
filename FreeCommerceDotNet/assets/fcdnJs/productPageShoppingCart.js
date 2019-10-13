@@ -74,8 +74,6 @@ $(document).on('click', '.quantity-left-minus', function () {
 
 });
 
-
-
 $(document).on('click', '.quantity-right-plus', function () {
     if ((window.productCount + 1) <= 999) {
         window.productCount++;
@@ -169,7 +167,6 @@ var updateCartTotalPrice = function() {
     $('#totalPriceH2').html(genelToplam + ' ₺');
 
 };
-
 
 var fillProductsInCart = function() {
     var tbody = $('#cartItemsTbody');
