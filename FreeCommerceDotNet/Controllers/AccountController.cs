@@ -189,20 +189,8 @@ namespace FreeCommerceDotNet.Controllers
             }
             else
             {
-                var cartList = new List<CartModel>();
-                using (ShippingManager m = new ShippingManager(new ShippingRepository()))
-                {
-                    ViewBag.ShippingMethods = m.SelectAll();
-                }
-
-                using (PaymentGatewayManager m = new PaymentGatewayManager(new PaymentGatewayRepository()))
-                {
-                    ViewBag.PaymentMethods = m.SelectAll();
-                }
-
-                model.Customer = GetCustomerByContextName();
-                model.CartList = cartList;
-                return View(model);
+                return RedirectToAction("Index", "Account");
+               
             }
 
         }

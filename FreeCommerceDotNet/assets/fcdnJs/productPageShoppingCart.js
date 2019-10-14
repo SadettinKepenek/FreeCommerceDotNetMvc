@@ -131,7 +131,7 @@ $(document).on('click', '.quantity-right-plus', function () {
         if ((window.productCount + 1) <= 999) {
             // Ürün yok sadece miktarı güncelle
             window.productCount++;
-
+            console.log("ürün miktarı arttı");
         }
     }
 

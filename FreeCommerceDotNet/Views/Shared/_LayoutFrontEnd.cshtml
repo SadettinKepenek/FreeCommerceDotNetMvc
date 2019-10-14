@@ -1237,14 +1237,15 @@
        
         var subtotalTextLayout = $('#cartSubTotalText');
         var subtotal = 0.0;
-        if (Items==null) {
+        if (Items == null) {
             subtotalTextLayout.html('0.00 ₺');
-            return;
+        } else {
+            for (var i = 0; i < Items.length; i++) {
+                subtotal += Items[i].productCount * Items[i].productPrice;
+            }
+            subtotalTextLayout.html(subtotal + ' ₺');
         }
-        for (var i = 0; i < Items.length; i++) {
-            subtotal += Items[i].productCount * Items[i].productPrice;
-        }
-        subtotalTextLayout.html(subtotal + ' ₺');
+        
     </script>
 
 </body>
