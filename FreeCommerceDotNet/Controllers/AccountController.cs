@@ -120,7 +120,6 @@ namespace FreeCommerceDotNet.Controllers
         {
             var customer = GetCustomerByContextName();
 
-            using (WishlistManager wishlist = new WishlistManager(new WishlistRepository()))
             List<Wish> wishLists;
             using (WishlistManager wishlist=new WishlistManager(new WishlistRepository()))
             {

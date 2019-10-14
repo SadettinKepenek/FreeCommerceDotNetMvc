@@ -53,15 +53,7 @@
     }
 
 }
-@*{
-        List<AttributeGroup> groups = new List<AttributeGroup>();
-        using (AttributeGroupManager manager = new AttributeGroupManager(new AttributeGroupRepository()))
-        {
-            groups = manager.SelectAll();
-            groups = groups.FirstOrDefault(x => x.AttributeGroupId = Model.ProductAttributes.FirstOrDefault().AttributeBm.AttributeGroupId);
-            Model.ProductAttributes.FirstOrDefault().
-        }
-    }*@
+
 
 <script type="text/javascript">
     window.productImageUrl ='@Model.ImageUrl';
@@ -168,7 +160,7 @@
                             <div class="qty-box">
                                 <div class="input-group">
                                     <span class="input-group-prepend"><button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
-                                    <input type="text" name="quantity" class="form-control input-number" readonly="readonly" value="1">
+                                    <input type="text" name="quantity" class="form-control input-number" id="productQuantityInput" readonly="readonly" value="1">
                                     <span class="input-group-prepend"><button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
                                 </div>
                             </div>
@@ -426,38 +418,38 @@
                                 </form>
 
                                 <script type="text/javascript">
-                                function AddReviewAjax() {
-                                    var values = {
-                                        CustomerId:@ViewBag.customerId,
-                                        ProductId:@ViewBag.ProductId,
-                                        Title: document.getElementById("review").value,
-                                        Text: document.getElementById("exampleFormControlTextarea1").value,
-                                        Rating: window.rate
+                                    function AddReviewAjax() {
+                                        var values = {
+                                            CustomerId:@ViewBag.customerId,
+                                            ProductId:@ViewBag.ProductId,
+                                            Title: document.getElementById("review").value,
+                                            Text: document.getElementById("exampleFormControlTextarea1").value,
+                                            Rating: window.rate
 
-                                    };
+                                        };
 
-                                    var url = location.protocol + '//' + location.host + "/Home/AddReview";
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        // The key needs to match your method's input parameter (case-sensitive).
-                                        data: JSON.stringify({ review: values }),
-                                        contentType: "application/json; charset=utf-8",
-                                        dataType: "json",
-                                        success: function (data) {
-                                            if (data === "Success") {
-                                                location.reload();
+                                        var url = location.protocol + '//' + location.host + "/Home/AddReview";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: url,
+                                            // The key needs to match your method's input parameter (case-sensitive).
+                                            data: JSON.stringify({ review: values }),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (data) {
+                                                if (data === "Success") {
+                                                    location.reload();
+                                                }
+                                                else {
+                                                    alert(data);
+                                                }
+                                            },
+                                            failure: function (errMsg) {
+
+                                                alert(errMsg);
                                             }
-                                            else {
-                                                alert(data);
-                                            }
-                                        },
-                                        failure: function (errMsg) {
-
-                                            alert(errMsg);
-                                        }
-                                    });
-                                }
+                                        });
+                                    }
 
 
                                 </script>
@@ -681,9 +673,9 @@
                                         </div>
 
                                         <div class="buttons">
-                                            <a href="#" class="view-cart btn btn-solid">Your cart</a>
-                                            <a href="#" class="checkout btn btn-solid">Check out</a>
-                                            <a href="#" class="continue btn btn-solid">Continue shopping</a>
+                                            <a href="~/Account/MyCart" class="view-cart btn btn-solid">Your cart</a>
+                                            <a href="~/Account/Checkout" class="checkout btn btn-solid">Check out</a>
+                                            <a href="#" onclick="$('#addtocart').modal('toggle');" class="continue btn btn-solid">Continue shopping</a>
                                         </div>
 
                                         <div class="upsell_payment">
@@ -699,12 +691,15 @@
             </div>
         </div>
     </div>
-    <!-- Add to cart modal popup end-->
+</div>
+<!-- Add to cart modal popup end-->
 
+<script type="text/javascript">
+    LoadIfExists(@Model.ProductId);
+</script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css" />
-
-    <!--jQuery-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--jQuery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 

@@ -49,7 +49,7 @@ namespace FreeCommerceDotNet.Controllers
 
 
         }
-        private bool permReview(int prodouctId)
+        private bool permReview(int productId)
         {
             bool isAuth = User.Identity.IsAuthenticated;
             bool hasReview = false;
@@ -72,7 +72,7 @@ namespace FreeCommerceDotNet.Controllers
                 var userOrders = new OrderManager(new OrderMasterRepository()).SelectByFilter(filters);
                 if (userOrders != null)
                 {
-                    perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == prodouctId));
+                    perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == productId));
 
                 }
                 using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
