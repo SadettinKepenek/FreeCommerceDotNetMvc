@@ -13,6 +13,8 @@ using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
 using FreeCommerceDotNet.DAL.Concrete;
 using System.Web.Services;
 using System.Diagnostics;
+using FreeCommerceDotNet.Models;
+using Newtonsoft.Json;
 
 
 namespace FreeCommerceDotNet.Controllers
@@ -223,6 +225,29 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
+        public ActionResult ProductCompare()
+        {
+            var httpCookie = Request.Cookies.Get("compareList");
+            if (httpCookie != null)
+            {
+                var productCompareJsonModels=JsonConvert.DeserializeObject<List<ProductCompareJSONModel>>(httpCookie.Value);
+                
+                var productCompareModel=new ProductCompareModel();
+                productCompareModel.Products=new List<Product>();
+                using (ProductManager p=new ProductManager(new ProductRepository()))
+                {
+                    for (int i = 0; i < productCompareJsonModels.Count; i++)
+                    {
+                        int productId = productCompareJsonModels[i].productId;
+                        productCompareModel.Products.Add(p.SelectById(productId));
+                    }
+                }
+
+                return View(productCompareModel);
+            }
+          
+            return View();
+        }
 
     }
 }

@@ -386,6 +386,7 @@
     <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\Interfaces\ILogger.cs" />
     <Compile Include="Models\ControllerModels\Security.cs" />
+    <Compile Include="Models\ProductCompareModel.cs" />
     <Compile Include="Models\Util\DbForeignKeyModel.cs" />
     <Compile Include="Models\Util\DeleteResponseModel.cs" />
     <Compile Include="Models\Util\ListModelBindingExtensions.cs" />
@@ -3807,6 +3808,7 @@
     <Content Include="Views\Account\OrderDetail.cshtml" />
     <Content Include="Views\Account\Checkout.cshtml" />
     <Content Include="Views\Account\OrderSuccess.cshtml" />
+    <Content Include="Views\Home\ProductCompare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

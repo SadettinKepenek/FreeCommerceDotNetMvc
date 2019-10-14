@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "ProductCompare";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+@using FreeCommerceDotNet.Entities.Concrete
+@model FreeCommerceDotNet.Models.ProductCompareModel
+
+<script src="~/assets/fcdnJs/productCompare.js"></script>
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>compare</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">compare</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- section start -->
+<section class="compare-section section-b-space ratio_asos">
+    <div class="container">
+        <div class="row">
+            @if (Model.Products.Count == 0)
+            {
+                <div class="col-md-12 text-center">
+                    <h3>Ürün Karşılaştırma Listesi Boş</h3>
+                    <a href="~/Home" class="btn btn-warning">Geri Dön</a>
+                </div>
+            }
+            else
+            {<div class="col-12">
+                    <div class="slide-4">
+
+                        @foreach (Product product in Model.Products)
+                        {
+                            <div>
+                                <div class="compare-part">
+                                    <button type="button" class="close-btn" onclick="removeItemFromCookie(@product.ProductId)">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <div class="img-secton">
+                                        <div>
+                                            <img src=@product.ImageUrl class="img-fluid blur-up lazyload bg-img" alt="">
+                                        </div>
+                                        <a href="#"  class="text-center"><h5>@product.ProductName</h5></a>
+                                        <h5  class="text-center">@product.ProductPrices.FirstOrDefault().Price ₺</h5>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            @{
+                                                string description = "";
+                                                if (product.ProductDescription.Length>10)
+                                                {
+                                                    description=product.ProductDescription.Substring(0, 30) + "...";
+                                                }
+                                                else
+                                                {
+                                                    description = product.ProductDescription;
+                                                }
+                                            }
+                                            @{
+                                                product.ProductCode = string.IsNullOrEmpty(product.ProductCode)? "Product Code yok":product.ProductCode;
+                                            }
+                                            <h5>@product.ProductCode</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@description </p>
+                                        </div>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Brand Name</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@product.BrandEntity.BrandName</p>
+                                        </div>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Product Price</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@product.ProductPrices.FirstOrDefault().Price ₺</p>
+                                        </div>
+                                    </div>
+
+                                    @foreach (ProductAttribute attribute in product.ProductAttributes)
+                                    {
+                                        <div class="detail-part">
+                                            <div class="title-detail">
+                                                <h5>@attribute.AttributeBm.AttributeName</h5>
+                                            </div>
+                                            <div class="inner-detail">
+                                                <p class="text-center">@attribute.AttributeDescription</p>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    
+                                    <div class="btn-part">
+                                        <a href="#" class="btn btn-solid">add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+
+
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    </div>
+</section>
+<!-- Section ends -->

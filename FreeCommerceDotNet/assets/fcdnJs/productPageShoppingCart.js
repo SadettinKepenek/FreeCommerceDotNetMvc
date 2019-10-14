@@ -12,11 +12,15 @@ $(document).on('click', '.productPageAddToCard', function () {
 
     var productImageHtml =
         '<a href="#">' +
-        '<img class="img-fluid blur-up lazyload pro-img" src = ' + window.productImageUrl + ' alt = "" >' +
+        '<img class="img-fluid blur-up lazyload pro-img" src = ' +
+        window.productImageUrl +
+        ' alt = "" >' +
         '</a>';
 
     var productDescriptionSection =
-        '<a href="#"><h6><i class="fa fa-check" ></i>Product<span> ' + window.productName + ' </span><span> successfully added to your Cart</span></h6 ></a>';
+        '<a href="#"><h6><i class="fa fa-check" ></i>Product<span> ' +
+        window.productName +
+        ' </span><span> successfully added to your Cart</span></h6 ></a>';
 
 
     var cartItem = {
@@ -57,7 +61,9 @@ $(document).on('click', '.productPageAddToCard', function () {
                 ' </span><span> successfully added to your Cart</span></h6 ></a>';
         } else {
             productDescriptionSection =
-                '<a href="#"><h6><i class="fa fa-exclamation" ></i>Product<span> ' + window.productName + ' </span><span> has been added to your Cart.Therefore,Incremented count.</span></h6 ></a>';
+                '<a href="#"><h6><i class="fa fa-exclamation" ></i>Product<span> ' +
+                window.productName +
+                ' </span><span> has been added to your Cart.Therefore,Incremented count.</span></h6 ></a>';
             if (window.productCount == cartItems[idx].productCount) {
                 productDescriptionSection =
                     '<a href="#"><h6><i class="fa fa-exclamation" ></i>Product<span> ' +
@@ -89,7 +95,6 @@ $(document).on('click', '.productPageAddToCard', function () {
 });
 
 // Add To Cart Minus
-
 $(document).on('click', '.quantity-left-minus', function () {
 
     if (checkIsExist(window.productId)) {
