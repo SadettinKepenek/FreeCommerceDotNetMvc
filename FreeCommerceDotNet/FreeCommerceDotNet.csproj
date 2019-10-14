@@ -453,6 +453,7 @@
     <Content Include="assets\css\themify-icons.css" />
     <Content Include="assets\css\themify.css" />
     <Content Include="assets\fcdnCss\addCardButtons.css" />
+    <Content Include="assets\fcdnJs\productCompare.js" />
     <Content Include="assets\fcdnJs\productPageShoppingCart.js" />
     <Content Include="assets\fonts\feather\activity.svg" />
     <Content Include="assets\fonts\feather\airplay.svg" />
