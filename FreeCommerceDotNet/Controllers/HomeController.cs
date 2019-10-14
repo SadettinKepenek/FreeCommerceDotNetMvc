@@ -13,6 +13,7 @@ using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
 using FreeCommerceDotNet.DAL.Concrete;
 using System.Web.Services;
 using System.Diagnostics;
+using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.Models;
 using Newtonsoft.Json;
 
@@ -234,13 +235,23 @@ namespace FreeCommerceDotNet.Controllers
                 
                 var productCompareModel=new ProductCompareModel();
                 productCompareModel.Products=new List<Product>();
+
+
                 using (ProductManager p=new ProductManager(new ProductRepository()))
                 {
-                    for (int i = 0; i < productCompareJsonModels.Count; i++)
+                    using (ReviewManager m=new ReviewManager(new ReviewRepository()))
                     {
-                        int productId = productCompareJsonModels[i].productId;
-                        productCompareModel.Products.Add(p.SelectById(productId));
+                        for (int i = 0; i < productCompareJsonModels.Count; i++)
+                        {
+                            int productId = productCompareJsonModels[i].productId;
+                            var filters = new List<DBFilter>();
+                            filters.Add(new DBFilter(){ParamName = "@ProductId",ParamValue = productId});
+                            Product item = p.SelectById(productId);
+                            item.Reviews = m.SelectByFilter(filters);
+                            productCompareModel.Products.Add(item);
+                        }
                     }
+                   
                 }
 
                 return View(productCompareModel);

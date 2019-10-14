@@ -53,16 +53,16 @@
                                         <div>
                                             <img src=@product.ImageUrl class="img-fluid blur-up lazyload bg-img" alt="">
                                         </div>
-                                        <a href="#"  class="text-center"><h5>@product.ProductName</h5></a>
-                                        <h5  class="text-center">@product.ProductPrices.FirstOrDefault().Price ₺</h5>
+                                        <a href="#" class="text-center"><h5>@product.ProductName</h5></a>
+                                        <h5 class="text-center">@product.ProductPrices.FirstOrDefault().Price ₺</h5>
                                     </div>
                                     <div class="detail-part">
                                         <div class="title-detail">
                                             @{
                                                 string description = "";
-                                                if (product.ProductDescription.Length>10)
+                                                if (product.ProductDescription.Length > 30)
                                                 {
-                                                    description=product.ProductDescription.Substring(0, 30) + "...";
+                                                    description = product.ProductDescription.Substring(0, 30);
                                                 }
                                                 else
                                                 {
@@ -70,12 +70,12 @@
                                                 }
                                             }
                                             @{
-                                                product.ProductCode = string.IsNullOrEmpty(product.ProductCode)? "Product Code yok":product.ProductCode;
+                                                product.ProductCode = string.IsNullOrEmpty(product.ProductCode) ? "NO CODE" : product.ProductCode;
                                             }
                                             <h5>@product.ProductCode</h5>
                                         </div>
                                         <div class="inner-detail">
-                                            <p class="text-center">@description </p>
+                                            <p class="text-center">@description</p>
                                         </div>
                                     </div>
                                     <div class="detail-part">
@@ -94,22 +94,40 @@
                                             <p class="text-center">@product.ProductPrices.FirstOrDefault().Price ₺</p>
                                         </div>
                                     </div>
-
-                                    @foreach (ProductAttribute attribute in product.ProductAttributes)
-                                    {
-                                        <div class="detail-part">
-                                            <div class="title-detail">
-                                                <h5>@attribute.AttributeBm.AttributeName</h5>
-                                            </div>
-                                            <div class="inner-detail">
-                                                <p class="text-center">@attribute.AttributeDescription</p>
-                                            </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Availability</h5>
                                         </div>
-
-                                    }
-                                    
+                                        <div class="inner-detail">
+                                            <p class="text-center">@(product.Quantity != 0 ? "In Stock Count : " + product.Quantity : "Out of Stock Available on "+@product.AvailableDate)</p>
+                                        </div>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Discount?</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@(product.ProductDiscounts?.FirstOrDefault()!=null?"Yes Discounted Price Available":"Not Yet.")</p>
+                                        </div>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Product Rate</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@(product.Reviews?.Average(x=>x.Rating) ?? 5)</p>
+                                        </div>
+                                    </div>
+                                    <div class="detail-part">
+                                        <div class="title-detail">
+                                            <h5>Is Product Active?</h5>
+                                        </div>
+                                        <div class="inner-detail">
+                                            <p class="text-center">@(product.Status?"Yes":"No")</p>
+                                        </div>
+                                    </div>
                                     <div class="btn-part">
-                                        <a href="#" class="btn btn-solid">add to cart</a>
+                                        <a href="~/Home/Product/@product.ProductId" class="btn btn-solid">add to cart</a>
                                     </div>
                                 </div>
                             </div>
