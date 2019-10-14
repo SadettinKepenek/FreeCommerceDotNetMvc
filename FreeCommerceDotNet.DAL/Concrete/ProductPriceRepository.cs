@@ -57,7 +57,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
         public ProductPrice SelectById(int id)
         {
-            string query = "ProductPriceInsertUpdateDelete";
+            string query = "SP_GetProductPrice";
             using (var conn = db.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, conn);
@@ -86,7 +86,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
         public List<ProductPrice> SelectByFilter(List<DBFilter> filters)
         {
-            string query = "ProductPriceInsertUpdateDelete";
+            string query = "SP_GetProductPrice";
             using (var conn = db.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, conn);
@@ -106,7 +106,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
         }
         public List<ProductPrice> SelectAll()
         {
-            string query = "ProductPriceInsertUpdateDelete";
+            string query = "SP_GetProductPrice";
             using (var conn = db.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, conn);

@@ -182,15 +182,7 @@ namespace FreeCommerceDotNet.Controllers
             if (cartListCookie!=null)
             {
                 var cartList = JsonConvert.DeserializeObject<List<CartModel>>(cartListCookie.Value);
-                using (ShippingManager m=new ShippingManager(new ShippingRepository()))
-                {
-                    ViewBag.ShippingMethods = m.SelectAll();
-                }
-
-                using (PaymentGatewayManager m=new PaymentGatewayManager(new PaymentGatewayRepository()))
-                {
-                    ViewBag.PaymentMethods = m.SelectAll();
-                }
+                AssignShippingAndPaymentMethods();
 
                 model.Customer = GetCustomerByContextName();
                 model.CartList = cartList;
@@ -214,6 +206,19 @@ namespace FreeCommerceDotNet.Controllers
                 return View(model);
             }
 
+        }
+
+        private void AssignShippingAndPaymentMethods()
+        {
+            using (ShippingManager m = new ShippingManager(new ShippingRepository()))
+            {
+                ViewBag.ShippingMethods = m.SelectAll();
+            }
+
+            using (PaymentGatewayManager m = new PaymentGatewayManager(new PaymentGatewayRepository()))
+            {
+                ViewBag.PaymentMethods = m.SelectAll();
+            }
         }
 
         [HttpPost]
@@ -243,16 +248,47 @@ namespace FreeCommerceDotNet.Controllers
                         master.PaymentGatewayId = model.PaymentId;
                         master.ShippingId = model.ShippingId;
                         master.TrackNumber = String.Empty;
-                        
+                        master.OrderDetails=new List<OrderDetail>();
+
+                        var filters = new List<DBFilter>();
+                        filters.Add(new DBFilter(){ParamName = "@segmentId",ParamValue = customer.SegmentId});
+                        using (ProductPriceManager priceManager=new ProductPriceManager(new ProductPriceRepository()))
+                        {
+                            foreach (CartModel cartModel in model.CartList)
+                            {
+                                var price = priceManager.SelectByFilter(filters).FirstOrDefault();
+                                master.OrderDetails.Add(new OrderDetail()
+                                {
+                                    ProductId = cartModel.productId,
+                                    ProductPrice = price.Price,
+                                    Quantity = cartModel.productCount,
+                                });
+                            }
+                        }
+
+                        var result=m.Insert(master);
+                        if (result.Message.Equals("Success"))
+                        {
+                            // Todo
+                            return RedirectToAction("OrderSuccess", "Account");
+                        }
+                        AssignShippingAndPaymentMethods();
+                        TempData["Message"] = result.Message;
+                        return View(model);
                     }
                 }
+                TempData["Message"] = "Something happened";
+
+                AssignShippingAndPaymentMethods();
+                return View(model);
             }
             catch (Exception e)
             {
-                // ignored
+                AssignShippingAndPaymentMethods();
+                TempData["Message"] = e.StackTrace;
+                return View(model);
             }
 
-            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult OrderSuccess()

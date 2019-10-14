@@ -62,6 +62,7 @@
                     @Html.HiddenFor(x => x.Customer.User.UserId)
                     @Html.HiddenFor(x => x.Customer.User.Username)
                     <div class="row">
+                        <h3>@TempData["Message"]</h3>
                         <div class="col-lg-6 col-sm-12 col-xs-12">
                             <div class="checkout-title">
                                 <h3>Billing Details</h3>
@@ -69,36 +70,36 @@
                             <div class="row check-out">
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">First Name</div>
-                                    @Html.TextBoxFor(x => x.Customer.Firstname, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Firstname, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Last Name</div>
-                                    @Html.TextBoxFor(x => x.Customer.Lastname, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Lastname, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Phone</div>
-                                    @Html.TextBoxFor(x => x.Customer.Telephone, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Telephone, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <div class="field-label">Email Address</div>
-                                    @Html.TextBoxFor(x => x.Customer.Email, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Email, new {disabled = "disabled"})
                                 </div>
 
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="field-label">Billing Address</div>
-                                    @Html.TextBoxFor(x => x.Customer.Address1, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Address1, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="field-label">Shipping Address</div>
-                                    @Html.TextBoxFor(x => x.Customer.Address2, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Address2, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="field-label">Tax Address</div>
-                                    @Html.TextBoxFor(x => x.Customer.TaxAddress, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.TaxAddress, new {disabled = "disabled"})
                                 </div>
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="field-label">Your Segment</div>
-                                    @Html.TextBoxFor(x => x.Customer.Segment.SegmentName, new { disabled = "disabled" })
+                                    @Html.TextBoxFor(x => x.Customer.Segment.SegmentName, new {disabled = "disabled"})
                                 </div>
                                 @*<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <input type="checkbox" name="shipping-option" id="account-option"> &ensp;
@@ -134,15 +135,15 @@
                                             <div class="shipping">
                                                 @foreach (Shipping shipping in shippings)
                                                 {
-                                                        <div class="shopping-option">
-                                                            <input data-val="true" data-val-number="The field ShippingId must be a number." data-val-required="ShippingId alanı gereklidir." id="ShippingId_@shipping.ShippingId" name="ShippingId" type="radio" value="@shipping.ShippingId" />
-                                                            <label for="ShippingId_@shipping.ShippingId">@shipping.ShippingName</label>
-                                                        </div>
+                                                    <div class="shopping-option">
+                                                        <input data-val="true" data-val-number="The field ShippingId must be a number." data-val-required="ShippingId alanı gereklidir." id="ShippingId_@shipping.ShippingId" name="ShippingId" type="radio" value="@shipping.ShippingId"/>
+                                                        <label for="ShippingId_@shipping.ShippingId">@shipping.ShippingName</label>
+                                                    </div>
                                                 }
-                                               
+
                                             </div>
                                         </li>
-                                        
+
                                     </ul>
                                     <ul class="total">
                                         <li>Total <span class="count">@genelToplam ₺</span></li>
@@ -152,13 +153,13 @@
                                     <div class="upper-box">
                                         <div class="payment-options">
                                             <h3>Payment Method</h3>
-                                            <hr />
+                                            <hr/>
                                             <ul>
                                                 @foreach (Payment payment in payments)
                                                 {
                                                     <li>
                                                         <div class="radio-option">
-                                                            <input data-val="true" data-val-number="The field PaymentId must be a number." data-val-required="PaymentId alanı gereklidir." id="PaymentId_@payment.PaymentId" name="PaymentId" type="radio" value="@payment.PaymentId" />
+                                                            <input data-val="true" data-val-number="The field PaymentId must be a number." data-val-required="PaymentId alanı gereklidir." id="PaymentId_@payment.PaymentId" name="PaymentId" type="radio" value="@payment.PaymentId"/>
                                                             <label for="PaymentId_@payment.PaymentId">@payment.PaymentName<span class="small-text">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span></label>
                                                         </div>
                                                     </li>
