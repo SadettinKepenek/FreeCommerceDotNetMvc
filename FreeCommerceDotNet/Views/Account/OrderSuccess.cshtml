@@ -1,0 +1,123 @@
+﻿@using FreeCommerceDotNet.Entities.Concrete
+@model FreeCommerceDotNet.Entities.Concrete.OrderMaster
+@{
+
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<!-- thank-you section start -->
+
+@{
+    string transactionNumber;
+    string sMonth= DateTime.Now.ToString("MM");
+    string sYear= DateTime.Now.ToString("yyyy");
+    string sOrderId = @Model.OrderId.ToString();
+    transactionNumber = sYear + sMonth +"00"+ sOrderId;
+}
+
+<section class="section-b-space light-layout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="success-text">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    <h2>Thank you</h2>
+                    <p>Order Status : @Model.DeliveryStatus</p>
+                    <p>Transaction ID : @transactionNumber</p>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-order">
+                    <h3>your order details</h3>
+                    @foreach (OrderDetail detail in Model.OrderDetails)
+                    {
+                        <div class="row product-order-detail">
+                            <div class="col-3"><img src=@detail.ProductBm.ImageUrl alt="" class="img-fluid blur-up lazyload"></div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>Product Name</h4>
+                                    <h5>@detail.ProductBm.ProductName</h5>
+                                </div>
+                            </div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>quantity</h4>
+                                    <h5>@detail.Quantity</h5>
+                                </div>
+                            </div>
+                            <div class="col-3 order_detail">
+                                <div>
+                                    <h4>price</h4>
+                                    <h5>@detail.ProductPrice ₺</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    <div class="total-sec">
+                        <ul>
+                            <li>subtotal <span>@Model.OrderDetails.Sum(x => x.ProductPrice) ₺</span></li>
+                            <li>shipping <span><del>0.00 ₺</del></span></li>
+                            <li>tax(GST) <span><del>0.00 ₺</del></span></li>
+                        </ul>
+                    </div>
+                    <div class="final-total">
+                        <h3>total <span>@Model.OrderDetails.Sum(x => x.ProductPrice) ₺</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row order-success-sec">
+                    <div class="col-sm-6">
+                        <h4>summary</h4>
+                        <ul class="order-detail">
+                            <li>order ID: @(Model.OrderId + 20191000)</li>
+                            <li>Order Date: @Model.OrderDate</li>
+                            <li>Order Total: @Model.OrderDetails.Sum(x => x.ProductPrice) ₺</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <h4>shipping address</h4>
+                        <ul class="order-detail">
+                            <li>@Model.CustomerBm.Address1</li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+
+                    </div>
+                    <div class="col-sm-12 payment-mode">
+                        <br />
+                        <h4>payment method</h4>
+                        <p>@Model.PaymentBm.PaymentName</p>
+                        <p>@Model.PaymentBm.PaymentDescription</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="delivery-sec">
+                            @if (Model.DeliveryStatus.Equals("Teslim Edildi"))
+                            {
+                                <h3>date of delivery</h3>
+                                <h2>@Model.DeliveryDate</h2>
+                            }
+                            else
+                            {
+                                <h3>expected date of delivery</h3>
+                                <h2>@Model.DeliveryDate</h2>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->

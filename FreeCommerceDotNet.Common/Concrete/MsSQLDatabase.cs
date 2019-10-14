@@ -9,7 +9,7 @@ namespace FreeCommerceDotNet.Common.Concrete
 {
     public class MsSQLDatabase : IDatabase
     {
-        private readonly string _connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;";
+        private readonly string _connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;MultipleActiveResultSets=true;";
         private SqlConnection connection;
         private SqlTransaction Transaction;
         public MsSQLDatabase()
@@ -88,7 +88,7 @@ namespace FreeCommerceDotNet.Common.Concrete
         public void RollbackTranscation()
         {
             SqlTransaction sqlTransaction = this.Transaction;
-            if (sqlTransaction != null) sqlTransaction.Rollback();
+            sqlTransaction?.Rollback();
             this.Transaction = null;
         }
 
@@ -155,6 +155,7 @@ namespace FreeCommerceDotNet.Common.Concrete
                     var dataTable = new DataTable();
                     dataTable.Load(dataReader);
                     CommitTranscation();
+                    dataReader.Close();
                     return dataTable;
                 }
                 catch (Exception e)
