@@ -1234,8 +1234,13 @@
     </script>
     <script type="text/javascript">
         var Items = JSON.parse(getCookie("cartListCookie"));
+       
         var subtotalTextLayout = $('#cartSubTotalText');
         var subtotal = 0.0;
+        if (Items==null) {
+            subtotalTextLayout.html('0.00 ₺');
+            return;
+        }
         for (var i = 0; i < Items.length; i++) {
             subtotal += Items[i].productCount * Items[i].productPrice;
         }

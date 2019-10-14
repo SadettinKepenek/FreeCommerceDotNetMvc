@@ -3805,6 +3805,7 @@
     <Content Include="Views\Account\MyOrders.cshtml" />
     <Content Include="Views\Account\OrderDetail.cshtml" />
     <Content Include="Views\Account\Checkout.cshtml" />
+    <Content Include="Views\Account\OrderSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

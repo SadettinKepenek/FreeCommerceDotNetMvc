@@ -1,33 +1,33 @@
 ﻿@using FreeCommerceDotNet.Entities.Concrete
 @model FreeCommerceDotNet.Entities.Concrete.OrderMaster
 @{
+
     ViewBag.Title = "OrderDetail";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
 }
 
+<!-- thank-you section start -->
 
 @{
     string transactionNumber;
-    string sMonth = DateTime.Now.ToString("MM");
-    string sYear = DateTime.Now.ToString("yyyy");
+    string sMonth= DateTime.Now.ToString("MM");
+    string sYear= DateTime.Now.ToString("yyyy");
     string sOrderId = @Model.OrderId.ToString();
-    transactionNumber = sYear + sMonth + "00" + sOrderId;
+    transactionNumber = sYear + sMonth +"00"+ sOrderId;
 }
 
-<!-- thank-you section start -->
 <section class="section-b-space light-layout">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="success-text">
-                    <h2>Order Detail @transactionNumber</h2>
-                    <p>Order Status @Model.DeliveryStatus</p>
-                    <p>Transaction ID:@transactionNumber</p>
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    <h2>Thank you</h2>
+                    <p>Order Status : @Model.DeliveryStatus</p>
+                    <p>Transaction ID : @transactionNumber</p>
                 </div>
             </div>
-            <div class="col-md-12">
-                <button class="btn btn-primary pull-right">Geri Dön</button>
-            </div>
+        
         </div>
     </div>
 </section>

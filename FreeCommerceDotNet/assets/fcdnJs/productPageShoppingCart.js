@@ -265,7 +265,7 @@ var fillProductsInCart = function () {
 
     var genelToplam = 0;
 
-    if (itemsInCart.length == 0) {
+    if (itemsInCart==null || itemsInCart.length == 0) {
         tbody.append('<tr><td colspan="6">Sepet Boş</td></tr>');
     }
 

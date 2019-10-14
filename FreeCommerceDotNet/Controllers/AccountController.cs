@@ -2,15 +2,14 @@
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
+using FreeCommerceDotNet.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services;
-using FreeCommerceDotNet.Models;
-using Newtonsoft.Json;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -121,15 +120,15 @@ namespace FreeCommerceDotNet.Controllers
             var customer = GetCustomerByContextName();
 
             List<Wish> wishLists;
-            using (WishlistManager wishlist=new WishlistManager(new WishlistRepository()))
+            using (WishlistManager wishlist = new WishlistManager(new WishlistRepository()))
             {
                 wishLists = wishlist.SelectByFilter(new List<DBFilter>() {new DBFilter()
                 {
                     ParamName = "@CustomerId",
                     ParamValue = customer.CustomerId
-                }}); 
+                }});
             }
-            if(wishLists == null)
+            if (wishLists == null)
             {
                 return View(new List<Wish>());
             }
@@ -141,12 +140,12 @@ namespace FreeCommerceDotNet.Controllers
             {
                 wishlist.Delete(wishId);
             }
-            return RedirectToAction("MyWishList","Account");
+            return RedirectToAction("MyWishList", "Account");
         }
 
         public ActionResult MyOrders()
         {
-            if (this.customer==null)
+            if (this.customer == null)
             {
                 customer = GetCustomerByContextName();
             }
@@ -167,7 +166,7 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult OrderDetail(int id)
         {
-            using (OrderMasterManager m=new OrderMasterManager(new OrderMasterRepository()))
+            using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
             {
                 return View(m.SelectById(id));
             }
@@ -179,7 +178,7 @@ namespace FreeCommerceDotNet.Controllers
             HttpCookie cartListCookie = Request.Cookies.Get("cartListCookie");
             CheckoutModel model = new CheckoutModel();
 
-            if (cartListCookie!=null)
+            if (cartListCookie != null)
             {
                 var cartList = JsonConvert.DeserializeObject<List<CartModel>>(cartListCookie.Value);
                 AssignShippingAndPaymentMethods();
@@ -226,21 +225,21 @@ namespace FreeCommerceDotNet.Controllers
         {
             // Todo Checkout Logic
 
-            
+
 
             try
             {
                 var customer = GetCustomerByContextName();
-                if (customer!=null)
+                if (customer != null)
                 {
-                    
-                    using (OrderMasterManager m=new OrderMasterManager(new OrderMasterRepository()))
+
+                    using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
                     {
                         string expectedDeliveryDate = m.GetExpectedDeliveryDate();
 
-                        OrderMaster master=new OrderMaster();
+                        OrderMaster master = new OrderMaster();
                         master.CustomerId = customer.CustomerId;
-                        master.CustomerBm=customer;
+                        master.CustomerBm = customer;
                         master.DeliveryDate = expectedDeliveryDate;
                         master.DeliveryComment = String.Empty;
                         master.DeliveryStatus = "Hazırlanıyor";
@@ -248,29 +247,47 @@ namespace FreeCommerceDotNet.Controllers
                         master.PaymentGatewayId = model.PaymentId;
                         master.ShippingId = model.ShippingId;
                         master.TrackNumber = String.Empty;
-                        master.OrderDetails=new List<OrderDetail>();
+                        master.OrderDetails = new List<OrderDetail>();
 
                         var filters = new List<DBFilter>();
-                        filters.Add(new DBFilter(){ParamName = "@segmentId",ParamValue = customer.SegmentId});
-                        using (ProductPriceManager priceManager=new ProductPriceManager(new ProductPriceRepository()))
+                        filters.Add(new DBFilter() { ParamName = "@segmentId", ParamValue = customer.SegmentId });
+                        using (ProductPriceManager priceManager = new ProductPriceManager(new ProductPriceRepository()))
                         {
                             foreach (CartModel cartModel in model.CartList)
                             {
                                 var price = priceManager.SelectByFilter(filters).FirstOrDefault();
-                                master.OrderDetails.Add(new OrderDetail()
+                                var orderDetail = new OrderDetail()
                                 {
                                     ProductId = cartModel.productId,
                                     ProductPrice = price.Price,
                                     Quantity = cartModel.productCount,
-                                });
+                                };
+
+                                master.OrderDetails.Add(orderDetail);
                             }
                         }
 
-                        var result=m.Insert(master);
+                        var result = m.Insert(master);
                         if (result.Message.Equals("Success"))
                         {
+                            using (OrderDetailManager detailManager = new OrderDetailManager(new OrderDetailRepository()))
+                            {
+                                foreach (var masterOrderDetail in master.OrderDetails)
+                                {
+                                    masterOrderDetail.OrderId = result.Id;
+                                    detailManager.Insert(masterOrderDetail);
+                                }
+                            }
                             // Todo
-                            return RedirectToAction("OrderSuccess", "Account");
+                            var httpCookie = Request.Cookies.Get("cartListCookie");
+                            if (httpCookie != null)
+                            {
+                                httpCookie.Expires = DateTime.Now.AddDays(-1);
+                                Response.Cookies.Add(httpCookie);
+                            }
+
+                            return RedirectToAction("OrderSuccess", "Account", new {orderId = result.Id});
+
                         }
                         AssignShippingAndPaymentMethods();
                         TempData["Message"] = result.Message;
@@ -290,10 +307,13 @@ namespace FreeCommerceDotNet.Controllers
             }
 
         }
-
-        public ActionResult OrderSuccess()
+        [HttpGet]
+        public ActionResult OrderSuccess(int orderId)
         {
-            return View();
+            using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
+            {
+                return View(m.SelectById(orderId));
+            }
         }
     }
 }
