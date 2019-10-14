@@ -12,34 +12,7 @@
     ViewBag.Title = "Category Page";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
 }
-@{
-    bool isAuth = HttpContext.Current.User.Identity.IsAuthenticated;
-    bool perm = false;
-    int customerId = 0;
-    if (isAuth)
-    {
-        var userName = HttpContext.Current.User.Identity.Name;
-        var user = new CustomerManager(new CustomerRepository()).SelectByFilter(
-            new List<FreeCommerceDotNet.Common.Concrete.DBFilter>() {
-new FreeCommerceDotNet.Common.Concrete.DBFilter()
-{
-ParamName="@username",
-ParamValue=userName
-}}
-            ).FirstOrDefault();
-        customerId = user.CustomerId;
-        List<FreeCommerceDotNet.Common.Concrete.DBFilter> filters = new List<FreeCommerceDotNet.Common.Concrete.DBFilter>();
-        filters.Add(new FreeCommerceDotNet.Common.Concrete.DBFilter() { ParamName = "@CustomerId", ParamValue = user.CustomerId });
-        var userOrders = new OrderManager(new OrderRepository()).SelectByFilter(filters);
-        if (userOrders != null)
-        {
-            perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == ViewBag.ProductId));
 
-        }
-
-
-    }
-}
 <script src="~/assets/js/jquery-3.3.1.min.js"></script>
 <script src="~/assets/js/js.cookie-2.2.1.min.js"></script>
 <script src="~/assets/fcdnJs/CookieOperations.js"></script>
@@ -281,7 +254,7 @@ ParamValue=userName
                         <a class="nav-link" id="profile-top-reviews" data-toggle="tab" href="#top-reviewlist" role="tab" aria-selected="false">Reviews</a>
                         <div class="material-border"></div>
                     </li>
-                    @if (perm)
+                    @if (ViewBag.perm)
                     {
                         <li class="nav-item">
                             <a class="nav-link" id="review-top-tab" data-toggle="tab" href="#top-review" role="tab" aria-selected="false">Write Review</a>
@@ -299,7 +272,7 @@ ParamValue=userName
                         <section class="section-b-space blog-detail-page review-page">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-8">
 
                                         <ul class="comment-section">
 
@@ -312,18 +285,46 @@ ParamValue=userName
                                                         <img src="~/assets/images/2.jpg" alt="Generic placeholder image">
                                                         <div class="media-body">
                                                             <h6>@review.customer.Firstname @review.customer.Lastname <span>(@review.Date )</span></h6>
+                                                            <strong>@review.Title</strong>
                                                             <p>@review.Text</p>
                                                             <ul class="comnt-sec">
                                                                 <li><a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><span>(14)</span></a></li>
                                                                 <li><a href="#"><div class="unlike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>(2)</div></a></li>
                                                             </ul>
                                                         </div>
+                                                        @if (review.CustomerId == ViewBag.CustomerId)
+                                                        {
+                                                            <button onclick="DeleteReviewAjax()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                        }
+                                                        <script type="text/javascript">
+                                                            function DeleteReviewAjax() {
+                                                                var url = location.protocol + '//' + location.host + "/Home/DeleteReview";
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    url: url,
+                                                                    // The key needs to match your method's input parameter (case-sensitive).
+                                                                    data: JSON.stringify({ ReviewId: @review.ReviewId }),
+                                                                    contentType: "application/json; charset=utf-8",
+                                                                    dataType: "json",
+                                                                    success: function (data) {
+                                                                        if (data === "Success") {
+                                                                            location.reload();
+                                                                        }
+                                                                        else {
+                                                                            alert(data);
+                                                                        }
+                                                                    },
+                                                                    failure: function (errMsg) {
+
+                                                                        alert(errMsg);
+                                                                    }
+                                                                });
+                                                            }
+                                                        </script>
                                                     </div>
 
 
                                                 </li>
-
-
 
                                             }
                                         </ul>
@@ -363,61 +364,71 @@ ParamValue=userName
                         </div>
                     </div>
 
-                    @if (perm)
+                    @if (ViewBag.perm)
                     {
-                        <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+                        if (ViewBag.hasReview)
+                        {
+                            <hr>
+                            <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+                                <h5>Bir ürün için zaten bir yorumunuz bulunmaktadır</h5>
+                            </div>
 
-                            <form id="myForm">
+                        }
+                        else
+                        {
+                            <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
 
-                                <div class="form-row">
-                                    <div class="col-md-12">
-                                        <div class="media">
-                                            <label>Rating</label>
-                                            <div class="media-body ml-3">
-                                                <div id="rating">
-                                                    <span id="star1"></span>
-                                                    <span id="star2"></span>
-                                                    <span id="star3"></span>
-                                                    <span id="star4"></span>
-                                                    <span id="star5"></span>
+                                <form id="myForm">
+
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <div class="media">
+                                                <label>Rating</label>
+                                                <div class="media-body ml-3">
+                                                    <div id="rating">
+                                                        <span id="star1"></span>
+                                                        <span id="star2"></span>
+                                                        <span id="star3"></span>
+                                                        <span id="star4"></span>
+                                                        <span id="star5"></span>
+                                                    </div>
                                                 </div>
+
+                                                <script type="text/javascript">
+                                                    document.querySelector('#rating').addEventListener('click', function (e) {
+                                                        let action = 'add';
+
+                                                        for (const span of this.children) {
+                                                            span.classList[action]('active');
+                                                            if (span === e.target) {
+                                                                action = 'remove';
+                                                                window.rate = e.target.id.replace("star", "");
+                                                                console.log('rate ' + window.rate);
+                                                            };
+                                                        }
+                                                    });
+                                                </script>
+
                                             </div>
-
-                                            <script type="text/javascript">
-                                                document.querySelector('#rating').addEventListener('click', function (e) {
-                                                    let action = 'add';
-
-                                                    for (const span of this.children) {
-                                                        span.classList[action]('active');
-                                                        if (span === e.target) {
-                                                            action = 'remove';
-                                                            window.rate = e.target.id.replace("star", "");
-                                                            console.log('rate ' + window.rate);
-                                                        };
-                                                    }
-                                                });
-                                            </script>
-
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="review">Review Title</label>
+                                            <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="review">Review</label>
+                                            <textarea class="form-control" placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1" rows="6"></textarea>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-solid" onclick="AddReviewAjax()" type="button">Submit Your Review</button>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="review">Review Title</label>
-                                        <input type="text" class="form-control" id="review" placeholder="Enter your Review Subjects" required>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="review">Review</label>
-                                        <textarea class="form-control" placeholder="Wrire Your Testimonial Here" id="exampleFormControlTextarea1" rows="6"></textarea>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button class="btn btn-solid" onclick="AddReviewAjax()" type="button">Submit Your Review</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
 
-                            <script type="text/javascript">
+                                <script type="text/javascript">
                                 function AddReviewAjax() {
                                     var values = {
-                                        CustomerId:@customerId,
+                                        CustomerId:@ViewBag.customerId,
                                         ProductId:@ViewBag.ProductId,
                                         Title: document.getElementById("review").value,
                                         Text: document.getElementById("exampleFormControlTextarea1").value,
@@ -449,8 +460,10 @@ ParamValue=userName
                                 }
 
 
-                            </script>
-                        </div>
+                                </script>
+                            </div>
+                        }
+
 
                     }
 

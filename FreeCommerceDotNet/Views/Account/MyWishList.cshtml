@@ -3,6 +3,86 @@
     ViewBag.Title = "MyWishList";
     Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
 }
+@using FreeCommerceDotNet.Entities.Concrete
+@model List<Wish>
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>wishlist</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active">wishlist</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="wishlist-section section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
 
-<h2>MyWishList</h2>
+
+
+                <table class="table cart-table table-responsive-xs">
+                    <thead>
+                        <tr class="table-head">
+                            <th scope="col">image</th>
+                            <th scope="col">product name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">availability</th>
+                            <th scope="col">Wishlist Date</th>
+                            <th scope="col">action</th>
+                        </tr>
+                    </thead>
+                    @foreach (var wish in Model)
+                    {
+                        
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="#"><img src="@wish.product.ImageUrl" alt=""></a>
+                                </td>
+                                <td>
+                                    <p>@wish.product.ProductName</p>
+                                </td>
+                                <td>
+                                    <p>@wish.product.Quantity</p>
+                                </td>
+                                <td>
+                                    <p>@wish.product.Status</p>
+                                </td>
+                                <td>
+                                    <p>@wish.WishDate</p>
+                                </td>
+                                
+                                
+                                
+                                <td>
+                                    <a href="@Url.Action("DeleteWish","Account", new { wishId = wish.WishId })" class="icon mr-3"><i class="ti-close"></i> </a>
+                                    @if (wish.product.Status == true)
+                                    {
+                                        <a href="@Url.Action("Product","Home",new {id = wish.ProductId})" class="cart"><i class="ti-shopping-cart"></i></a>
+                                    }
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+                
+                </div>
+            </div>
+            <div class="row wishlist-buttons">
+                <div class="col-12"><a href="@Url.Action("Index","Home")" class="btn btn-solid">continue shopping</a></div>
+            </div>
+        </div>
+    </section>
 
