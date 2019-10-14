@@ -210,6 +210,8 @@ namespace FreeCommerceDotNet.Controllers
         }
         public JsonResult GetSearchResults(string query)
         {
+            /// Veritabanı tarafında eğer productname gönderilirse bir kaç filtreleme işleminin yapılması gerek
+            /// Belki bunun için ayrıca bir procedüre yazılabilir.
             using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
                 try
