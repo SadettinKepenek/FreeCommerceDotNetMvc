@@ -82,6 +82,23 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
+        public string GetExpectedDeliveryDate()
+        {
+            string query = "GetExpectedDeliveryDate";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    return datatable.Rows[0][0] as string;
+                }
+            }
+
+            return null;
+        }
+
         public List<OrderMaster> SelectByFilter(List<DBFilter> filters)
         {
             string query = "SP_GetOrder";

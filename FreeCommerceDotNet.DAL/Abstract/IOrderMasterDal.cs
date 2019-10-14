@@ -9,5 +9,6 @@ namespace FreeCommerceDotNet.DAL.Abstract
 {
     public interface IOrderMasterDal : IRepository<OrderMaster>
     {
+        string GetExpectedDeliveryDate();
     }
 }

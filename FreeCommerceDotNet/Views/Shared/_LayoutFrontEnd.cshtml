@@ -101,7 +101,7 @@
     foreach (Category categoryBm in categories)
     {
         <li>
-            <a href="#">@categoryBm.CategoryName</a>
+            <a href="~/Home/Category/@categoryBm.CategoryId">@categoryBm.CategoryName</a>
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul class="mega-menu clothing-menu">
@@ -112,14 +112,14 @@
                             {
                                 <div class="col-xl-4">
                                     <div class="link-section">
-                                        <h5><a href="#">@category.CategoryName</a></h5>
+                                        <h5><a href="~/Home/Category/@category.CategoryId">@category.CategoryName</a></h5>
                                         @if (category.SubCategories.Count != 0)
                                         {
 
                                             <ul>
                                                 @foreach (var sub in category.SubCategories)
                                                 {
-                                                    <li><a href="#">@sub.CategoryName</a></li>
+                                                    <li><a href="~/Home/Category/@sub.CategoryId">@sub.CategoryName</a></li>
                                                 }
                                             </ul>
                                         }
@@ -144,7 +144,7 @@
     foreach (var categoryBm in categories)
     {
         <li>
-            <a href="#">@categoryBm.CategoryName</a>
+            <a href="~/Home/Category/@categoryBm.CategoryId">@categoryBm.CategoryName</a>
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul>
@@ -152,13 +152,13 @@
                     @foreach (var category in categoryBm.SubCategories)
                     {
                         <li>
-                            <a href="#">@category.CategoryName</a>
+                            <a href="~/Home/Category/@category.CategoryId">@category.CategoryName</a>
                             @if (category.SubCategories.Count != 0)
                             {
                                 <ul>
                                     @foreach (Category categorySubCategory in category.SubCategories)
                                     {
-                                        <li> <a href="#">@categorySubCategory.CategoryName</a></li>
+                                        <li> <a href="~/Home/Category/@categorySubCategory.CategoryId">@categorySubCategory.CategoryName</a></li>
                                     }
                                 </ul>
                             }

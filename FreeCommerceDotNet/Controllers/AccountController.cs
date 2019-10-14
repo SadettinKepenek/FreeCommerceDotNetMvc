@@ -220,7 +220,44 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Checkout(CheckoutModel model)
         {
             // Todo Checkout Logic
+
+            
+
+            try
+            {
+                var customer = GetCustomerByContextName();
+                if (customer!=null)
+                {
+                    
+                    using (OrderMasterManager m=new OrderMasterManager(new OrderMasterRepository()))
+                    {
+                        string expectedDeliveryDate = m.GetExpectedDeliveryDate();
+
+                        OrderMaster master=new OrderMaster();
+                        master.CustomerId = customer.CustomerId;
+                        master.CustomerBm=customer;
+                        master.DeliveryDate = expectedDeliveryDate;
+                        master.DeliveryComment = String.Empty;
+                        master.DeliveryStatus = "Hazırlanıyor";
+                        master.OrderDate = DateTime.Now.ToShortDateString();
+                        master.PaymentGatewayId = model.PaymentId;
+                        master.ShippingId = model.ShippingId;
+                        master.TrackNumber = String.Empty;
+                        
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult OrderSuccess()
+        {
+            return View();
         }
     }
 }

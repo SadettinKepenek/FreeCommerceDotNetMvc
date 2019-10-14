@@ -9,6 +9,7 @@ namespace FreeCommerceDotNet.BLL.Abstract
 {
     public interface IOrderMasterService :IService<OrderMaster>
     {
+        string GetExpectedDeliveryDate();
 
     }
 }

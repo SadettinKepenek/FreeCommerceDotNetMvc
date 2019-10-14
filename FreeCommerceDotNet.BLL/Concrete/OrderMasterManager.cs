@@ -42,6 +42,11 @@ namespace FreeCommerceDotNet.BLL.Concrete
 
         }
 
+        public string GetExpectedDeliveryDate()
+        {
+            return _orderMasterRepository.GetExpectedDeliveryDate();
+        }
+
         public List<OrderMaster> SelectByFilter(List<DBFilter> filters)
         {
             return _orderMasterRepository.SelectByFilter(filters);

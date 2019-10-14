@@ -132,13 +132,20 @@
                                         <li>
                                             Shipping
                                             <div class="shipping">
-                                                @Html.DropDownListFor(x => x.ShippingId, new SelectList(shippings, "ShippingId", "ShippingName"))
-
+                                                @foreach (Shipping shipping in shippings)
+                                                {
+                                                        <div class="shopping-option">
+                                                            <input data-val="true" data-val-number="The field ShippingId must be a number." data-val-required="ShippingId alanı gereklidir." id="ShippingId_@shipping.ShippingId" name="ShippingId" type="radio" value="@shipping.ShippingId" />
+                                                            <label for="ShippingId_@shipping.ShippingId">@shipping.ShippingName</label>
+                                                        </div>
+                                                }
+                                               
                                             </div>
                                         </li>
+                                        
                                     </ul>
                                     <ul class="total">
-                                        <li>Total <span class="count">$620.00</span></li>
+                                        <li>Total <span class="count">@genelToplam ₺</span></li>
                                     </ul>
                                 </div>
                                 <div class="payment-box">
