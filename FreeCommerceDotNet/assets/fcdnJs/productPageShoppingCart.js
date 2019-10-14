@@ -1,4 +1,6 @@
-﻿window.productCount = 1;
+﻿// Global Variable to hold productCount in Product Page
+
+window.productCount = 1;
 
 // Add To Card Button
 
