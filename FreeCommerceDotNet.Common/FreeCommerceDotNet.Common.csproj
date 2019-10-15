@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IDatabase.cs" />
+    <Compile Include="Abstract\IEmailProvider.cs" />
     <Compile Include="Concrete\ConnectionException.cs" />
     <Compile Include="Concrete\DBFilter.cs" />
     <Compile Include="Concrete\DBResult.cs" />
