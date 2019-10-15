@@ -48,6 +48,7 @@
     <Compile Include="Concrete\ConnectionException.cs" />
     <Compile Include="Concrete\DBFilter.cs" />
     <Compile Include="Concrete\DBResult.cs" />
+    <Compile Include="Concrete\EmailHelper.cs" />
     <Compile Include="Concrete\LinqHelper.cs" />
     <Compile Include="Concrete\MsSQLDatabase.cs" />
     <Compile Include="Concrete\OutlookMailManager.cs" />
@@ -78,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Concrete\StringMatching\readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="HtmlPages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

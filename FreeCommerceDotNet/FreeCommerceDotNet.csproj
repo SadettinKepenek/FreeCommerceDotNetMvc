@@ -384,6 +384,7 @@
     </Compile>
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CheckoutModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Models\ProductCompareModel.cs" />
     <Compile Include="Models\HttpResponseModel.cs" />
@@ -3802,6 +3803,7 @@
     <Content Include="Views\Account\Checkout.cshtml" />
     <Content Include="Views\Account\OrderSuccess.cshtml" />
     <Content Include="Views\Home\ProductCompare.cshtml" />
+    <Content Include="Views\Security\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

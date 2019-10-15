@@ -5,7 +5,7 @@ using FreeCommerceDotNet.Common.Abstract;
 
 namespace FreeCommerceDotNet.Common.Concrete
 {
-    public class OutlookMailManager:IEmailProvider
+    public class OutlookMailManager:IEmailProvider, IDisposable
     {
         private string SmtpUsername { get; }
         private string SmtpPassword { get; }
@@ -48,6 +48,10 @@ namespace FreeCommerceDotNet.Common.Concrete
                 throw new Exception("Mail Send Failed " + e.StackTrace);
             }
 
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
