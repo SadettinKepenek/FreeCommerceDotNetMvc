@@ -143,6 +143,63 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
+        public ResetTicket SelectResetTicket(int userid, int ticketid)
+        {
+            string query = "SP_GetResetTickets";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId",userid);
+                command.Parameters.AddWithValue("@TicketId",ticketid);
+                DataTable datatable = database.DoQuery(command: command);
+                var rows = datatable.Rows;
+                ResetTicket ticket = new ResetTicket();
+                ticket.TicketId = ticketid;
+                ticket.UserId = userid;
+                ticket.tokenUsed = (bool)rows[0]["tokenUsed"];
+                ticket.tokenHash = (Guid)rows[0]["tokenHash"];
+                ticket.exprationDate = rows[0]["exprationDate"] as string;
+                return ticket;
+            }
+        }
 
+        public DBResult InsertResetTicket(int userid)
+        {
+            string query = "ResetTicketsInsertUpdateDelete";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Action", "INSERT");
+                command.Parameters.AddWithValue("@UserId", userid);
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    return database.ReadResultFromDataTable(datatable);
+                }
+            }
+
+            return null;
+        }
+
+        public DBResult UpdateResetTicket(int ticketid)
+        {
+            string query = "ResetTicketsInsertUpdateDelete";
+            using (var connection = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Action", "UPDATE");
+                command.Parameters.AddWithValue("@TicketId",ticketid);
+  
+                DataTable datatable = database.DoQuery(command: command);
+                if (datatable.Rows.Count != 0)
+                {
+                    return database.ReadResultFromDataTable(datatable);
+                }
+            }
+            return null;
+        }
     }
 }

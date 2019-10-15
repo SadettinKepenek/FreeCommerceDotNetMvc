@@ -9,6 +9,7 @@ namespace FreeCommerceDotNet.BLL.Concrete
     public class UserManager:IUserService
     {
         private IUserDal _userDal;
+        
 
         public UserManager()
         {
@@ -51,6 +52,22 @@ namespace FreeCommerceDotNet.BLL.Concrete
 
         public void Dispose()
         {
+        }
+
+        public ResetTicket SelectResetTicket(int userid, int ticketid)
+        {
+           return _userDal.SelectResetTicket(userid,ticketid);
+        }
+
+        public ServiceResult InsertResetTicket(int userid)
+        {
+            return ServiceHelper.FromDbResultToServiceResult(_userDal.InsertResetTicket(userid));
+        }
+
+        public ServiceResult UpdateResetTicket(int ticketid)
+        {
+            return ServiceHelper.FromDbResultToServiceResult(_userDal.UpdateResetTicket(ticketid));
+
         }
     }
 }
