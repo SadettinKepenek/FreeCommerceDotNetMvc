@@ -1,17 +1,15 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Net;
+﻿using FreeCommerceDotNet.BLL.Concrete;
+using FreeCommerceDotNet.Common.Concrete;
+using FreeCommerceDotNet.DAL.Concrete;
 using Microsoft.Owin.Security.OAuth;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Security;
-using FreeCommerceDotNet.Models.Util;
 
 namespace FreeCommerceDotNet.Models.WebApi
 {
-    public class WebApiProviderAuthorization: OAuthAuthorizationServerProvider
+    public class WebApiProviderAuthorization : OAuthAuthorizationServerProvider
     {
         /// Kullanımı
         /// PostMan ile siteurl.com/token adresine post isteği yapılır
@@ -33,42 +31,40 @@ namespace FreeCommerceDotNet.Models.WebApi
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             //Kullanıcının access_token alabilmesi için gerekli validation işlemlerini yapıyoruz.
-
-            string sqlQuery = "select * from Users where Username=@username and Password=@password";
-            SqlCommand cmd = new SqlCommand(sqlQuery);
-            cmd.Parameters.AddWithValue("@username", context.UserName);
-            cmd.Parameters.AddWithValue("@password", context.Password);
-            using (SqlConnection connection = new SqlConnection(Utilities.connectionString))
+            using (UserManager m = new UserManager(new UserRepository()))
             {
-                cmd.Connection = connection;
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                var user = m.SelectByFilter(new List<DBFilter>()
                 {
-                    if (reader.Read())
+                    new DBFilter()
+                {
+                        ParamName = "@username",ParamValue = context.UserName
+                },
+                    new  DBFilter()
                     {
-                        var roles = reader[4].ToString();
-                        ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
-                        identity.AddClaim(new Claim("sub", context.UserName));
-                        identity.AddClaim(new Claim(System.IdentityModel.Claims.ClaimTypes.Name, context.UserName));
-                        foreach (var role in roles.Split(';'))
-                        {
-                            identity.AddClaim(new Claim(ClaimTypes.Role, role));
-
-                        }
-
-                        context.Validated(identity);
-                        
-                        
+                        ParamName = "@password",ParamValue = context.Password
                     }
 
+                }).FirstOrDefault();
+                if (user != null)
+                {
+                    var roles = user.Role;
+                    ClaimsIdentity identity = new ClaimsIdentity(context.Options.AuthenticationType);
+                    identity.AddClaim(new Claim("sub", context.UserName));
+                    identity.AddClaim(new Claim(System.IdentityModel.Claims.ClaimTypes.Name, context.UserName));
+                    foreach (var role in roles.Split(';'))
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Role, role));
+
+                    }
+
+                    context.Validated(identity);
                 }
                 else
                 {
                     context.SetError("invalid_grant", "Kullanıcı adı veya şifre hatalı.");
+
                 }
-                connection.Close();
+
             }
 
 
