@@ -448,6 +448,7 @@
     <Content Include="assets\fcdnCss\addCardButtons.css" />
     <Content Include="assets\fcdnJs\productCompare.js" />
     <Content Include="assets\fcdnJs\productPageShoppingCart.js" />
+    <Content Include="assets\fcdnJs\searchProduct.js" />
     <Content Include="assets\fonts\feather\activity.svg" />
     <Content Include="assets\fonts\feather\airplay.svg" />
     <Content Include="assets\fonts\feather\alert-circle.svg" />
