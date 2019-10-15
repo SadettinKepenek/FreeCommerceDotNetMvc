@@ -1,6 +1,7 @@
 ﻿using FreeCommerceDotNet.BLL.Concrete;
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Entities.Concrete;
 using FreeCommerceDotNet.Models.ControllerModels;
 using System;
 using System.Collections.Generic;
@@ -46,19 +47,7 @@ namespace FreeCommerceDotNet.Controllers
                     {
                         Entities.Concrete.User user = selectByFilter.FirstOrDefault();
 
-                        var userRoles = user.Role;
-                        var authTicket = new FormsAuthenticationTicket(
-                            1,                             // version
-                            login.Username,                      // user name
-                            DateTime.Now,                  // created
-                            DateTime.Now.AddMinutes(20),   // expires
-                            login.rememberMe,                    // persistent?
-                            userRoles                     // can be used to store roles
-                        );
-
-                        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                        System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+                        AuthCookie(login, user);
                         if (String.IsNullOrEmpty(returnUrl))
                             returnUrl = "~/Home/Index";
                         return Redirect(returnUrl);
@@ -78,11 +67,61 @@ namespace FreeCommerceDotNet.Controllers
                 return View(login);
 
         }
+
+        private static void AuthCookie(LoginModel login, User user)
+        {
+            var userRoles = user.Role;
+            var authTicket = new FormsAuthenticationTicket(
+                1, // version
+                login.Username, // user name
+                DateTime.Now, // created
+                DateTime.Now.AddMinutes(20), // expires
+                login.rememberMe, // persistent?
+                userRoles // can be used to store roles
+            );
+
+            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+        }
+
         [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Security", null);
+        }
+
+        [HttpPost]
+        public ActionResult Register(LoginModel register,string returnUrl)
+        {
+            var user = new User()
+            {
+                Username = register.Username,
+                Password = register.Password,
+                Role = "Client",
+                EMail = register.EMail
+            };
+            using (UserManager m=new UserManager(new UserRepository()))
+            {
+                var result = m.Insert(user);
+                if (result.Message.Equals("Success"))
+                {
+                    register.rememberMe = true;
+                    AuthCookie(register,user);
+                    TempData["Message"] = "Üyeliğiniz başarıyla açıldı";
+                    using ()
+                    {
+                        
+                    }
+                    return RedirectToAction("Index", "Account");
+                }
+                else
+                {
+                    return View("Login",register);
+                }
+            }
+
         }
     }
 }
