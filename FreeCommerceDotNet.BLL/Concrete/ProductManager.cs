@@ -52,5 +52,10 @@ namespace FreeCommerceDotNet.BLL.Concrete
         public void Dispose()
         {
         }
+
+        public List<Product> SearchProduct(string productName)
+        {
+            return _productDal.SearchProduct(productName);
+        }
     }
 }

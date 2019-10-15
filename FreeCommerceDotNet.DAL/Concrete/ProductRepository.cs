@@ -334,6 +334,34 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return product;
         }
 
+        public List<Product> SearchProduct(string productName)
+        {
+            string query = "SP_SearchProduct";
+            using (var conn = db.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@ProductName", productName);
+                command.CommandType = CommandType.StoredProcedure;
+
+                DataTable result = db.DoQuery(command: command);
+                if (result.Rows.Count != 0)
+                {
+                    List<Product> searchResults = new List<Product>();
+                    foreach (DataRow dr in result.Rows)
+                    {
+                        Product p = new Product();
+                        p.ProductId = (int)dr["ProductId"];
+                        p.ProductName = dr["ProductName"] as string;
+                        p.ImageUrl = dr["ProductImageUrl"] as string;
+                        p.ProductDescription = dr["ProductDescription"] as string;
+                        searchResults.Add(p);
+                    }
+                    return searchResults;
+                }
+            }
+            return null;
+        }
+
         #endregion
     }
 }

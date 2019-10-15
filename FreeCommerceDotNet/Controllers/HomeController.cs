@@ -16,7 +16,7 @@ using System.Diagnostics;
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.Models;
 using Newtonsoft.Json;
-
+using FuzzyString;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -216,9 +216,17 @@ namespace FreeCommerceDotNet.Controllers
             {
                 try
                 {
-                    query = query.Replace(" ", String.Empty).ToLower();
-                    Debug.WriteLine(query);
-                    var result = manager.SelectAll().Where(x => x.ProductName.Replace(" ", String.Empty).ToLower() == query || x.ProductName.Replace(" ", String.Empty).ToLower().Contains(query)).ToList();
+                    
+
+                    var result = manager.SearchProduct(query);
+                    for (int i = 0; i < result.Count-1; i++)
+                    {
+                        if (!MatchSourceAndTarget(result[i].ProductName, query))
+                        {
+                            result.RemoveAt(i);
+                        }
+                    }
+                    
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception e)
@@ -260,6 +268,16 @@ namespace FreeCommerceDotNet.Controllers
             }
           
             return View();
+        }
+        private static bool MatchSourceAndTarget(string target, string source)
+        {
+            List<FuzzyStringComparisonOptions> options = new List<FuzzyStringComparisonOptions>();
+            options.Add(FuzzyStringComparisonOptions.UseOverlapCoefficient);
+            options.Add(FuzzyStringComparisonOptions.UseLongestCommonSubsequence);
+            options.Add(FuzzyStringComparisonOptions.UseLongestCommonSubstring);
+            FuzzyStringComparisonTolerance tolerance = FuzzyStringComparisonTolerance.Strong;
+            bool result = source.ApproximatelyEquals(target, tolerance, options.ToArray());
+            return result;
         }
 
     }
