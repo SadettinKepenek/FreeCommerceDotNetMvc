@@ -61,6 +61,8 @@ namespace FreeCommerceDotNet.Controllers
                         System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
                         if (String.IsNullOrEmpty(returnUrl))
                             returnUrl = "~/Home/Index";
+
+
                         return Redirect(returnUrl);
 
 
@@ -68,6 +70,7 @@ namespace FreeCommerceDotNet.Controllers
                     else
                     {
                         ModelState.AddModelError("LoginAttempt", "Username or Password are Invalid.");
+
                         return View(login);
                     }
                 }
