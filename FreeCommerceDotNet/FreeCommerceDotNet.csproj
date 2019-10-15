@@ -384,17 +384,9 @@
     </Compile>
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CheckoutModel.cs" />
-    <Compile Include="Models\Interfaces\ILogger.cs" />
-    <Compile Include="Models\ControllerModels\Security.cs" />
+    <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Models\ProductCompareModel.cs" />
-    <Compile Include="Models\Util\DbForeignKeyModel.cs" />
-    <Compile Include="Models\Util\DeleteResponseModel.cs" />
-    <Compile Include="Models\Util\ListModelBindingExtensions.cs" />
-    <Compile Include="Models\Util\LogEntry.cs" />
-    <Compile Include="Models\Util\LoggerExtensions.cs" />
-    <Compile Include="Models\Util\Loggers.cs" />
-    <Compile Include="Models\Util\Utilities.cs" />
-    <Compile Include="Models\Abstracts\HttpResponseModel.cs" />
+    <Compile Include="Models\HttpResponseModel.cs" />
     <Compile Include="Models\WebApi\Helper\WebAPIHelper.cs" />
     <Compile Include="Models\WebApi\WebApiAuthorize.cs" />
     <Compile Include="Models\WebApi\ResponseModels\UnauthorizeResponseModel.cs" />
