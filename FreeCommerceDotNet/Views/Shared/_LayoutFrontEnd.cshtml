@@ -288,10 +288,9 @@
                                                                                         var urlProduct;
                                                                                         for (var i = 0; i < data.length; i++) {
                                                                                             urlProduct = location.protocol + '//' + location.host + "/Home/Product/"+data[i].ProductId;
-                                                                                            $("#searchResults").append('<a href = "' + urlProduct + '" class="list-group-item"><div class="row" >'
-                                                                                                + '<div class="col-md-4">' + data[i].ProductName + '</div>' +
-                                                                                                + '<div class="col-md-4">' + data[i].Description + '</div>' +
-                                                                                                '</div></a><hr/>');
+                                                                                            $("#searchResults").append('<a href = "' + urlProduct + '" class="list-group-item">'+data[i].ProductName+'</a><hr/>');
+
+                                                                                               
                                                                                         }
                                                                                     }
                                                                                 });

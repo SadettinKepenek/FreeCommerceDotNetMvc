@@ -213,7 +213,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     query = query.Replace(" ", String.Empty).ToLower();
                     Debug.WriteLine(query);
-                    var result = manager.SelectAll().Where(x => x.ProductName.Replace(" ", String.Empty).ToLower() == query).ToList();
+                    var result = manager.SelectAll().Where(x => x.ProductName.Replace(" ", String.Empty).ToLower() == query || x.ProductName.Replace(" ", String.Empty).ToLower().Contains(query)).ToList();
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception e)
