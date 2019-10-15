@@ -382,16 +382,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Interfaces\ILogger.cs" />
-    <Compile Include="Models\ControllerModels\Security.cs" />
-    <Compile Include="Models\Util\DbForeignKeyModel.cs" />
-    <Compile Include="Models\Util\DeleteResponseModel.cs" />
-    <Compile Include="Models\Util\ListModelBindingExtensions.cs" />
-    <Compile Include="Models\Util\LogEntry.cs" />
-    <Compile Include="Models\Util\LoggerExtensions.cs" />
-    <Compile Include="Models\Util\Loggers.cs" />
-    <Compile Include="Models\Util\Utilities.cs" />
-    <Compile Include="Models\Abstracts\HttpResponseModel.cs" />
+    <Compile Include="Models\CartModel.cs" />
+    <Compile Include="Models\CheckoutModel.cs" />
+    <Compile Include="Models\SecurityModel.cs" />
+    <Compile Include="Models\ProductCompareModel.cs" />
+    <Compile Include="Models\HttpResponseModel.cs" />
     <Compile Include="Models\WebApi\Helper\WebAPIHelper.cs" />
     <Compile Include="Models\WebApi\WebApiAuthorize.cs" />
     <Compile Include="Models\WebApi\ResponseModels\UnauthorizeResponseModel.cs" />
@@ -451,6 +446,7 @@
     <Content Include="assets\css\themify-icons.css" />
     <Content Include="assets\css\themify.css" />
     <Content Include="assets\fcdnCss\addCardButtons.css" />
+    <Content Include="assets\fcdnJs\productCompare.js" />
     <Content Include="assets\fcdnJs\productPageShoppingCart.js" />
     <Content Include="assets\fonts\feather\activity.svg" />
     <Content Include="assets\fonts\feather\airplay.svg" />
@@ -3800,6 +3796,11 @@
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Account\MyCart.cshtml" />
     <Content Include="Views\Account\MyWishList.cshtml" />
+    <Content Include="Views\Account\MyOrders.cshtml" />
+    <Content Include="Views\Account\OrderDetail.cshtml" />
+    <Content Include="Views\Account\Checkout.cshtml" />
+    <Content Include="Views\Account\OrderSuccess.cshtml" />
+    <Content Include="Views\Home\ProductCompare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,186 @@
+﻿@using FreeCommerceDotNet.Entities.Concrete
+@using FreeCommerceDotNet.Models
+@model CheckoutModel
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+@{
+    List<Shipping> shippings = ViewBag.ShippingMethods;
+    List<Payment> payments = ViewBag.PaymentMethods;
+
+}
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Check-out</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Account">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Check-out</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="checkout-page">
+            <div class="checkout-form">
+                @using (Html.BeginForm("Checkout", "Account", FormMethod.Post))
+                {
+                    for (int i = 0; i < Model.CartList.Count; i++)
+                    {
+                        @Html.HiddenFor(model => Model.CartList[i].productId)
+                        @Html.HiddenFor(model => Model.CartList[i].productCount)
+                        @Html.HiddenFor(model => Model.CartList[i].productName)
+                        @Html.HiddenFor(model => Model.CartList[i].productPrice)
+                        @Html.HiddenFor(model => Model.CartList[i].productImageUrl)
+                    }
+
+                    @Html.HiddenFor(x => x.Customer.Address1)
+                    @Html.HiddenFor(x => x.Customer.Address2)
+                    @Html.HiddenFor(x => x.Customer.TaxAddress)
+                    @Html.HiddenFor(x => x.Customer.CustomerId)
+                    @Html.HiddenFor(x => x.Customer.UserId)
+                    @Html.HiddenFor(x => x.Customer.Firstname)
+                    @Html.HiddenFor(x => x.Customer.Lastname)
+                    @Html.HiddenFor(x => x.Customer.Email)
+                    @Html.HiddenFor(x => x.Customer.Telephone)
+                    @Html.HiddenFor(x => x.Customer.SegmentId)
+                    @Html.HiddenFor(x => x.Customer.Segment.SegmentName)
+                    @Html.HiddenFor(x => x.Customer.Segment.SegmentId)
+                    @Html.HiddenFor(x => x.Customer.Status)
+                    @Html.HiddenFor(x => x.Customer.User.UserId)
+                    @Html.HiddenFor(x => x.Customer.User.Username)
+                    <div class="row">
+                        <h3>@TempData["Message"]</h3>
+                        <div class="col-lg-6 col-sm-12 col-xs-12">
+                            <div class="checkout-title">
+                                <h3>Billing Details</h3>
+                            </div>
+                            <div class="row check-out">
+                                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                    <div class="field-label">First Name</div>
+                                    @Html.TextBoxFor(x => x.Customer.Firstname, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                    <div class="field-label">Last Name</div>
+                                    @Html.TextBoxFor(x => x.Customer.Lastname, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                    <div class="field-label">Phone</div>
+                                    @Html.TextBoxFor(x => x.Customer.Telephone, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                    <div class="field-label">Email Address</div>
+                                    @Html.TextBoxFor(x => x.Customer.Email, new {disabled = "disabled"})
+                                </div>
+
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <div class="field-label">Billing Address</div>
+                                    @Html.TextBoxFor(x => x.Customer.Address1, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <div class="field-label">Shipping Address</div>
+                                    @Html.TextBoxFor(x => x.Customer.Address2, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <div class="field-label">Tax Address</div>
+                                    @Html.TextBoxFor(x => x.Customer.TaxAddress, new {disabled = "disabled"})
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <div class="field-label">Your Segment</div>
+                                    @Html.TextBoxFor(x => x.Customer.Segment.SegmentName, new {disabled = "disabled"})
+                                </div>
+                                @*<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <input type="checkbox" name="shipping-option" id="account-option"> &ensp;
+                                        <label for="account-option">Create An Account?</label>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-xs-12">
+                            <div class="checkout-details">
+                                <div class="order-box">
+                                    <div class="title-box">
+                                        <div>Product <span>Total</span></div>
+                                    </div>
+                                    <ul class="qty">
+                                        @foreach (CartModel cart in Model.CartList)
+                                        {
+                                            <li>@cart.productName × @cart.productCount <span>@(cart.productCount * cart.productPrice) ₺</span></li>
+                                        }
+
+
+                                    </ul>
+                                    <ul class="sub-total">
+                                        @{
+                                            var genelToplam = 0.0;
+                                            foreach (CartModel cartModel in Model.CartList)
+                                            {
+                                                genelToplam += cartModel.productCount * cartModel.productPrice;
+                                            }
+                                        }
+                                        <li>Subtotal <span class="count">@genelToplam ₺</span></li>
+                                        <li>
+                                            Shipping
+                                            <div class="shipping">
+                                                @foreach (Shipping shipping in shippings)
+                                                {
+                                                    <div class="shopping-option">
+                                                        <input data-val="true" data-val-number="The field ShippingId must be a number." data-val-required="ShippingId alanı gereklidir." id="ShippingId_@shipping.ShippingId" name="ShippingId" type="radio" value="@shipping.ShippingId"/>
+                                                        <label for="ShippingId_@shipping.ShippingId">@shipping.ShippingName</label>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                    <ul class="total">
+                                        <li>Total <span class="count">@genelToplam ₺</span></li>
+                                    </ul>
+                                </div>
+                                <div class="payment-box">
+                                    <div class="upper-box">
+                                        <div class="payment-options">
+                                            <h3>Payment Method</h3>
+                                            <hr/>
+                                            <ul>
+                                                @foreach (Payment payment in payments)
+                                                {
+                                                    <li>
+                                                        <div class="radio-option">
+                                                            <input data-val="true" data-val-number="The field PaymentId must be a number." data-val-required="PaymentId alanı gereklidir." id="PaymentId_@payment.PaymentId" name="PaymentId" type="radio" value="@payment.PaymentId"/>
+                                                            <label for="PaymentId_@payment.PaymentId">@payment.PaymentName<span class="small-text">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span></label>
+                                                        </div>
+                                                    </li>
+                                                }
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-solid btn">Place Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section end -->

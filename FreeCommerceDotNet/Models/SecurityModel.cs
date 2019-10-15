@@ -2,7 +2,7 @@
 
 namespace FreeCommerceDotNet.Models.ControllerModels
 {
-    public class Security
+    public class SecurityModel
     {
         
     }

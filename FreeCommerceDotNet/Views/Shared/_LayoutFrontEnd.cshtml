@@ -41,6 +41,8 @@
 
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/color1.css" media="screen" id="color">
+    <script src="~/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="~/assets/fcdnJs/CookieOperations.js"></script>
 
 
 </head>
@@ -52,12 +54,21 @@
         @:<i class="fa fa-user" aria-hidden="true"></i>Sn. @HttpContext.Current.User.Identity.Name
         <ul class="onhover-show-div">
 
+
             <li>
-                <a href="~/Security/Logout" data-lng="es">Logout</a>
+                <a href="~/Account/">
+                    <i class="fa fa-user" aria-hidden="true">
+
+                    </i> my Account
+                </a>
             </li>
+            <li>
+                <a href="~/Security/Logout" data-lng="es">
+                    <i class="fa fa-sign-out" aria-hidden="true">
 
-
-
+                    </i> Logout
+                </a>
+            </li>
         </ul>
     }
     else
@@ -90,7 +101,7 @@
     foreach (Category categoryBm in categories)
     {
         <li>
-            <a href="#">@categoryBm.CategoryName</a>
+            <a href="~/Home/Category/@categoryBm.CategoryId">@categoryBm.CategoryName</a>
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul class="mega-menu clothing-menu">
@@ -101,14 +112,14 @@
                             {
                                 <div class="col-xl-4">
                                     <div class="link-section">
-                                        <h5><a href="#">@category.CategoryName</a></h5>
+                                        <h5><a href="~/Home/Category/@category.CategoryId">@category.CategoryName</a></h5>
                                         @if (category.SubCategories.Count != 0)
                                         {
 
                                             <ul>
                                                 @foreach (var sub in category.SubCategories)
                                                 {
-                                                    <li><a href="#">@sub.CategoryName</a></li>
+                                                    <li><a href="~/Home/Category/@sub.CategoryId">@sub.CategoryName</a></li>
                                                 }
                                             </ul>
                                         }
@@ -133,7 +144,7 @@
     foreach (var categoryBm in categories)
     {
         <li>
-            <a href="#">@categoryBm.CategoryName</a>
+            <a href="~/Home/Category/@categoryBm.CategoryId">@categoryBm.CategoryName</a>
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul>
@@ -141,13 +152,13 @@
                     @foreach (var category in categoryBm.SubCategories)
                     {
                         <li>
-                            <a href="#">@category.CategoryName</a>
+                            <a href="~/Home/Category/@category.CategoryId">@category.CategoryName</a>
                             @if (category.SubCategories.Count != 0)
                             {
                                 <ul>
                                     @foreach (Category categorySubCategory in category.SubCategories)
                                     {
-                                        <li> <a href="#">@categorySubCategory.CategoryName</a></li>
+                                        <li> <a href="~/Home/Category/@categorySubCategory.CategoryId">@categorySubCategory.CategoryName</a></li>
                                     }
                                 </ul>
                             }
@@ -188,7 +199,8 @@
                     </div>
                     <div class="col-lg-6 text-right">
                         <ul class="header-dropdown">
-                            <li class="mobile-wishlist"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</a></li>
+                            <li class="mobile-wishlist"><a href="~/Account/MyWishList"><i class="fa fa-heart" aria-hidden="true"></i>my wishlist</a></li>
+                            <li class="mobile-wishlist"><a href="~/Account/MyCart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> my cart <span><small id="cartSubTotalText">0.00 ₺</small></span></a></li>
                             <li class="onhover-dropdown mobile-account">
 
                                 @GetAccountLogin()
@@ -260,10 +272,10 @@
                                                                                 <div class="list-group" id="searchResults">
                                                                                 </div>
                                                                             </div>
-                                                                            
+
                                                                             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                                                         </form>
-                                                                        
+
 
                                                                         <script type="text/javascript">
                                                                             var searchQuery;
@@ -1218,6 +1230,21 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
+    </script>
+    <script type="text/javascript">
+        var Items = JSON.parse(getCookie("cartListCookie"));
+       
+        var subtotalTextLayout = $('#cartSubTotalText');
+        var subtotal = 0.0;
+        if (Items == null) {
+            subtotalTextLayout.html('0.00 ₺');
+        } else {
+            for (var i = 0; i < Items.length; i++) {
+                subtotal += Items[i].productCount * Items[i].productPrice;
+            }
+            subtotalTextLayout.html(subtotal + ' ₺');
+        }
+        
     </script>
 
 </body>

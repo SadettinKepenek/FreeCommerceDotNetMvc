@@ -13,6 +13,9 @@ using ProductPriceManager = FreeCommerceDotNet.BLL.Concrete.ProductPriceManager;
 using FreeCommerceDotNet.DAL.Concrete;
 using System.Web.Services;
 using System.Diagnostics;
+using FreeCommerceDotNet.Common.Concrete;
+using FreeCommerceDotNet.Models;
+using Newtonsoft.Json;
 
 
 namespace FreeCommerceDotNet.Controllers
@@ -49,7 +52,7 @@ namespace FreeCommerceDotNet.Controllers
 
 
         }
-        private bool permReview(int prodouctId)
+        private bool permReview(int productId)
         {
             bool isAuth = User.Identity.IsAuthenticated;
             bool hasReview = false;
@@ -72,7 +75,7 @@ namespace FreeCommerceDotNet.Controllers
                 var userOrders = new OrderManager(new OrderMasterRepository()).SelectByFilter(filters);
                 if (userOrders != null)
                 {
-                    perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == prodouctId));
+                    perm = userOrders.Any(x => x != null && x.OrderDetails != null && x.OrderDetails.Any(y => y != null && y.ProductId == productId));
 
                 }
                 using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
@@ -207,6 +210,8 @@ namespace FreeCommerceDotNet.Controllers
         }
         public JsonResult GetSearchResults(string query)
         {
+            /// Veritabanı tarafında eğer productname gönderilirse bir kaç filtreleme işleminin yapılması gerek
+            /// Belki bunun için ayrıca bir procedüre yazılabilir.
             using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
                 try
@@ -223,6 +228,39 @@ namespace FreeCommerceDotNet.Controllers
             }
         }
 
+        public ActionResult ProductCompare()
+        {
+            var httpCookie = Request.Cookies.Get("compareList");
+            if (httpCookie != null)
+            {
+                var productCompareJsonModels=JsonConvert.DeserializeObject<List<ProductCompareJSONModel>>(httpCookie.Value);
+                
+                var productCompareModel=new ProductCompareModel();
+                productCompareModel.Products=new List<Product>();
+
+
+                using (ProductManager p=new ProductManager(new ProductRepository()))
+                {
+                    using (ReviewManager m=new ReviewManager(new ReviewRepository()))
+                    {
+                        for (int i = 0; i < productCompareJsonModels.Count; i++)
+                        {
+                            int productId = productCompareJsonModels[i].productId;
+                            var filters = new List<DBFilter>();
+                            filters.Add(new DBFilter(){ParamName = "@ProductId",ParamValue = productId});
+                            Product item = p.SelectById(productId);
+                            item.Reviews = m.SelectByFilter(filters);
+                            productCompareModel.Products.Add(item);
+                        }
+                    }
+                   
+                }
+
+                return View(productCompareModel);
+            }
+          
+            return View();
+        }
 
     }
 }
