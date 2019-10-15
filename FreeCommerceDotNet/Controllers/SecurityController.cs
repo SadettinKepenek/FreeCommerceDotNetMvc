@@ -2,6 +2,7 @@
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
 using FreeCommerceDotNet.Entities.Concrete;
+using FreeCommerceDotNet.Models;
 using FreeCommerceDotNet.Models.ControllerModels;
 using System;
 using System.Collections.Generic;
@@ -94,35 +95,65 @@ namespace FreeCommerceDotNet.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Security", null);
         }
-
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Register()
+        {
+            using (SegmentManager segmentManager = new SegmentManager(new SegmentRepository()))
+            {
+                ViewBag.Segments = segmentManager.SelectAll();
+            }
+            return View(new RegisterModel());
+        }
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Register(LoginModel register,string returnUrl)
+        public ActionResult Register(RegisterModel register)
         {
             var user = new User()
             {
-                Username = register.Username,
-                Password = register.Password,
+                Username = register.Customer.Email,
+                Password = register.User.Password,
                 Role = "Client",
-                EMail = register.EMail
+                EMail = register.Customer.Email
             };
-            using (UserManager m=new UserManager(new UserRepository()))
+            using (UserManager userManager = new UserManager(new UserRepository()))
             {
-                var result = m.Insert(user);
-                if (result.Message.Equals("Success"))
+
+                var userInsertResult = userManager.Insert(user);
+                if (userInsertResult.Message.Equals("Success"))
                 {
-                    register.rememberMe = true;
-                    AuthCookie(register,user);
-                    TempData["Message"] = "Üyeliğiniz başarıyla açıldı";
-                    using ()
+                    using (CustomerManager customerManager = new CustomerManager(new CustomerRepositorycs()))
                     {
-                        
+                        register.Customer.User = user;
+                        register.Customer.UserId = userInsertResult.Id;
+                        register.Customer.Password = user.Password;
+                        var customerInsertResult = customerManager.Insert(register.Customer);
+                        if (customerInsertResult.Message.Equals("Success"))
+                        {
+                            AuthCookie(new LoginModel()
+                            {
+                                Username = register.User.Username,
+                                Roles = "Client",
+                                Password = register.User.Password,
+                                EMail = register.User.EMail
+                            }, user);
+                            TempData["Message"] = "Üyeliğiniz başarıyla açıldı";
+                            using (OutlookMailManager mailManager = new OutlookMailManager())
+                            {
+                                mailManager.Send(register.Customer.Email, "Welcome To FreeCommerceDotNet", EmailHelper.RegisterSuccessMail());
+                            }
+                            return RedirectToAction("Index", "Account");
+                        }
+                        // Else
+                        userManager.Delete(userInsertResult.Id);
                     }
+                    //Else
+
                     return RedirectToAction("Index", "Account");
                 }
-                else
-                {
-                    return View("Login",register);
-                }
+
+                return View("Login", register);
             }
 
         }
