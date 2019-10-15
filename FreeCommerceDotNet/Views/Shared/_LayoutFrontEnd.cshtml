@@ -258,7 +258,7 @@
                                     <div class="icon-nav">
                                         <ul>
                                             <li class="onhover-div mobile-search">
-                                                <div><img alt="" src="~/assets/images/icon/layout4/search.png" onclick="openSearch()" class="img-fluid blur-up lazyload"> <i class="ti-search" onclick="openSearch()"></i></div>
+                                                <div><img alt="" src="~/assets/images/icon/layout4/search.png" onclick="openSearch()" class="img-fluid blur-up lazyload"> <i class="ti-search" onclick="openSearch(); $('#searchResults').empty()"></i></div>
                                                 <div id="search-overlay" class="search-overlay">
                                                     <div>
                                                         <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
@@ -266,15 +266,25 @@
                                                             <div class="container">
                                                                 <div class="row">
                                                                     <div class="col-xl-12">
-                                                                        <form>
-                                                                            <div class="form-group">
-                                                                                <input type="text" class="form-control" id="exampleInputPassword1" oninput="searchProduct(this)" placeholder="Search a Product" maxlength="50">
-                                                                                <div class="list-group" id="searchResults">
-                                                                                </div>
-                                                                            </div>
 
-                                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                                                        </form>
+                                                                        <input type="text" class="form-control" id="exampleInputPassword1" oninput="searchProduct(this)" placeholder="Search a Product" maxlength="50">
+
+                                                                        <div class="container">
+                                                                            <table class="table" id="searchResultTable">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th scope="col">#</th>
+                                                                                        <th scope="col">Product Name</th>
+                                                                                        <th scope="col">Description</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody id="searchResults">
+                                                                                </tbody>
+                                                                            </table>
+
+
+                                                                        </div>
+
 
 
                                                                         <script type="text/javascript">
@@ -282,12 +292,21 @@
                                                                             function searchProduct(inputField) {
                                                                                 window.searchQuery = inputField.value;
                                                                                 console.log(window.searchQuery)
-                                                                                getSearhResults();
+                                                                                $("#searchResultTable tbody").empty();
+                                                                                if (inputField.value === '') {
+                                                                                    $("#searchResultTable tbody").empty();
 
+                                                                                }
+                                                                                else {
+
+                                                                                    getSearhResults();
+                                                                                }
 
                                                                             }
+
                                                                             function getSearhResults() {
-                                                                                $("#searchResults").empty();
+                                                                                $("#searchResultTable tbody").empty();
+
                                                                                 var url = location.protocol + '//' + location.host + "/Home/GetSearchResults";
                                                                                 $.ajax({
                                                                                     type: 'GET',
@@ -296,13 +315,25 @@
                                                                                     data: { query: window.searchQuery },
                                                                                     dataType: 'json',
                                                                                     success: function (data) {
-                                                                                        console.log(data);
+                                                                                        $("#searchResultTable tbody").empty();
+
                                                                                         var urlProduct;
                                                                                         for (var i = 0; i < data.length; i++) {
-                                                                                            urlProduct = location.protocol + '//' + location.host + "/Home/Product/"+data[i].ProductId;
-                                                                                            $("#searchResults").append('<a href = "' + urlProduct + '" class="list-group-item">'+data[i].ProductName+'</a><hr/>');
+                                                                                            urlProduct = location.protocol + '//' + location.host + "/Home/Product/" + data[i].ProductId;
 
-                                                                                               
+                                                                                            var htmlString = '';
+                                                                                            if (i < 4) {
+                                                                                                htmlString = '<tr><td scope="row" class="align-middle"><img class="img-fluid" src=' + data[i].ImageUrl + ' height="100" width="100"/></td><td class="align-middle"><a href=' + urlProduct + '>' + data[i].ProductName + '</a></td><td class="align-middle">' + data[i].ProductDescription.substring(0, 30) + '</td></tr>';
+                                                                                                $('#searchResults').append(htmlString);
+
+
+                                                                                            }
+                                                                                            else {
+                                                                                                
+                                                                                                break;
+                                                                                            }
+
+
                                                                                         }
                                                                                     }
                                                                                 });
@@ -1233,7 +1264,7 @@
     </script>
     <script type="text/javascript">
         var Items = JSON.parse(getCookie("cartListCookie"));
-       
+
         var subtotalTextLayout = $('#cartSubTotalText');
         var subtotal = 0.0;
         if (Items == null) {
@@ -1244,7 +1275,7 @@
             }
             subtotalTextLayout.html(subtotal + ' ₺');
         }
-        
+
     </script>
 
 </body>
