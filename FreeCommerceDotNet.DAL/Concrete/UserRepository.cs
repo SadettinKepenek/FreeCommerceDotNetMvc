@@ -143,23 +143,22 @@ namespace FreeCommerceDotNet.DAL.Concrete
             return null;
         }
 
-        public ResetTicket SelectResetTicket(int userid, int ticketid)
+        public ResetTicket SelectResetTicket(int ticketid)
         {
             string query = "SP_GetResetTickets";
             using (var connection = database.CreateConnection())
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@UserId",userid);
                 command.Parameters.AddWithValue("@TicketId",ticketid);
                 DataTable datatable = database.DoQuery(command: command);
                 var rows = datatable.Rows;
                 ResetTicket ticket = new ResetTicket();
                 ticket.TicketId = ticketid;
-                ticket.UserId = userid;
+                ticket.UserId = (int)rows[0]["UserId"];
                 ticket.tokenUsed = (bool)rows[0]["tokenUsed"];
                 ticket.tokenHash = (Guid)rows[0]["tokenHash"];
-                ticket.exprationDate = rows[0]["exprationDate"] as string;
+                ticket.exprationDate = rows[0]["expirationDate"] as string;
                 return ticket;
             }
         }

@@ -54,9 +54,9 @@ namespace FreeCommerceDotNet.BLL.Concrete
         {
         }
 
-        public ResetTicket SelectResetTicket(int userid, int ticketid)
+        public ResetTicket SelectResetTicket( int ticketid)
         {
-           return _userDal.SelectResetTicket(userid,ticketid);
+           return _userDal.SelectResetTicket(ticketid);
         }
 
         public ServiceResult InsertResetTicket(int userid)

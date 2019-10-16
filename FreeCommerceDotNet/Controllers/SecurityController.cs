@@ -1,6 +1,8 @@
 ﻿using FreeCommerceDotNet.BLL.Concrete;
 using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.DAL.Concrete;
+using FreeCommerceDotNet.Entities.Concrete;
+using FreeCommerceDotNet.Models;
 using FreeCommerceDotNet.Models.ControllerModels;
 using System;
 using System.Collections.Generic;
@@ -87,5 +89,39 @@ namespace FreeCommerceDotNet.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Security", null);
         }
+        [HttpGet]
+        public ActionResult ForgetPassword()
+        {
+
+            return View(new ForgetPasswordModel());
+        }
+        [HttpPost]
+        public ActionResult ForgetPassword(ForgetPasswordModel forgetPasswordModel)
+        {
+            var varifyUrl = "";
+            using (UserManager userManager = new UserManager(new UserRepository()))
+            {
+                var user = userManager.SelectByFilter(new List<DBFilter>(){
+                    new DBFilter()
+                    {
+                        ParamName = "@email",
+                        ParamValue = forgetPasswordModel.Email
+                    }
+                }
+                 ).FirstOrDefault();
+                var ticketid = userManager.InsertResetTicket(user.UserId).Id;
+                var token = userManager.SelectResetTicket(ticketid).tokenHash;
+
+                var url = "http://" + Request.Url.Host +":"+Request.Url.Port+ "/Home/ChangePassword?ticketid="+ticketid+"&token="+token;
+                varifyUrl = "<a href = '" + url + "'>'" + url + "'</a>";
+            }
+            using (OutlookMailManager mailManager = new OutlookMailManager())
+            {
+                mailManager.Send("sadettin.kepenek@hotmail.com", "Change Password", "Şifrenizi yeniden oluşturmak için linke bağlantıya tıklayın:'" + varifyUrl + "'");
+                TempData["MailMessage"] = "Lütfen e posta adresinizi kontrol edin";
+            }
+            return View();
+        }
+
     }
 }

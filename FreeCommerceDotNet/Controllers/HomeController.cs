@@ -17,6 +17,7 @@ using FreeCommerceDotNet.Common.Concrete;
 using FreeCommerceDotNet.Models;
 using Newtonsoft.Json;
 using FuzzyString;
+using FreeCommerceDotNet.Entities.Concrete;
 
 namespace FreeCommerceDotNet.Controllers
 {
@@ -278,6 +279,45 @@ namespace FreeCommerceDotNet.Controllers
             FuzzyStringComparisonTolerance tolerance = FuzzyStringComparisonTolerance.Strong;
             bool result = source.ApproximatelyEquals(target, tolerance, options.ToArray());
             return result;
+        }
+        [HttpGet,ActionName("Changepassword")]
+        public ActionResult ChangePassword(int ticketId, Guid token)
+        {
+            using (UserManager manager = new UserManager(new UserRepository()))
+            {
+                var ticket = manager.SelectResetTicket(ticketId);
+                //token kullanılmışsa
+                if (ticket.tokenUsed == true)
+                {
+                    return RedirectToAction("ForgetPassword", "Security");
+                }
+                else
+                {
+                    //token'in süresi geçmişse
+                    string today = DateTime.Today.ToString("dd-MM-yyyy");
+                    if (!today.Equals(ticket.exprationDate))
+                    {
+                        return RedirectToAction("ForgetPassword", "Security");
+                    }
+                    else
+                    {
+                        ResetTicket resetTicket = new ResetTicket();
+                        resetTicket = ticket;
+                        resetTicket.tokenUsed = true;
+                        manager.UpdateResetTicket(ticketId);
+                        return View(manager.SelectById(resetTicket.UserId));
+                    }
+                }
+            }
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(User user)
+        {
+            using (UserManager manager = new UserManager(new UserRepository()))
+            {
+                manager.Update(user);
+            }
+            return RedirectToAction("Index", "Security");
         }
 
     }
