@@ -277,6 +277,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -384,7 +385,11 @@
     </Compile>
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CheckoutModel.cs" />
+
     <Compile Include="Models\ForgetPasswordModel.cs" />
+
+    <Compile Include="Models\RegisterModel.cs" />
+
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Models\ProductCompareModel.cs" />
     <Compile Include="Models\HttpResponseModel.cs" />
@@ -3740,7 +3745,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -3803,8 +3810,12 @@
     <Content Include="Views\Account\Checkout.cshtml" />
     <Content Include="Views\Account\OrderSuccess.cshtml" />
     <Content Include="Views\Home\ProductCompare.cshtml" />
+
     <Content Include="Views\Security\ForgetPassword.cshtml" />
     <Content Include="Views\Home\ChangePassword.cshtml" />
+
+    <Content Include="Views\Security\Register.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
