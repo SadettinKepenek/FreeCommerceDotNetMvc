@@ -5,7 +5,10 @@ using FreeCommerceDotNet.Common.Abstract;
 
 namespace FreeCommerceDotNet.Common.Concrete
 {
-    public class OutlookMailManager:IEmailProvider, IDisposable
+
+    public class OutlookMailManager:IEmailProvider,IDisposable
+
+
     {
         private string SmtpUsername { get; }
         private string SmtpPassword { get; }
@@ -52,6 +55,7 @@ namespace FreeCommerceDotNet.Common.Concrete
 
         public void Dispose()
         {
+
         }
     }
 }

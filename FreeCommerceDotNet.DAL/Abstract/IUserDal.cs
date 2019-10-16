@@ -10,7 +10,7 @@ namespace FreeCommerceDotNet.DAL.Abstract
 {
     public interface IUserDal : IRepository<User>
     {
-        ResetTicket SelectResetTicket(int userid, int ticketid);
+        ResetTicket SelectResetTicket(int ticketid);
         DBResult InsertResetTicket(int userid);
         DBResult UpdateResetTicket(int ticketid);
 
