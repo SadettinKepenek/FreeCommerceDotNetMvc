@@ -142,7 +142,18 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("MyWishList", "Account");
         }
-
+         public ActionResult AddWishList(int productId,int customerId)
+        {
+            using (WishlistManager manager = new WishlistManager(new WishlistRepository()))
+            {
+                Wish wish = new Wish();
+                wish.ProductId = productId;
+                wish.CustomerId = customerId;
+                wish.WishDate = DateTime.Now.ToString("dd/MM/yyyy");
+                manager.Insert(wish);
+            }
+            return RedirectToAction("MyWishList","Account");
+        }
         public ActionResult MyOrders()
         {
             if (this.customer == null)

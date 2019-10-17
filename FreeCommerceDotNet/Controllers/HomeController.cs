@@ -320,5 +320,10 @@ namespace FreeCommerceDotNet.Controllers
             return RedirectToAction("Index", "Security");
         }
 
+       /* public ActionResult AddWishList()
+        {
+            return RedirectToAction("Wish");
+        }*/
+
     }
 }

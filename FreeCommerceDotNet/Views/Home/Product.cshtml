@@ -176,8 +176,8 @@
                                     <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                     <li><a href="#"><i class="fa fa-rss"></i></a></li>
                                 </ul>
-                                <form class="d-inline-block">
-                                    <button class="wishlist-btn"><i class="fa fa-heart"></i><span class="title-font">Add To WishList</span></button>
+                                <form class="d-inline-block">                  
+                                    <a class="wishlist-btn" href="@Url.Action("AddWishList","Account",new {productId = Model.ProductId,customerId =  ViewBag.CustomerId})"><i class="fa fa-heart"></i><span class="title-font">Add To WishList</span></a>
                                 </form>
                             </div>
                         </div>
