@@ -46,6 +46,7 @@
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICategoryService.cs" />
     <Compile Include="Abstract\ICustomerService.cs" />
+    <Compile Include="Abstract\IInvoiceService.cs" />
     <Compile Include="Abstract\IOrderDetailService.cs" />
     <Compile Include="Abstract\IOrderMasterService.cs" />
     <Compile Include="Abstract\IOrderReturnService.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Concrete\AttributeManager.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\CustomerManager.cs" />
+    <Compile Include="Concrete\InvoiceManager.cs" />
     <Compile Include="Concrete\OrderDetailManager.cs" />
     <Compile Include="Concrete\OrderMasterManager.cs" />
     <Compile Include="Concrete\ReviewManager.cs" />
