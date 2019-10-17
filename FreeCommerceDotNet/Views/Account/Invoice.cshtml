@@ -1,0 +1,359 @@
+﻿@using FreeCommerceDotNet.Entities.Concrete
+@model FreeCommerceDotNet.Models.InvoiceModel
+@{
+    ViewBag.Title = "Invoice";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<style type="text/css">
+    #invoice {
+        padding: 30px;
+    }
+
+    .invoice {
+        position: relative;
+        background-color: #FFF;
+        min-height: 680px;
+        padding: 15px
+    }
+
+        .invoice header {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #3989c6
+        }
+
+        .invoice .company-details {
+            text-align: right
+        }
+
+            .invoice .company-details .name {
+                margin-top: 0;
+                margin-bottom: 0
+            }
+
+        .invoice .contacts {
+            margin-bottom: 20px
+        }
+
+        .invoice .invoice-to {
+            text-align: left
+        }
+
+            .invoice .invoice-to .to {
+                margin-top: 0;
+                margin-bottom: 0
+            }
+
+        .invoice .invoice-details {
+            text-align: right
+        }
+
+            .invoice .invoice-details .invoice-id {
+                margin-top: 0;
+                color: #3989c6
+            }
+
+        .invoice main {
+            padding-bottom: 50px
+        }
+
+            .invoice main .thanks {
+                margin-top: -100px;
+                font-size: 2em;
+                margin-bottom: 50px
+            }
+
+            .invoice main .notices {
+                padding-left: 6px;
+                border-left: 6px solid #3989c6
+            }
+
+                .invoice main .notices .notice {
+                    font-size: 1.2em
+                }
+
+        .invoice table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 20px
+        }
+
+            .invoice table td, .invoice table th {
+                padding: 15px;
+                background: #eee;
+                border-bottom: 1px solid #fff
+            }
+
+            .invoice table th {
+                white-space: nowrap;
+                font-weight: 400;
+                font-size: 16px
+            }
+
+            .invoice table td h3 {
+                margin: 0;
+                font-weight: 400;
+                color: #3989c6;
+                font-size: 1.2em
+            }
+
+            .invoice table .qty, .invoice table .total, .invoice table .unit {
+                text-align: right;
+                font-size: 1.2em
+            }
+
+            .invoice table .no {
+                color: #fff;
+                font-size: 1.6em;
+                background: #3989c6
+            }
+
+            .invoice table .unit {
+                background: #ddd
+            }
+
+            .invoice table .total {
+                background: #3989c6;
+                color: #fff
+            }
+
+            .invoice table tbody tr:last-child td {
+                border: none
+            }
+
+            .invoice table tfoot td {
+                background: 0 0;
+                border-bottom: none;
+                white-space: nowrap;
+                text-align: right;
+                padding: 10px 20px;
+                font-size: 1.2em;
+                border-top: 1px solid #aaa
+            }
+
+            .invoice table tfoot tr:first-child td {
+                border-top: none
+            }
+
+            .invoice table tfoot tr:last-child td {
+                color: #3989c6;
+                font-size: 1.4em;
+                border-top: 1px solid #3989c6
+            }
+
+            .invoice table tfoot tr td:first-child {
+                border: none
+            }
+
+        .invoice footer {
+            width: 100%;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #aaa;
+            padding: 8px 0
+        }
+
+    @@media print {
+        .invoice {
+            font-size: 11px !important;
+            overflow: hidden !important
+        }
+
+            .invoice footer {
+                position: absolute;
+                bottom: 10px;
+                page-break-after: always
+            }
+
+            .invoice > div:last-child {
+                page-break-before: always
+            }
+    }
+</style>
+
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Dashboard</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="account-sidebar"><a class="popup-btn">my account</a></div>
+                <div class="dashboard-left">
+                    <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
+                    <div class="block-content">
+                        <ul>
+                            @*<li><a href="#">Address Book</a></li>*@
+                            <li class="active"><a href="#">Account Info</a></li>
+                            <li><a href="~/Account/MyOrders">My Orders</a></li>
+                            <li><a href="~/Account/MyWishList">My Wishlist</a></li>
+                            <li><a href="#">Newsletter</a></li>
+                            <li><a href="~/Account/Settings">My Account</a></li>
+                            <li><a href="~/Account/ChangePassword">Change Password</a></li>
+                            <li class="last"><a href="#">Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="dashboard-right">
+                    <div class="dashboard">
+                        <div class="page-title text-center">
+                            <h2>@Model.Invoice.TranscationNo</h2>
+                        </div>
+                        <div class="container-fluid">
+                            <hr />
+                            <div class="row">
+                                <div id="invoice">
+                                    <div class="toolbar hidden-print">
+                                        <div class="text-right">
+                                            <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+                                            <button class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Export as PDF</button>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div class="invoice overflow-auto">
+                                        <div style="min-width: 600px">
+                                            <header>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <a target="_blank" href="https://lobianijs.com">
+                                                            <img src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png" data-holder-rendered="true" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="col company-details">
+                                                        <h2 class="name">
+                                                            <a target="_blank" href="https://lobianijs.com">
+                                                                Arboshiki
+                                                            </a>
+                                                        </h2>
+                                                        <div>455 Foggy Heights, AZ 85004, US</div>
+                                                        <div>(123) 456-789</div>
+                                                        <div>company@example.com</div>
+                                                    </div>
+                                                </div>
+                                            </header>
+                                            <main>
+                                                <div class="row contacts">
+                                                    <div class="col invoice-to">
+                                                        <div class="text-gray-light">INVOICE TO:</div>
+                                                        <h2 class="to">@Model.Customer.Firstname @Model.Customer.Lastname</h2>
+                                                        <div class="address">@Model.Customer.Address1</div>
+                                                        <div class="email"><a href="mailto:john@example.com">@Model.Customer.User.EMail</a></div>
+                                                    </div>
+                                                    <div class="col invoice-details">
+                                                        <h1 class="invoice-id">@Model.Invoice.TranscationNo</h1>
+                                                        <div class="date">@Model.OrderMaster.OrderDate</div>
+                                                        <div class="date">@Model.OrderMaster.DeliveryDate</div>
+                                                    </div>
+                                                </div>
+                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th class="text-left">Product</th>
+                                                            <th class="text-right">PRICE</th>
+                                                            <th class="text-right">COUNT</th>
+                                                            <th class="text-right">TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (OrderDetail detail in Model.OrderMaster.OrderDetails)
+                                                        {
+                                                            <tr>
+                                                                <td class="no">@detail.OrderDetailId</td>
+                                                                <td class="text-left">
+                                                                    <h3>
+                                                                        <a>
+                                                                            @detail.ProductBm.ProductName
+                                                                        </a>
+                                                                    </h3>
+                                                                  
+                                                                </td>
+                                                                <td class="unit">@detail.ProductPrice ₺</td>
+                                                                <td class="qty">@detail.Quantity</td>
+                                                                <td class="total">@(detail.Quantity * detail.ProductPrice) ₺</td>
+                                                            </tr>
+
+
+                                                        }
+
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        @{
+                                                            double total = 0.0;
+                                                            foreach (OrderDetail detail in Model.OrderMaster.OrderDetails)
+                                                            {
+                                                                total += detail.Quantity * detail.ProductPrice;
+                                                            }
+                                                        }
+                                                        <td colspan="2"></td>
+                                                        <td colspan="2">SUBTOTAL</td>
+                                                        <td>@total ₺</td>
+                                                    </tr>
+                                                        <tr>
+                                                            <td colspan="2"></td>
+                                                            <td colspan="2">NO TAX</td>
+                                                            <td><del>0.00 ₺</del></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"></td>
+                                                            <td colspan="2">GRAND TOTAL</td>
+                                                            <td>@total ₺</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <div class="thanks">Thank you!</div>
+                                                <div class="notices">
+                                                    <div>NOTICE:</div>
+                                                    <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                                                </div>
+                                            </main>
+                                            <footer>
+                                                Invoice was created on a computer and is valid without the signature and seal.
+                                            </footer>
+                                        </div>
+                                        <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section end -->
+<script type="text/javascript">
+    $('#printInvoice').click(function () {
+        Popup($('.invoice')[0].outerHTML);
+        function Popup(data) {
+            window.print();
+            return true;
+        }
+    });
+</script>

@@ -10,5 +10,7 @@ namespace FreeCommerceDotNet.BLL.Abstract
 {
     public interface IInvoiceService : IService<Invoice>
     {
+        int GetInvoiceCount();
+        string GetTranscationNumber();
     }
 }

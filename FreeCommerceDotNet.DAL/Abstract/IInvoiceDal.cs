@@ -9,6 +9,6 @@ namespace FreeCommerceDotNet.DAL.Abstract
 {
     public interface IInvoiceDal : IRepository<Invoice>
     {
-
+        int GetInvoiceCount();
     }
 }

@@ -63,5 +63,20 @@ namespace FreeCommerceDotNet.BLL.Concrete
         }
 
 
+        public int GetInvoiceCount()
+        {
+            return _invoiceDal.GetInvoiceCount();
+        }
+
+        public string GetTranscationNumber()
+        {
+            string number = "";
+            var today = DateTime.Now;
+            String dy = today.Day.ToString();
+            String mn = today.Month.ToString();
+            string yy = today.Year.ToString();
+            number = "#Inv" + yy + mn + GetInvoiceCount();
+            return number;
+        }
     }
 }
