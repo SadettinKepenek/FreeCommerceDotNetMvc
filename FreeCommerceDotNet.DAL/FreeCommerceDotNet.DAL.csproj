@@ -46,6 +46,7 @@
     <Compile Include="Abstract\IBrandDal.cs" />
     <Compile Include="Abstract\ICategoryDal.cs" />
     <Compile Include="Abstract\ICustomerDal.cs" />
+    <Compile Include="Abstract\IInvoiceDal.cs" />
     <Compile Include="Abstract\IOrderDetailDal.cs" />
     <Compile Include="Abstract\IOrderMasterDal.cs" />
     <Compile Include="Abstract\IPaymentGatewayDal.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Concrete\BrandRepository.cs" />
     <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Concrete\CustomerRepositorycs.cs" />
+    <Compile Include="Concrete\InvoiceRepository.cs" />
     <Compile Include="Concrete\OrderDetailRepository.cs" />
     <Compile Include="Concrete\OrderMasterRepository.cs" />
     <Compile Include="Concrete\PaymentGatewayRepository.cs" />

@@ -46,6 +46,7 @@
     <Compile Include="Concrete\Attribute.cs" />
     <Compile Include="Concrete\AttributeGroup.cs" />
     <Compile Include="Concrete\Brand.cs" />
+    <Compile Include="Concrete\Invoice.cs" />
     <Compile Include="Concrete\ResetTicket.cs" />
     <Compile Include="Concrete\ServiceResult.cs" />
     <Compile Include="Concrete\Category.cs" />
