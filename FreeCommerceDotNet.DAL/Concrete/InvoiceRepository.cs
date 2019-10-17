@@ -75,6 +75,23 @@ namespace FreeCommerceDotNet.DAL.Concrete
             }
         }
 
+        public int GetInvoiceCount()
+        {
+            string query = "SELECT COUNT(1) AS InvoiceCount FROM Invoices";
+            using (var conn = database.CreateConnection())
+            {
+                SqlCommand command = new SqlCommand(query, conn);
+                var queryResult = database.DoQuery(command: command);
+                if (queryResult.Rows.Count!=0)
+                {
+                    var dr = queryResult.Rows[0];
+                    int invoiceCount = (int) dr["InvoiceCount"];
+                    return invoiceCount;
+                }
+            }
+            return 0;
+        }
+
         public List<Invoice> SelectByFilter(List<DBFilter> filters)
         {
             string query = "SP_GetInvoices";
@@ -103,8 +120,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 Invoice invoice = new Invoice();
                 invoice.InvoiceId = (int)rows[0]["InvoiceId"];
                 invoice.InvoiceStatus = (bool)rows[0]["InvoiceStatus"];
-                invoice.InvoiceTotalDiscount = (double)rows[0]["InvoiceTotalDiscount"];
-                invoice.InvoiceTotalPrice = (double)rows[0]["InvoiceTotalPrice"];
+                invoice.InvoiceTotalDiscount = Convert.ToDouble(rows[0]["InvoiceTotalDiscount"]);
+                invoice.InvoiceTotalPrice = Convert.ToDouble(rows[0]["InvoiceTotalPrice"]);
                 invoice.TranscationNo = rows[0]["TranscationNo"] as string;
                 OrderMaster orderMaster = new OrderMaster();
                 orderMaster.OrderId = (int)rows[0]["OrderId"];
@@ -124,8 +141,8 @@ namespace FreeCommerceDotNet.DAL.Concrete
                     Invoice invoice = new Invoice();
                     invoice.InvoiceId = (int)row["InvoiceId"];
                     invoice.InvoiceStatus = (bool)row["InvoiceStatus"];
-                    invoice.InvoiceTotalDiscount = (double)row["InvoiceTotalDiscount"];
-                    invoice.InvoiceTotalPrice = (double)row["InvoiceTotalPrice"];
+                    invoice.InvoiceTotalDiscount = Convert.ToDouble(row["InvoiceTotalDiscount"]);
+                    invoice.InvoiceTotalPrice = Convert.ToDouble(row["InvoiceTotalPrice"]);
                     invoice.TranscationNo = row["TranscationNo"] as string;
                     OrderMaster orderMaster = new OrderMaster();
                     orderMaster.OrderId = (int)row["OrderId"];

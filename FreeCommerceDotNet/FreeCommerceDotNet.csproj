@@ -386,6 +386,7 @@
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\ForgetPasswordModel.cs" />
+    <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Models\ProductCompareModel.cs" />
@@ -3811,6 +3812,7 @@
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\Security\Register.cshtml" />
     <Content Include="Views\Home\Faq.cshtml" />
+    <Content Include="Views\Account\Invoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

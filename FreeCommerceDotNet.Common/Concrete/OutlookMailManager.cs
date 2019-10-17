@@ -40,6 +40,7 @@ namespace FreeCommerceDotNet.Common.Concrete
             mailMessage.Subject = subject;
             mailMessage.Body = message;
             mailMessage.IsBodyHtml = true;
+            
             try
             {
                 client.Send(mailMessage);

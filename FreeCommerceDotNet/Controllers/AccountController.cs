@@ -142,7 +142,7 @@ namespace FreeCommerceDotNet.Controllers
             }
             return RedirectToAction("MyWishList", "Account");
         }
-         public ActionResult AddWishList(int productId,int customerId)
+        public ActionResult AddWishList(int productId, int customerId)
         {
             using (WishlistManager manager = new WishlistManager(new WishlistRepository()))
             {
@@ -152,7 +152,7 @@ namespace FreeCommerceDotNet.Controllers
                 wish.WishDate = DateTime.Now.ToString("dd/MM/yyyy");
                 manager.Insert(wish);
             }
-            return RedirectToAction("MyWishList","Account");
+            return RedirectToAction("MyWishList", "Account");
         }
         public ActionResult MyOrders()
         {
@@ -201,7 +201,7 @@ namespace FreeCommerceDotNet.Controllers
             else
             {
                 return RedirectToAction("Index", "Account");
-               
+
             }
 
         }
@@ -224,12 +224,12 @@ namespace FreeCommerceDotNet.Controllers
         {
             // Todo Checkout Logic
 
-
-
+            OrderMaster orderMasterTemp = null;
+            Invoice invoiceTemp = null;
             try
             {
-                var customer = GetCustomerByContextName();
-                if (customer != null)
+                var checkoutCustomer = GetCustomerByContextName();
+                if (checkoutCustomer != null)
                 {
 
                     using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
@@ -237,8 +237,8 @@ namespace FreeCommerceDotNet.Controllers
                         string expectedDeliveryDate = m.GetExpectedDeliveryDate();
 
                         OrderMaster master = new OrderMaster();
-                        master.CustomerId = customer.CustomerId;
-                        master.CustomerBm = customer;
+                        master.CustomerId = checkoutCustomer.CustomerId;
+                        master.CustomerBm = checkoutCustomer;
                         master.DeliveryDate = expectedDeliveryDate;
                         master.DeliveryComment = String.Empty;
                         master.DeliveryStatus = "Hazırlanıyor";
@@ -249,7 +249,7 @@ namespace FreeCommerceDotNet.Controllers
                         master.OrderDetails = new List<OrderDetail>();
 
                         var filters = new List<DBFilter>();
-                        filters.Add(new DBFilter() { ParamName = "@segmentId", ParamValue = customer.SegmentId });
+                        filters.Add(new DBFilter() { ParamName = "@segmentId", ParamValue = checkoutCustomer.SegmentId });
                         using (ProductPriceManager priceManager = new ProductPriceManager(new ProductPriceRepository()))
                         {
                             foreach (CartModel cartModel in model.CartList)
@@ -267,30 +267,83 @@ namespace FreeCommerceDotNet.Controllers
                         }
 
                         var result = m.Insert(master);
+                        master.OrderId = result.Id;
                         if (result.Message.Equals("Success"))
                         {
+                            // Order Master Başarıyla Eklendiyse
                             using (OrderDetailManager detailManager = new OrderDetailManager(new OrderDetailRepository()))
                             {
+                                orderMasterTemp = master;
+
                                 foreach (var masterOrderDetail in master.OrderDetails)
                                 {
-                                    masterOrderDetail.OrderId = result.Id;
-                                    detailManager.Insert(masterOrderDetail);
+                                    masterOrderDetail.OrderId = master.OrderId;
+                                    var r = detailManager.Insert(masterOrderDetail);
+                                    masterOrderDetail.OrderDetailId = r.Id;
+                                }
+
+                                if (master.OrderDetails.All(x => x.ProductId != 0))
+                                {
+                                    // Order Detaillar başarı ile eklendi ise
+
+
+
+                                    using (InvoiceManager invoiceManager = new InvoiceManager(new InvoiceRepository()))
+                                    {
+                                        var invoice = new Invoice()
+                                        {
+                                            OrderMaster = master,
+                                            OrderId = master.OrderId,
+                                            InvoiceStatus = true,
+                                            InvoiceTotalDiscount = 0.000,
+                                            InvoiceTotalPrice = master.OrderDetails.Sum(x => x.ProductPrice),
+                                            TranscationNo = invoiceManager.GetTranscationNumber(),
+
+                                        };
+                                        var invoiceResult = invoiceManager.Insert(invoice);
+                                        if (invoiceResult.Message.Equals("Success"))
+                                        {
+                                            invoice.InvoiceId = invoiceResult.Id;
+                                            invoiceTemp = invoice;
+
+                                            // Invoice başarı ile eklendi ise
+                                            var httpCookie = Request.Cookies.Get("cartListCookie");
+                                            if (httpCookie != null)
+                                            {
+                                                httpCookie.Expires = DateTime.Now.AddDays(-1);
+                                                Response.Cookies.Add(httpCookie);
+                                            }
+
+                                            new OutlookMailManager().Send(checkoutCustomer.User.EMail,
+                                                $"Order-{invoice.TranscationNo}", "<h3>Your Order Is Preparing</h3><hr/>" +
+                                                                                                   "<div class=\"container\">" +
+                                                                                                   "<div class=\"row\"><p>Dear " + checkoutCustomer.Firstname + " " + checkoutCustomer.Lastname + " Your Order is preparing" +
+                                                                                                   "<br/> Your Expected Delivery Date is " + master.DeliveryDate + " Have Good Day.<p></div>" +
+                                                                                                   "</div>");
+
+                                            return RedirectToAction("OrderSuccess", "Account", new { orderId = result.Id });
+                                        }
+                                        else
+                                        {
+                                            return CancelOrder(model, master, detailManager, m, result);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return CancelOrder(model, master, detailManager, m, result);
                                 }
                             }
-                            // Todo
-                            var httpCookie = Request.Cookies.Get("cartListCookie");
-                            if (httpCookie != null)
-                            {
-                                httpCookie.Expires = DateTime.Now.AddDays(-1);
-                                Response.Cookies.Add(httpCookie);
-                            }
 
-                            return RedirectToAction("OrderSuccess", "Account", new {orderId = result.Id});
 
                         }
-                        AssignShippingAndPaymentMethods();
-                        TempData["Message"] = result.Message;
-                        return View(model);
+                        else
+                        {
+                            AssignShippingAndPaymentMethods();
+                            TempData["Message"] = result.Message;
+                            return View(model);
+                        }
+
                     }
                 }
                 TempData["Message"] = "Something happened";
@@ -300,12 +353,63 @@ namespace FreeCommerceDotNet.Controllers
             }
             catch (Exception e)
             {
-                AssignShippingAndPaymentMethods();
-                TempData["Message"] = e.StackTrace;
-                return View(model);
+                return CancelOrder(model, orderMasterTemp, new OrderDetailManager(new OrderDetailRepository()), new OrderMasterManager(new OrderMasterRepository()),invoiceTemp,e);
+
+                
             }
 
         }
+
+        private ActionResult CancelOrder(CheckoutModel model, OrderMaster orderMasterTemp, OrderDetailManager detailManager, OrderMasterManager orderMasterManager, Invoice invoiceTemp,Exception e)
+        {
+            AssignShippingAndPaymentMethods();
+
+            if (orderMasterTemp.OrderId != 0)
+            {
+                orderMasterManager.Delete(orderMasterTemp.OrderId);
+            }
+
+            if (orderMasterTemp.OrderDetails != null)
+                foreach (OrderDetail detail in orderMasterTemp.OrderDetails.Where(x => x.OrderDetailId != 0))
+                {
+                    detailManager.Delete(detail.OrderDetailId);
+                }
+
+            if (invoiceTemp.InvoiceId!=0)
+            {
+                using (InvoiceManager invoiceManager=new InvoiceManager(new InvoiceRepository()))
+                {
+                    invoiceManager.Delete(invoiceTemp.InvoiceId);
+                }
+            }
+            orderMasterManager.Delete(orderMasterTemp.OrderId);
+            TempData["Message"] = e.StackTrace;
+            return View(model);
+        }
+
+        private ActionResult CancelOrder(CheckoutModel model, OrderMaster master, OrderDetailManager detailManager,
+            OrderMasterManager m, ServiceResult result)
+        {
+
+            AssignShippingAndPaymentMethods();
+
+            if (master.OrderId != 0)
+            {
+                m.Delete(master.OrderId);
+            }
+
+            if (master.OrderDetails != null)
+                foreach (OrderDetail detail in master.OrderDetails.Where(x => x.OrderDetailId != 0))
+                {
+                    detailManager.Delete(detail.OrderDetailId);
+                }
+
+           
+            m.Delete(result.Id);
+            return View(model);
+        }
+        
+
         [HttpGet]
         public ActionResult OrderSuccess(int orderId)
         {
@@ -314,5 +418,35 @@ namespace FreeCommerceDotNet.Controllers
                 return View(m.SelectById(orderId));
             }
         }
+
+
+        [HttpGet]
+        public ActionResult Invoice(int orderId)
+        {
+            var customer = GetCustomerByContextName();
+
+            InvoiceModel invoiceModel =new InvoiceModel();
+            using (OrderMasterManager m=new OrderMasterManager(new OrderMasterRepository()))
+            {
+                invoiceModel.OrderMaster = m.SelectById(orderId);
+            }
+
+            if (invoiceModel.OrderMaster.CustomerId!=customer.CustomerId)
+            {
+                return RedirectToAction("Index", "Account");
+            }
+
+            using (InvoiceManager m=new InvoiceManager(new InvoiceRepository()))
+            {
+                var filters = new List<DBFilter>();
+                filters.Add(new DBFilter(){ParamValue = orderId,ParamName = "@OrderId" });
+                invoiceModel.Invoice = m.SelectByFilter(filters).FirstOrDefault();
+            }
+
+            invoiceModel.Customer = customer;
+
+            return View(invoiceModel);
+        }
+
     }
 }
