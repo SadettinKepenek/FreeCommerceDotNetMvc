@@ -9,7 +9,7 @@ namespace FreeCommerceDotNet.Common.Concrete
 {
     public class MsSQLDatabase : IDatabase
     {
-        private readonly string _connectionString = "server=94.73.144.8;Database=u8206796_dbF1B;User Id=u8206796_userF1B;Password=SPlt16S0;MultipleActiveResultSets=true;";
+        private readonly string _connectionString = SystemVariables.connectionStringMssql;
         private SqlConnection connection;
         private SqlTransaction Transaction;
         public MsSQLDatabase()

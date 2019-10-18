@@ -69,6 +69,7 @@
     <Compile Include="Concrete\StringMatching\RatcliffObershelpSimilarity.cs" />
     <Compile Include="Concrete\StringMatching\SorensenDiceDistance.cs" />
     <Compile Include="Concrete\StringMatching\TanimotoCoefficient.cs" />
+    <Compile Include="Concrete\SystemVariables.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
