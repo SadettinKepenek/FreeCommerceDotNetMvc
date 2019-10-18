@@ -361,5 +361,22 @@ namespace FreeCommerceDotNet.Controllers
             return View();
         }
 
+        public ActionResult AboutUs()
+        {
+
+            return View();
+        }
+
+        public ActionResult Sitemap()
+        {
+            return View();
+        }
+
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
     }
 }

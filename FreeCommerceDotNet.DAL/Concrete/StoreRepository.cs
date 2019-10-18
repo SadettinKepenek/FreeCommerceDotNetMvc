@@ -199,6 +199,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                         store.EMail = row["EMail"] as string;
                         store.Comment = row["Comment"] as string;
                         store.DisplayStock = (bool)row["DisplayStock"];
+                        store.Address = row["Address"] as string;
                         store.DisplayPricesWithTax = (bool)row["DisplayPricesWithTax"];
                         store.AllowReviews = (bool)row["AllowReviews"];
                         store.LoginDisplayPrices = (bool)row["LoginDisplayPrices"];
