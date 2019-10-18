@@ -179,7 +179,14 @@ namespace FreeCommerceDotNet.Controllers
         {
             using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
             {
-                return View(m.SelectById(id));
+                var selectById = m.SelectById(id);
+                if (GetCustomerByContextName().CustomerId==selectById.CustomerId)
+                {
+                    return View(selectById);
+
+                }
+
+                return RedirectToAction("MyOrders", "Account");
             }
         }
 
