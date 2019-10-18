@@ -23,9 +23,45 @@ namespace FreeCommerceDotNet.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string p1)
+        public ActionResult Index()
         {
-            return View();
+            List<Product> discountedProducts;
+            
+            using (ProductManager manager = new ProductManager(new ProductRepository()))
+            {
+
+                discountedProducts = manager.SelectByFilter(new List<DBFilter>()
+                {
+                    new DBFilter()
+                    {
+                        ParamName = "@JustInDiscount",
+                        ParamValue = true
+                    }
+
+                });
+                
+                using (OrderMasterManager orderManager = new OrderMasterManager(new OrderMasterRepository()))
+                {
+                    var allOrders = orderManager.SelectAll();
+                    var productIds = allOrders.Select(x => x.OrderDetails.FirstOrDefault().ProductId);
+                    var bestSellerProducts = productIds.GroupBy(y => y).OrderByDescending(g => g.Count()).Take(4).Select(g => g.Key);
+                    
+                    if (bestSellerProducts != null)
+                    {
+                        List<Product> products = new List<Product>();
+                        foreach (var item in bestSellerProducts)
+                        {                         
+                            products.Add(manager.SelectById(item));                           
+                        }
+                        ViewBag.TrendProducts = products;
+                    }                 
+                    
+                }
+            }
+            if (discountedProducts != null)
+                return View(discountedProducts);
+            else
+                return View();
         }
 
         // Develop Branch
@@ -81,9 +117,9 @@ namespace FreeCommerceDotNet.Controllers
                 }
                 using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
                 {
-                    if(manager.SelectAll().Where(x => x.CustomerId == customerId).ToList().Count != 0)
+                    if (manager.SelectAll().Where(x => x.CustomerId == customerId).ToList().Count != 0)
                         hasReview = true;
-                    
+
 
                 }
                 ViewBag.customerId = customerId;
@@ -217,17 +253,17 @@ namespace FreeCommerceDotNet.Controllers
             {
                 try
                 {
-                    
+
 
                     var result = manager.SearchProduct(query);
-                    for (int i = 0; i < result.Count-1; i++)
+                    for (int i = 0; i < result.Count - 1; i++)
                     {
                         if (!MatchSourceAndTarget(result[i].ProductName, query))
                         {
                             result.RemoveAt(i);
                         }
                     }
-                    
+
                     return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception e)
@@ -242,32 +278,32 @@ namespace FreeCommerceDotNet.Controllers
             var httpCookie = Request.Cookies.Get("compareList");
             if (httpCookie != null)
             {
-                var productCompareJsonModels=JsonConvert.DeserializeObject<List<ProductCompareJSONModel>>(httpCookie.Value);
-                
-                var productCompareModel=new ProductCompareModel();
-                productCompareModel.Products=new List<Product>();
+                var productCompareJsonModels = JsonConvert.DeserializeObject<List<ProductCompareJSONModel>>(httpCookie.Value);
+
+                var productCompareModel = new ProductCompareModel();
+                productCompareModel.Products = new List<Product>();
 
 
-                using (ProductManager p=new ProductManager(new ProductRepository()))
+                using (ProductManager p = new ProductManager(new ProductRepository()))
                 {
-                    using (ReviewManager m=new ReviewManager(new ReviewRepository()))
+                    using (ReviewManager m = new ReviewManager(new ReviewRepository()))
                     {
                         for (int i = 0; i < productCompareJsonModels.Count; i++)
                         {
                             int productId = productCompareJsonModels[i].productId;
                             var filters = new List<DBFilter>();
-                            filters.Add(new DBFilter(){ParamName = "@ProductId",ParamValue = productId});
+                            filters.Add(new DBFilter() { ParamName = "@ProductId", ParamValue = productId });
                             Product item = p.SelectById(productId);
                             item.Reviews = m.SelectByFilter(filters);
                             productCompareModel.Products.Add(item);
                         }
                     }
-                   
+
                 }
 
                 return View(productCompareModel);
             }
-          
+
             return View();
         }
         private static bool MatchSourceAndTarget(string target, string source)
@@ -280,7 +316,7 @@ namespace FreeCommerceDotNet.Controllers
             bool result = source.ApproximatelyEquals(target, tolerance, options.ToArray());
             return result;
         }
-        [HttpGet,ActionName("Changepassword")]
+        [HttpGet, ActionName("Changepassword")]
         public ActionResult ChangePassword(int ticketId, Guid token)
         {
             using (UserManager manager = new UserManager(new UserRepository()))
@@ -320,7 +356,7 @@ namespace FreeCommerceDotNet.Controllers
             return RedirectToAction("Index", "Security");
         }
 
-       public ActionResult Faq()
+        public ActionResult Faq()
         {
             return View();
         }

@@ -215,7 +215,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public string Image3Url { get; set; }
         public string Image4Url { get; set; }
         public string Image5Url { get; set; }
-
+        public int Rating { get; set; }
         public List<ProductAttribute> ProductAttributes { get; set; }
         public List<ProductDiscount> ProductDiscounts { get; set; }
         public List<ProductOption> ProductOptions { get; set; }
