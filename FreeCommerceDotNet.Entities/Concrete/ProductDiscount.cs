@@ -8,9 +8,7 @@ namespace FreeCommerceDotNet.Entities.Concrete
         public int DiscountId { get; set; }
         [Required(ErrorMessage = "ProductId Zorunludur")]
         public int ProductId { get; set; }
-        [Required(ErrorMessage = "StartDate Zorunludur")]
         public string StartDate { get; set; }
-        [Required(ErrorMessage = "EndDate Zorunludur")]
         public string EndDate { get; set; }
         [Required(ErrorMessage = "Quantity Zorunludur")]
         public int Quantity { get; set; }

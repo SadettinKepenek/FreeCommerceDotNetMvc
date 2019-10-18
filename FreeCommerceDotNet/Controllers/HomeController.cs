@@ -30,7 +30,7 @@ namespace FreeCommerceDotNet.Controllers
             
             using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
-                newProducts = manager.SelectAll();
+                newProducts = manager.SelectAll().Where(x => x.Status == true).ToList();
                 for (int i = 0; i < newProducts.Count-1; i++)
                 {
                     DateTime dt = DateTime.Now;
@@ -54,7 +54,7 @@ namespace FreeCommerceDotNet.Controllers
                         ParamValue = true
                     }
 
-                });
+                }).Where(x => x.Status == true).ToList();
                 
                 ViewBag.SpecialOffer = discountedProducts.Take(1).ToList().FirstOrDefault();
                 
@@ -71,7 +71,7 @@ namespace FreeCommerceDotNet.Controllers
                         {                         
                             products.Add(manager.SelectById(item));                           
                         }
-                        ViewBag.TrendProducts = products;
+                        ViewBag.TrendProducts = products.Where(x => x.Status == true).ToList();
                     }                 
                     
                 }
@@ -86,25 +86,30 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Product(int id)
         {
 
-            using (ReviewManager manager = new ReviewManager(new ReviewRepository()))
-            {
-                var reviews = manager.SelectAll();
-                reviews = reviews.Where(x => x.ProductId == id).ToList();
-                ViewBag.reviews = reviews;
-                //kullanıcı giriş yapmış ve order'ı varsa AddReview seciton'u gözükecek
-                //Aynı zamanda kullanıcının bir review'i varsa review ekleyemeyecek
-                ViewBag.perm = permReview(id);
-            }
+         
 
 
             using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
                 var product = manager.SelectById(id);
+                if (!product.Status)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 // ProductDiscount productDiscount = new ProductDiscount();
                 ViewBag.ProductId = id;
+                using (ReviewManager reviewManager = new ReviewManager(new ReviewRepository()))
+                {
+                    var reviews = reviewManager.SelectAll();
+                    reviews = reviews.Where(x => x.ProductId == id).ToList();
+                    ViewBag.reviews = reviews;
+                    //kullanıcı giriş yapmış ve order'ı varsa AddReview seciton'u gözükecek
+                    //Aynı zamanda kullanıcının bir review'i varsa review ekleyemeyecek
+                    ViewBag.perm = permReview(id);
+                }
                 return View(product);
             }
-
+            
 
         }
         private bool permReview(int productId)
@@ -273,7 +278,7 @@ namespace FreeCommerceDotNet.Controllers
                 {
 
 
-                    var result = manager.SearchProduct(query);
+                    var result = manager.SearchProduct(query).Where(x=> x.Status == true).ToList();
                     for (int i = 0; i < result.Count - 1; i++)
                     {
                         if (!MatchSourceAndTarget(result[i].ProductName, query))
