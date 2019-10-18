@@ -26,10 +26,26 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Index()
         {
             List<Product> discountedProducts;
+            List<Product> newProducts;
             
             using (ProductManager manager = new ProductManager(new ProductRepository()))
             {
-
+                newProducts = manager.SelectAll();
+                for (int i = 0; i < newProducts.Count-1; i++)
+                {
+                    DateTime dt = DateTime.Now;
+                    var productDate = Convert.ToDateTime(newProducts[i].AvailableDate);
+                    var diff = dt - productDate;
+                    if (diff.TotalDays > 8)
+                    {
+                        newProducts.Remove(newProducts[i]);
+                    }
+                }
+                if (newProducts != null)
+                {
+                    ViewBag.NewProducts = newProducts;
+                }
+                         
                 discountedProducts = manager.SelectByFilter(new List<DBFilter>()
                 {
                     new DBFilter()
@@ -39,6 +55,8 @@ namespace FreeCommerceDotNet.Controllers
                     }
 
                 });
+                
+                ViewBag.SpecialOffer = discountedProducts.Take(1).ToList().FirstOrDefault();
                 
                 using (OrderMasterManager orderManager = new OrderMasterManager(new OrderMasterRepository()))
                 {

@@ -1,6 +1,5 @@
 ﻿@using FreeCommerceDotNet.BLL.Concrete
 @using FreeCommerceDotNet.DAL.Concrete
-
 @using FreeCommerceDotNet.Entities.Concrete
 @using Category = FreeCommerceDotNet.Entities.Concrete.Category
 @*@{
@@ -8,7 +7,6 @@
     }*@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,53 +17,39 @@
     <link rel="icon" href="~/assets/images/favicon/3.png" type="image/x-icon" />
     <link rel="shortcut icon" href="~/assets/images/favicon/3.png" type="image/x-icon" />
     <title> @ViewBag.Title - FreeCommerceDotNet</title>
-
     <!--Google font-->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-
     <!-- Icons -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/fontawesome.css">
-
     <!--Slick slider css-->
     <link rel="stylesheet" type="text/css" href="~/assets/css/slick.css">
     <link rel="stylesheet" type="text/css" href="~/assets/css/slick-theme.css">
-
     <!-- Animate icon -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/animate.css">
-
     <!-- Themify icon -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/themify-icons.css">
-
     <!-- Bootstrap css -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.css">
-
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="~/assets/css/color1.css" media="screen" id="color">
     <script src="~/assets/js/jquery-3.3.1.min.js"></script>
     <script src="~/assets/fcdnJs/CookieOperations.js"></script>
-
-
 </head>
-
 @helper GetAccountLogin()
 {
     if (HttpContext.Current.User.Identity.IsAuthenticated)
     {
         @:<i class="fa fa-user" aria-hidden="true"></i>Sn. @HttpContext.Current.User.Identity.Name
         <ul class="onhover-show-div">
-
-
             <li>
                 <a href="~/Account/">
                     <i class="fa fa-user" aria-hidden="true">
-
                     </i> my Account
                 </a>
             </li>
             <li>
                 <a href="~/Security/Logout" data-lng="es">
                     <i class="fa fa-sign-out" aria-hidden="true">
-
                     </i> Logout
                 </a>
             </li>
@@ -82,19 +66,13 @@
             else
             {
                 <li><a href="~/Security/Login" data-lng="en">Login</a></li>
-
             }
-
         </ul>
     }
 }
 @{
     var manager = new CategoryManager(new CategoryRepository());
-
-
     var categories = manager.GetLayoutCategories();
-
-
 }
 @helper GetSideBarCategories(List<Category> categories)
 {
@@ -107,7 +85,6 @@
                 <ul class="mega-menu clothing-menu">
                     <li>
                         <div class="row m-0">
-
                             @foreach (Category category in categoryBm.SubCategories.Take(3))
                             {
                                 <div class="col-xl-4">
@@ -115,7 +92,6 @@
                                         <h5><a href="~/Home/Category/@category.CategoryId">@category.CategoryName</a></h5>
                                         @if (category.SubCategories.Count != 0)
                                         {
-
                                             <ul>
                                                 @foreach (var sub in category.SubCategories)
                                                 {
@@ -123,22 +99,16 @@
                                                 }
                                             </ul>
                                         }
-
                                     </div>
                                 </div>//hatırlamy9om bakalım burdan
                             }
-
-
                         </div>
                     </li>
                 </ul>
-
             }
         </li>
     }
-
 }
-
 @helper GetNavbarCategories(List<Category> categories)
 {
     foreach (var categoryBm in categories)
@@ -148,7 +118,6 @@
             @if (categoryBm.SubCategories.Count != 0)
             {
                 <ul>
-
                     @foreach (var category in categoryBm.SubCategories)
                     {
                         <li>
@@ -162,27 +131,14 @@
                                     }
                                 </ul>
                             }
-
-
-
-
-
                         </li>
                     }
-
-
-
                 </ul>
             }
-
-
         </li>
     }
 }
-
-
 <body>
-
     <!-- header start -->
     <header>
         <div class="mobile-fix-option"></div>
@@ -202,9 +158,7 @@
                             <li class="mobile-wishlist"><a href="~/Account/MyWishList"><i class="fa fa-heart" aria-hidden="true"></i>my wishlist</a></li>
                             <li class="mobile-wishlist"><a href="~/Account/MyCart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> my cart <span><small id="cartSubTotalText">0.00 ₺</small></span></a></li>
                             <li class="onhover-dropdown mobile-account">
-
                                 @GetAccountLogin()
-
                             </li>
                         </ul>
                     </div>
@@ -242,7 +196,6 @@
                                         <li>
                                             <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                         </li>
-
                                         <li>
                                             <a href="#">Anasayfa</a>
                                         </li>
@@ -251,7 +204,6 @@
                                 </nav>
                             </div>
                         </div>
-
                         <div class="">
                             <div class="menu-right pull-right">
                                 <div>
@@ -266,9 +218,7 @@
                                                             <div class="container">
                                                                 <div class="row">
                                                                     <div class="col-xl-12">
-
                                                                         <input type="text" class="form-control" id="exampleInputPassword1" oninput="searchProduct(this)" placeholder="Search a Product" maxlength="50">
-
                                                                         <div class="container">
                                                                             <table class="table" id="searchResultTable">
                                                                                 <thead>
@@ -281,13 +231,7 @@
                                                                                 <tbody id="searchResults">
                                                                                 </tbody>
                                                                             </table>
-
-
                                                                         </div>
-
-
-
-
                                                                         <script src="~/assets/fcdnJs/searchProduct.js"></script>
                                                                     </div>
                                                                 </div>
@@ -298,7 +242,6 @@
                                             </li>
                                             <li class="onhover-div mobile-cart">
                                                 <div href="javascript:void(0)" onclick="openCart()"><img alt="" src="~/assets/images/icon/layout4/cart.png" class="img-fluid blur-up lazyload"> <i class="ti-shopping-cart"></i></div>
-
                                             </li>
                                         </ul>
                                     </div>
@@ -311,7 +254,6 @@
         </div>
     </header>
     <!-- header end -->
-
     @RenderBody()
     <br /><br />
     <hr />
@@ -1178,28 +1120,20 @@
     <!-- tap to top end-->
     <!-- latest jquery-->
     <script src="~/assets/js/jquery-3.3.1.min.js"></script>
-
     <!-- popper js-->
     <script src="~/assets/js/popper.min.js"></script>
-
     <!-- slick js-->
     <script src="~/assets/js/slick.js"></script>
-
     <!-- menu js-->
     <script src="~/assets/js/menu.js"></script>
-
     <!-- lazyload js-->
     <script src="~/assets/js/lazysizes.min.js"></script>
-
     <!-- Bootstrap js-->
     <script src="~/assets/js/bootstrap.js"></script>
-
     <!-- Bootstrap Notification js-->
     <script src="~/assets/js/bootstrap-notify.min.js"></script>
-
     <!-- Theme js-->
     <script src="~/assets/js/script.js"></script>
-
     <script>
         //$(window).on('load',function(){
         //    $('#exampleModal').modal('show');
@@ -1207,14 +1141,12 @@
         function openSearch() {
             document.getElementById("search-overlay").style.display = "block";
         }
-
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
     </script>
     <script type="text/javascript">
         var Items = JSON.parse(getCookie("cartListCookie"));
-
         var subtotalTextLayout = $('#cartSubTotalText');
         var subtotal = 0.0;
         if (Items == null) {
@@ -1225,10 +1157,6 @@
             }
             subtotalTextLayout.html(subtotal + ' ₺');
         }
-
     </script>
-
 </body>
-
 </html>
-
