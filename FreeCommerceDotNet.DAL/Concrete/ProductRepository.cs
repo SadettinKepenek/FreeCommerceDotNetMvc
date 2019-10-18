@@ -34,6 +34,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 cmd.Parameters.AddWithValue("@Image2Url", entity.Image2Url);
                 cmd.Parameters.AddWithValue("@Image3Url", entity.Image3Url);
                 cmd.Parameters.AddWithValue("@Image4Url", entity.Image4Url);
+                cmd.Parameters.AddWithValue("@Rating", entity.Rating);
                 cmd.Parameters.AddWithValue("@SKU", entity.SKU);
                 cmd.Parameters.AddWithValue("@UPC", entity.UPC);
                 cmd.Parameters.AddWithValue("@EAN", entity.EAN);
@@ -79,6 +80,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
                 cmd.Parameters.AddWithValue("@Image2Url", entity.Image2Url);
                 cmd.Parameters.AddWithValue("@Image3Url", entity.Image3Url);
                 cmd.Parameters.AddWithValue("@Image4Url", entity.Image4Url);
+                cmd.Parameters.AddWithValue("@Rating", entity.Rating);
                 cmd.Parameters.AddWithValue("@SKU", entity.SKU);
                 cmd.Parameters.AddWithValue("@UPC", entity.UPC);
                 cmd.Parameters.AddWithValue("@EAN", entity.EAN);
@@ -239,6 +241,7 @@ namespace FreeCommerceDotNet.DAL.Concrete
             product.Weight = Convert.ToDouble(mainrow["Weight"]);
             product.Status = (bool)mainrow["Status"];
             product.Brand = (int)mainrow["Brand"];
+            product.Rating = (int)mainrow["Rating"];
             product.BrandEntity = new Brand()
             {
                 BrandId = (int)mainrow["Brand"],
