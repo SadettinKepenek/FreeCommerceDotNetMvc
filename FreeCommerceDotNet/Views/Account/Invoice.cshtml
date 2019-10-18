@@ -1,4 +1,6 @@
-﻿@using FreeCommerceDotNet.Entities.Concrete
+﻿@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+@using FreeCommerceDotNet.Entities.Concrete
 @model FreeCommerceDotNet.Models.InvoiceModel
 @{
     ViewBag.Title = "Invoice";
@@ -241,15 +243,18 @@
                                                             <img src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png" data-holder-rendered="true" />
                                                         </a>
                                                     </div>
+                                                    @{
+                                                        var store = new StoreManager(new StoreRepository()).SelectAll().FirstOrDefault();
+                                                    }
                                                     <div class="col company-details">
                                                         <h2 class="name">
-                                                            <a target="_blank" href="https://lobianijs.com">
-                                                                Arboshiki
+                                                            <a target="_blank" href="~/Home">
+                                                                @store.StoreName
                                                             </a>
                                                         </h2>
-                                                        <div>455 Foggy Heights, AZ 85004, US</div>
-                                                        <div>(123) 456-789</div>
-                                                        <div>company@example.com</div>
+                                                        <div> @store.Address</div>
+                                                        <div> @store.Phone</div>
+                                                        <div> @store.EMail</div>
                                                     </div>
                                                 </div>
                                             </header>

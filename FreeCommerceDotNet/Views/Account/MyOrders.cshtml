@@ -72,8 +72,11 @@
                                                 <li class="list-group-item">Payment Gateway : @item.PaymentBm.PaymentName</li>
                                                 <li class="list-group-item">Shipping Gateway : @item.ShippingBm.ShippingName</li>
                                                 <li class="list-group-item">Total Product Count : @item.OrderDetails.Count</li>
+                                                @{
+                                                    double total = item.OrderDetails.Sum(e => e.Quantity * e.ProductPrice);
 
-                                                <li class="list-group-item"><strong>Order Subtotal : <span style="color: red">@item.OrderDetails.Sum(x => x.ProductPrice)</span> ₺</strong></li>
+                                                }
+                                                <li class="list-group-item"><strong>Order Subtotal : <span style="color: red">@total</span> ₺</strong></li>
                                             </ul>
                                             <div class="card-body text-center">
                                                 <a href="~/Account/OrderDetail/@item.OrderId" class="card-link">Order Detail</a>

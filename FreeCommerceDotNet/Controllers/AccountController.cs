@@ -179,7 +179,14 @@ namespace FreeCommerceDotNet.Controllers
         {
             using (OrderMasterManager m = new OrderMasterManager(new OrderMasterRepository()))
             {
-                return View(m.SelectById(id));
+                var selectById = m.SelectById(id);
+                if (GetCustomerByContextName().CustomerId==selectById.CustomerId)
+                {
+                    return View(selectById);
+
+                }
+
+                return RedirectToAction("MyOrders", "Account");
             }
         }
 
@@ -226,6 +233,14 @@ namespace FreeCommerceDotNet.Controllers
 
             OrderMaster orderMasterTemp = null;
             Invoice invoiceTemp = null;
+
+            if (model.ShippingId ==0 || model.PaymentId==0)
+            {
+                AssignShippingAndPaymentMethods();
+                TempData["Message"] = "Lütfen Ödeme yöntemi ve kargolama yöntemini seçin";
+                return View(model);
+            }
+
             try
             {
                 var checkoutCustomer = GetCustomerByContextName();

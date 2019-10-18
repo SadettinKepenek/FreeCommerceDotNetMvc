@@ -62,7 +62,12 @@
                     @Html.HiddenFor(x => x.Customer.User.UserId)
                     @Html.HiddenFor(x => x.Customer.User.Username)
                     <div class="row">
-                        <h3>@TempData["Message"]</h3>
+                        <div class="col-lg-6 col-sm-12 col-xs-12">
+
+                            <h3 class="alert-dark">@TempData["Message"]</h3>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-6 col-sm-12 col-xs-12">
                             <div class="checkout-title">
                                 <h3>Billing Details</h3>
