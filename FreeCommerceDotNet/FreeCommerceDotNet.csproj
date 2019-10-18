@@ -3813,6 +3813,9 @@
     <Content Include="Views\Security\Register.cshtml" />
     <Content Include="Views\Home\Faq.cshtml" />
     <Content Include="Views\Account\Invoice.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\Sitemap.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

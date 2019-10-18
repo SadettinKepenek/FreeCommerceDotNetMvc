@@ -1,0 +1,109 @@
+﻿@using FreeCommerceDotNet.BLL.Concrete
+@using FreeCommerceDotNet.DAL.Concrete
+
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>contact</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active">contact</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+<!--section start-->
+<section class="contact-page section-b-space">
+    <div class="container">
+        @{
+            string src;
+            using (StoreManager store=new StoreManager(new StoreRepository()))
+            {
+                var storeInstance = store.SelectAll().FirstOrDefault();
+                if (storeInstance != null)
+                {
+                    if (storeInstance.Address != null)
+                    {
+                        src = "https://maps.google.com/maps?q=" + storeInstance.Address.Replace(" ","%20") + "&t=&z=13&ie=UTF8&iwloc=&output=embed";
+                    }
+                    else
+                    {
+                        src = "https://maps.google.com/maps?q=istanbul&t=&z=13&ie=UTF8&iwloc=&output=embed";
+
+                    }
+                }
+                else
+                {
+                    src = "https://maps.google.com/maps?q=istanbul&t=&z=13&ie=UTF8&iwloc=&output=embed";
+
+                }
+            }
+        }
+        <div class="row section-b-space">
+            <div class="col-lg-7 map">
+                <iframe src=@src allowfullscreen></iframe>
+            </div>
+            <div class="col-lg-5">
+                <div class="contact-right">
+                    <ul>
+                        <li>
+                            <div class="contact-icon">
+                                <img src="~/assets/images/icon/phone.png" alt="Generic placeholder image">
+                                <h6>Contact Us</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>+91 123 - 456 - 7890</p>
+                                <p>+86 163 - 451 - 7894</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <h6>Address</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>ABC Complex,Near xyz, New York</p>
+                                <p>USA 123456</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <img src="~/assets/images/icon/email.png" alt="Generic placeholder image">
+                                <h6>Address</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>Support@Shopcart.com</p>
+                                <p>info@shopcart.com</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <i class="fa fa-fax" aria-hidden="true"></i>
+                                <h6>Fax</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>Support@Shopcart.com</p>
+                                <p>info@shopcart.com</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
