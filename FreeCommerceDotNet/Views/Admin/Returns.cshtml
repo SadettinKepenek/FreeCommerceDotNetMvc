@@ -62,20 +62,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (OrderReturn bm in Model)
-                            {
-                                <tr>
-                                    <th scope="row">@bm.ReturnId</th>
-                                    <td>@bm.OrderId</td>
-                                    <td>@bm.CustomerBm.Firstname @bm.CustomerBm.Lastname</td>
-                                    <td>@bm.BoxOpened</td>
-                                    <td>@bm.ReturnReason</td>
-                                    <td>@bm.ReturnStatus</td>
-                                    @GetProductActionButtons(bm)
+                        @if (Model==null)
+                        {
+                            <tr>
+                                <th scope="row" class="text-center" colspan="7">Herhangi bir return bulunamadı</th>
+                                
 
 
-                                </tr>
-                            }
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (OrderReturn bm in Model)
+                             {
+                                 <tr>
+                                     <th scope="row">@bm.ReturnId</th>
+                                     <td>@bm.OrderId</td>
+                                     <td>@bm.CustomerBm.Firstname @bm.CustomerBm.Lastname</td>
+                                     <td>@bm.BoxOpened</td>
+                                     <td>@bm.ReturnReason</td>
+                                     <td>@bm.ReturnStatus</td>
+                                     @GetProductActionButtons(bm)
+
+
+                                 </tr>
+                             }
+                        }
 
 
                         </tbody>

@@ -36,6 +36,19 @@
     {
         categories = bm.SelectAll();
 
+        foreach (Category item in categories)
+        {
+            if (item.SubCategories != null)
+            {
+                foreach (Category itemSubCategory in item.SubCategories)
+                {
+                    if (categories.FirstOrDefault(x=>x.CategoryId==itemSubCategory.CategoryId)==null)
+                    {
+                        categories.Add(itemSubCategory);
+                    }
+                }
+            }
+        }
     }
     using (AttributeManager bm = new AttributeManager(new AttributeRepository()))
     {
