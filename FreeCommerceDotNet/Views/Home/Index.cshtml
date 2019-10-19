@@ -30,14 +30,22 @@
         </div>
     </div>
 </section>
+@{
+    Product product = ViewBag.SpecialOffer ?? null;
+
+}
 <!-- Home slider end -->
 <!-- slider tab  -->
 <section class="section-b-space ratio_square">
     <div class="container">
-        <div class="title2">
-            <h4>new collection</h4>
-            <h2 class="title-inner2">trending products</h2>
-        </div>
+        @if (product != null)
+        {
+            <div class="title2">
+                <h4>new collection</h4>
+                <h2 class="title-inner2">trending products</h2>
+            </div>
+        }
+
         <div class="row">
             <div class="col">
                 <div class="theme-tab">
@@ -93,21 +101,24 @@
 <!-- parallax banner -->
 <section class="p-0">
     @{
-        var product = ViewBag.SpecialOffer;
-        <div class="full-banner banner-layout-3 parallax text-center p-center">
-            <img src="@product.ImageUrl" alt="" class="bg-img blur-up lazyload">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="banner-contain">
-                            <h4 class="color pt-0">special offer for you</h4>
-                            <h3>@product.ProductName</h3>
-                            <h4>discounted product</h4> <a href="@Url.Action("Product","Home",new {id = product.ProductId })" class="btn btn-solid">shop now</a>
+        if (product != null)
+        {
+            <div class="full-banner banner-layout-3 parallax text-center p-center">
+                <img src="@product.ImageUrl" alt="" class="bg-img blur-up lazyload">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="banner-contain">
+                                <h4 class="color pt-0">special offer for you</h4>
+                                <h3>@product.ProductName</h3>
+                                <h4>discounted product</h4> <a href="@Url.Action("Product","Home",new {id = product.ProductId })" class="btn btn-solid">shop now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+
     }
 </section>
 <div class="container">
@@ -141,7 +152,103 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <path d="M216.176,424.152c0.167-4.415-3.278-8.129-7.693-8.296c-0.001,0-0.002,0-0.003,0 C104.11,411.982,20.341,328.363,16.28,224H48c4.418,0,8-3.582,8-8s-3.582-8-8-8H16.28C20.283,103.821,103.82,20.287,208,16.288 V40c0,4.418,3.582,8,8,8s8-3.582,8-8V16.288c102.754,3.974,185.686,85.34,191.616,188l-31.2-31.2 c-3.178-3.07-8.242-2.982-11.312,0.196c-2.994,3.1-2.994,8.015,0,11.116l44.656,44.656c0.841,1.018,1.925,1.807,3.152,2.296 c0.313,0.094,0.631,0.172,0.952,0.232c0.549,0.198,1.117,0.335,1.696,0.408c0.08,0,0.152,0,0.232,0c0.08,0,0.152,0,0.224,0 c0.609-0.046,1.211-0.164,1.792-0.352c0.329-0.04,0.655-0.101,0.976-0.184c1.083-0.385,2.069-1.002,2.888-1.808l45.264-45.248 c3.069-3.178,2.982-8.242-0.196-11.312c-3.1-2.994-8.015-2.994-11.116,0l-31.976,31.952 C425.933,90.37,331.38,0.281,216.568,0.112C216.368,0.104,216.2,0,216,0s-0.368,0.104-0.568,0.112 C96.582,0.275,0.275,96.582,0.112,215.432C0.112,215.632,0,215.8,0,216s0.104,0.368,0.112,0.568 c0.199,115.917,91.939,210.97,207.776,215.28h0.296C212.483,431.847,216.013,428.448,216.176,424.152z" fill="#ff4c3b" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -197,7 +304,103 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <path d="M262.801,308.064c-4.165-4.165-10.917-4.164-15.085,0l-83.934,83.933c-4.165,4.165-4.165,10.918,0,15.085 c2.083,2.083,4.813,3.124,7.542,3.124c2.729,0,5.459-1.042,7.542-3.124l83.934-83.933 C266.966,318.982,266.966,312.229,262.801,308.064z" fill="#ff4c3b" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -229,7 +432,103 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <path d="M260.054,356.065l-4.525,4.524c-4.166,4.165-4.166,10.918-0.001,15.085c2.082,2.083,4.813,3.125,7.542,3.125 c2.729,0,5.459-1.042,7.541-3.125l4.525-4.524c4.166-4.165,4.166-10.918,0.001-15.084 C270.974,351.901,264.219,351.9,260.054,356.065z" fill="#ff4c3b" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -261,7 +560,103 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <path d="M320.339,80.186c2.731,0,5.461-1.042,7.543-3.126l4.525-4.527c4.164-4.166,4.163-10.92-0.003-15.084 c-4.165-4.164-10.92-4.163-15.084,0.003l-4.525,4.527c-4.164,4.166-4.163,10.92,0.003,15.084 C314.881,79.146,317.609,80.186,320.339,80.186z" fill="#ff4c3b" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -312,14 +707,14 @@
                                 </div>
                             </div>
                             <div class="product-info">
-                                
+
                                 <div class="rating">
                                     @for (int i = 0; i < item.Rating; i++)
                                     {
 
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                     }
-                                    
+
                                 </div>
                                 <a href="@Url.Action("Product","Home",new {id = item.ProductId })">
                                     <h6>@item.ProductName</h6>

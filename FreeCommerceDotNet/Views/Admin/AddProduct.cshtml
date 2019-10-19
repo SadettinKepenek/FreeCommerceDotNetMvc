@@ -4,11 +4,10 @@
 @using System.Collections.Generic
 @using System.Web
 @using System.Web.Mvc
-@using FreeCommerceDotNet.BLL.Concrete
-@using FreeCommerceDotNet.DAL.Concrete
 @using FreeCommerceDotNet.Entities.Concrete
 @using Attribute = FreeCommerceDotNet.Entities.Concrete.Attribute
-
+@using FreeCommerceDotNet.BLL.Concrete
+@using  FreeCommerceDotNet.DAL.Concrete
 @model FreeCommerceDotNet.Entities.Concrete.Product
 
 
@@ -29,12 +28,18 @@
 
 
 @{
-    List<Category> categories;
+    List<Category> categories2=new List<Category>();
+    List<Category> categories=new List<Category>();
     List<FreeCommerceDotNet.Entities.Concrete.Attribute> attributes;
     List<Segment> segments;
     using (CategoryManager bm = new CategoryManager(new CategoryRepository()))
     {
         categories = bm.SelectAll();
+        //foreach (Category item in categories2)
+        //{
+        //    categories.Add(bm.SelectById(item.CategoryId));
+        //}
+
 
         foreach (Category item in categories)
         {
@@ -79,7 +84,11 @@
     // TODO Bütün her şey tamam post işlemi yapılacak.
 
 }
+@{ 
+    var brands = new BrandManager(new BrandRepository()).SelectAll();
 
+
+}
 
 
 
@@ -132,7 +141,7 @@
                                     <div class="form-group mb-3 row">
                                         <label for="editor1" class="col-xl-3 col-sm-4 mb-0">Product Description :</label>
                                         <div class="col-xl-8 col-sm-7 pl-0 description-sm">
-                                            @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm",  name = "editor1", type = "text", required = "" })
+                                            @Html.TextAreaFor(x => x.ProductDescription, new { @class = "form-control col-xl-8 col-sm-7 description-sm", name = "editor1", type = "text", required = "" })
                                         </div>
                                         <div class="valid-feedback">Looks good!</div>
                                         <div class="invalid-feedback offset-sm-4 offset-xl-3">Please Enter Valid Product Name.</div>
@@ -243,7 +252,7 @@
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Brand :</label>
-                                                @Html.TextBoxFor(x => x.Brand, new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08", type = "text", required = "" })
+                                                @Html.DropDownListFor(x => x.Brand,new SelectList(brands,"BrandId","BrandName"), new { @class = "form-control col-xl-8 col-sm-7", id = "validationCustom08",required = "" })
                                             </div>
                                             <div class="form-group mb-3 row">
                                                 <label for="validationCustom08" class="col-xl-3 col-sm-4 mb-0">Available Date :</label>
@@ -294,19 +303,22 @@
 
                                                     <table class="table">
                                                         <thead>
-                                                        <tr>
-                                                            <th scope="col">#Segment</th>
-                                                            <th scope="col">Fiyat</th>
+                                                            <tr>
+                                                                <th scope="col">#Segment</th>
+                                                                <th scope="col">Fiyat</th>
 
-                                                        </tr>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
                                                             @for (int i = 0; i < Model.ProductPrices.Count; i++)
                                                             {
-                                                                <tr>
-                                                                    <th scope="row">@Model.ProductPrices[i].Segment</th>
-                                                                    <th scope="row">@Html.TextBoxFor(x => x.ProductPrices[i].Price, new { type = "number", style = "min-width:60%;" })</th>
-                                                                </tr>
+                                                            <tr>
+                                                                @Html.HiddenFor(x => x.ProductPrices[i].SegmentId)
+                                                                @Html.HiddenFor(x => x.ProductPrices[i].Segment.SegmentId)
+                                                                @Html.HiddenFor(x => x.ProductPrices[i].Segment.SegmentName)
+                                                                <th scope="row">@Model.ProductPrices[i].SegmentId</th>
+                                                                <th scope="row">@Html.TextBoxFor(x => x.ProductPrices[i].Price, new { type = "number", style = "min-width:60%;" })</th>
+                                                            </tr>
                                                             }
 
 
@@ -400,7 +412,7 @@
                                         <button type="button" class="btn btn-light">Discard</button>
                                     </div>
                                 }
-                             
+
                             </div>
 
                         </div>
@@ -525,9 +537,9 @@
 <script src="../assets/js/dashboard/form-validation-custom.js"></script>
 <!-- ckeditor js-->
 @*<script src="../assets/js/editor/ckeditor/ckeditor.js"></script>
-<script src="../assets/js/editor/ckeditor/styles.js"></script>
-<script src="../assets/js/editor/ckeditor/adapters/jquery.js"></script>
-<script src="../assets/js/editor/ckeditor/ckeditor.custom.js"></script>*@
+    <script src="../assets/js/editor/ckeditor/styles.js"></script>
+    <script src="../assets/js/editor/ckeditor/adapters/jquery.js"></script>
+    <script src="../assets/js/editor/ckeditor/ckeditor.custom.js"></script>*@
 
 @*<script src="../assets/js/jquery.elevatezoom.js"></script>
-<script src="../assets/js/zoom-scripts.js"></script>*@
+    <script src="../assets/js/zoom-scripts.js"></script>*@
