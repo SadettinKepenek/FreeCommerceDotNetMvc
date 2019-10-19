@@ -41,30 +41,44 @@ namespace FreeCommerceDotNet.Controllers
         public ActionResult Categories(bool subCategories)
         {
             List<Category> categories;
-
+            List<Category> willReturn;
             using (CategoryManager categorManager=new CategoryManager(new CategoryRepository()))
             {
-                var allCategories = categorManager.SelectAll();
-
+                categories = categorManager.GetLayoutCategories();
+                for (int i = 0; i < categories.Count; i++)
+                {
+                    if (categories[i].SubCategories != null)
+                    {
+                        foreach (Category itemSubCategory in categories[i].SubCategories)
+                        {
+                            if (categories.FirstOrDefault(x => x.CategoryId == itemSubCategory.CategoryId) == null)
+                            {
+                                itemSubCategory.CategoryName = categories[i].CategoryName + " --> " + itemSubCategory.CategoryName;
+                                categories.Add(itemSubCategory);
+                            }
+                        }
+                    }
+                }
                 if (subCategories)
                 {
-                    categories = new List<Category>();
-                    foreach (Category categoryBm in allCategories.Where(x=>x.ParentId!=-1))
+                    willReturn=new List<Category>();
+                    foreach (Category categoryBm in categories.Where(x=>x.ParentId!=-1))
                     {
-                        categories.Add(categoryBm);
+                        willReturn.Add(categoryBm);
                     }
 
                     return View(categories);
                 }
                 else
                 {
-                    categories = new List<Category>();
-                    foreach (Category categoryBm in allCategories.Where(x => x.ParentId == -1))
+                    willReturn = new List<Category>();
+
+                    foreach (Category categoryBm in categories.Where(x => x.ParentId == -1))
                     {
-                        categories.Add(categoryBm);
+                        willReturn.Add(categoryBm);
                     }
 
-                    return View(categories);
+                    return View(willReturn);
                 }
             }
         }
@@ -100,7 +114,25 @@ namespace FreeCommerceDotNet.Controllers
         [HttpGet]
         public ActionResult UpdateCategory(int id)
         {
-            return View(new CategoryManager(new CategoryRepository()).SelectById(id));
+            using (CategoryManager m=new CategoryManager(new CategoryRepository()))
+            {
+                var layoutCategories = m.GetLayoutCategories();
+                var category = layoutCategories.FirstOrDefault(x => x.CategoryId == id);
+                if (category == null)
+                {
+                    foreach (Category layoutCategory in layoutCategories)
+                    {
+                        if (layoutCategory.SubCategories!=null && layoutCategory.SubCategories.FirstOrDefault(x=>x.CategoryId==id)!=null)
+                        {
+                            category = layoutCategory.SubCategories.FirstOrDefault(x => x.CategoryId == id);
+                            return View(category);
+                        }
+                    }
+                }
+                return View(category);
+
+            }
+
         }
         [ValidateAntiForgeryToken]
         [HttpPost]

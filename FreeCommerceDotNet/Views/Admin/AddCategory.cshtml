@@ -11,7 +11,21 @@
     List<FreeCommerceDotNet.Entities.Concrete.Category> categories;
     using (FreeCommerceDotNet.BLL.Concrete.CategoryManager bm = new FreeCommerceDotNet.BLL.Concrete.CategoryManager(new CategoryRepository()))
     {
-        categories = bm.SelectAll();
+        categories = bm.GetLayoutCategories();
+        for (int i = 0; i < categories.Count; i++)
+        {
+            if (categories[i].SubCategories != null)
+            {
+                foreach (Category itemSubCategory in categories[i].SubCategories)
+                {
+                    if (categories.FirstOrDefault(x=>x.CategoryId==itemSubCategory.CategoryId)==null)
+                    {
+                        categories.Add(itemSubCategory);
+                    }
+                }
+            }
+        }
+
         categories.Insert(0, new Category() { CategoryId = -1, CategoryName = "Parent Category Yok", ParentId = -1 });
     }
 }
