@@ -1,5 +1,4 @@
-﻿@using FreeCommerceDotNet.Models.BusinessModels
-@using FreeCommerceDotNet.Models.DbModels
+﻿
 @using Product = FreeCommerceDotNet.Entities.Concrete.Product
 @model List<FreeCommerceDotNet.Entities.Concrete.Product>
 
@@ -50,11 +49,12 @@
 
 @helper GetProductActionButtons(Product bm)
 {
-        <td class="text-center">
-            @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-danger" })
-            @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-warning" })
-            @Html.ActionLink("Show", "Product", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-success" })
-        </td>
+<td class="text-center">
+    @Html.ActionLink("Update", "UpdateProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-danger" })
+    @Html.ActionLink("Delete", "DeleteProduct", "Admin", new { id = bm.ProductId }, new { @class = "btn btn-sm btn-warning" })
+    <a class="btn btn-sm btn-success" href="~/Home/Product/@bm.ProductId" target="_blank">Show</a>
+
+</td>
 }
 
 @{

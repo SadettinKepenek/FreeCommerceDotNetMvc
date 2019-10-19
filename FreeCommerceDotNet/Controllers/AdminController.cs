@@ -361,22 +361,25 @@ namespace FreeCommerceDotNet.Controllers
         {
             try
             {
-                using (ProductManager m = new ProductManager())
+                using (ProductManager m = new ProductManager(new ProductRepository()))
                 {
                     int insertedId = m.Insert(bm).Id;
                     bm.ProductId = insertedId;
                     using (ProductAttributeManager attributeManager = new ProductAttributeManager(new ProductAttributeRepository()))
                     {
-                        foreach (var bmProductAttribute in bm.ProductAttributes)
-                        {
-                            bmProductAttribute.ProductId = bm.ProductId;
-                            attributeManager.Insert(bmProductAttribute);
-                        }
+                        if(bm.ProductAttributes!=null)
+                            foreach (var bmProductAttribute in bm.ProductAttributes)
+                            {
+                                bmProductAttribute.ProductId = bm.ProductId;
+                                attributeManager.Insert(bmProductAttribute);
+                            }
                     }
 
                     using (ProductDiscountManager discountManager = new ProductDiscountManager(new ProductDiscountRepository()))
                     {
-                        foreach (var productDiscount in bm.ProductDiscounts)
+                        if (bm.ProductDiscounts != null)
+
+                            foreach (var productDiscount in bm.ProductDiscounts)
                         {
                             productDiscount.ProductId = bm.ProductId;
                             discountManager.Insert(productDiscount);
@@ -385,7 +388,9 @@ namespace FreeCommerceDotNet.Controllers
 
                     using (ProductPriceManager productPriceManager = new ProductPriceManager(new ProductPriceRepository()))
                     {
-                        foreach (var productPrice in bm.ProductPrices)
+                        if (bm.ProductPrices != null)
+
+                            foreach (var productPrice in bm.ProductPrices)
                         {
                             productPrice.ProductId = bm.ProductId;
                             productPriceManager.Insert(productPrice);
@@ -400,7 +405,7 @@ namespace FreeCommerceDotNet.Controllers
             catch (Exception e)
             {
                 ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
-                return AddProduct(bm);
+                return View(bm);
             }
         }
 
@@ -425,7 +430,7 @@ namespace FreeCommerceDotNet.Controllers
             }
 
             TempData["ProductAttributesCompare"] = productBm.ProductAttributes;
-            using (SegmentManager m = new SegmentManager())
+            using (SegmentManager m = new SegmentManager(new SegmentRepository()))
             {
                 var segments = m.SelectAll();
                 foreach (var segment in segments)
@@ -449,13 +454,17 @@ namespace FreeCommerceDotNet.Controllers
                 {
                     productManager.Update(bm);
                     List<Entities.Concrete.ProductAttribute> firstAttributes = TempData["ProductAttributesCompare"] as List<Entities.Concrete.ProductAttribute>;
-                    UpdateProductAttributes(bm.ProductAttributes, firstAttributes,bm.ProductId);
+                    firstAttributes = firstAttributes ?? new List<ProductAttribute>();
+                 
+                        UpdateProductAttributes(bm.ProductAttributes, firstAttributes, bm.ProductId);
+
+                    
                     TempData["AddSuccessMessage"] = "Ürün Başarılı bir şekilde güncellendi";
                     return RedirectToAction("Products");
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi.");
+                    ModelState.AddModelError("AddError", "Veri eklenirken veritabanında bir hata meydana geldi. "+e.StackTrace);
                     return View(bm);
 
                 }
@@ -502,7 +511,11 @@ namespace FreeCommerceDotNet.Controllers
 
         public ActionResult DeleteProduct(int id)
         {
-            return View();
+            using (ProductManager manager = new ProductManager(new ProductRepository()))
+            {
+                manager.Delete(id);
+                return RedirectToAction("Products","Admin");
+            }
         }
 
         public ActionResult Customers()
