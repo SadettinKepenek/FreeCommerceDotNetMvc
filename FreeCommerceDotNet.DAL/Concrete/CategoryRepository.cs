@@ -124,7 +124,6 @@ namespace FreeCommerceDotNet.DAL.Concrete
 
         public List<Category> SelectAll()
         {
-            return GetLayoutCategories();
             string query = "SP_GetCategory";
             using (var conn = database.CreateConnection())
             {

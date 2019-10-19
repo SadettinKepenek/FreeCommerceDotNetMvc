@@ -56,7 +56,6 @@
                             <th scope="col">#</th>
                             <th scope="col">Category Name</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Product Count</th>
                             <th scope="col">Sub Category Count</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
@@ -68,8 +67,7 @@
                                 <th scope="row">@bm.CategoryId</th>
                                 <td>@bm.CategoryName</td>
                                 <td>@bm.Description</td>
-                                <td>@bm.Products.Count</td>
-                                <td>@bm.SubCategories.Count</td>
+                                <td>@(bm.SubCategories?.Count ?? 0)</td>
                                 @GetProductActionButtons(bm)
 
 
